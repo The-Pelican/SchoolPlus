@@ -81,7 +81,7 @@ class SetPasswordViewController: UIViewController {
         guard pwdTextField.text == repwdTextField.text else {
             ProgressHUD.showFailed("两次密码不一致")
             return}
-        user.register(id: user.id, pwd: pwdTextField.text!, key: key, code: code).subscribe(onNext: { string in
+        user.register(pho: user.pho, pwd: pwdTextField.text!, key: key, code: code).subscribe(onNext: { string in
             user.save()
             self.navigationController?.pushViewController(Navigator.getViewController(key: "认证"), animated: true)
         }, onError: { error in

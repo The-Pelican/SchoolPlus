@@ -7,13 +7,26 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 class Organization {
-    var name = ""
-    var slogan = ""
-    var description = "这是一个简介"
-    var logoURL = ""
-    var founder = ""
-    var memberCount = 1
-    var members = [Member]()
+    var organizationId:Int?
+    var organizationName:String?
+    var slogan:String?
+    var intro:String?
+    var auditor:String?
+    var hasSubscribed:Bool?
+    
+    init() {
+        
+    }
+    
+    init(_ json:JSON){
+        organizationId = json["organizationId"].int
+        organizationName = json["organizationName"].string
+        slogan = json["slogan"].string
+        intro = json["intro"].string
+        auditor = json["auditor"].string
+        hasSubscribed = json["hasSubscribed"].bool
+    }
 }

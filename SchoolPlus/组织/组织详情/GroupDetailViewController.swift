@@ -59,7 +59,7 @@ class GroupDetailViewController: UIViewController {
             $0.height.equalTo(200)
         })
         
-        nameLabel.text = "名称：  \(group.name)"
+        nameLabel.text = "名称：  \(group.organizationName ?? "无名")"
         self.detail.addSubview(nameLabel)
         nameLabel.snp.makeConstraints({
             $0.top.equalToSuperview().offset(10)
@@ -82,7 +82,7 @@ class GroupDetailViewController: UIViewController {
             $0.left.equalTo(5)
         })
         
-        descriptionContentLabel.text = "\(group.description)"
+        descriptionContentLabel.text = "\(group.intro)"
         descriptionContentLabel.numberOfLines = 0
         self.detail.addSubview(descriptionContentLabel)
         descriptionContentLabel.snp.makeConstraints({
@@ -92,14 +92,14 @@ class GroupDetailViewController: UIViewController {
         })
         
         
-        founderLabel.text = "创始人：\(group.founder)"
+        founderLabel.text = "创始人：\(group.auditor ?? "")"
         self.detail.addSubview(founderLabel)
         founderLabel.snp.makeConstraints({
             $0.bottom.equalToSuperview().offset(-5)
             $0.left.equalTo(5)
         })
         
-        counterLabel.text = "成员数量：\(group.memberCount)"
+        counterLabel.text = "成员数量:"
         self.detail.addSubview(counterLabel)
         counterLabel.snp.makeConstraints({
             $0.bottom.equalToSuperview().offset(-5)

@@ -21,8 +21,14 @@ class UpdateMessageViewController: UIViewController {
             collectionView.reloadData()
         }
     }
-    var info: Infomation?
     
+    var newImages:[UIImage] = [] {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+    
+    var info: Infomation?
     let disposeBag = DisposeBag()
 
     override func viewDidLoad() {
@@ -35,10 +41,11 @@ class UpdateMessageViewController: UIViewController {
         initSubView()
         updateConstraints()
         if let info = info {
-            textView.text = info.content
+            textView.text = info.text
             
-            if !info.audioPath.isEmpty {
-                for image in info.audioPath {
+            if !(info.media?.isEmpty ?? true) && images.isEmpty  {
+                print(info.media!)
+                for image in info.media! {
                     if let url = URL(string: image) {
                         do {
                             let data = try Data(contentsOf: url)
@@ -51,7 +58,6 @@ class UpdateMessageViewController: UIViewController {
                     }
                 }
             }
-            
         }
     }
     
@@ -82,7 +88,7 @@ class UpdateMessageViewController: UIViewController {
             $0.top.equalTo(55+textView.frame.size.height)
             $0.left.equalToSuperview()
             $0.width.equalToSuperview()
-            $0.height.equalTo(100)
+            $0.height.equalTo(300)
         })
         
         textView.rx.didChange
@@ -97,9 +103,15 @@ class UpdateMessageViewController: UIViewController {
     
     @objc func done() {
         if let info = info {
-            info.editNews(newsId:info.newsId,text: textView.text!,pic:images).subscribe(onNext:{ string in
-                ProgressHUD.showSucceed()
-                self.navigationController?.popViewController(animated: true)
+            print("编辑")
+            print(info.newsId!)
+            print(newImages)
+            print(info.media!)
+            info.editNews(newsId:info.newsId!,text: textView.text!, media: info.media!,pic:newImages).subscribe(onNext:{ string in
+                if string == "success" {
+                    ProgressHUD.showSucceed()
+                    self.navigationController?.popViewController(animated: true)
+                }
             }, onError: { error in
                 ProgressHUD.showError(error.localizedDescription)
                 }).disposed(by: disposeBag)
@@ -142,8 +154,9 @@ class UpdateMessageViewController: UIViewController {
         let btn = sender as! UIButton
         let cell = superUICollectionViewCell(of: btn)!
         let indexPath = collectionView.indexPath(for: cell)
-        if !images.isEmpty && indexPath!.row < images.count {
-            images.remove(at: indexPath!.item)
+        images.remove(at: indexPath!.item)
+        if !(info?.media)!.isEmpty && indexPath!.row < (info?.media)!.count {
+            info?.media?.remove(at: indexPath!.item)
         }
     }
     
@@ -198,6 +211,9 @@ extension UpdateMessageViewController: UICollectionViewDelegate, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("点击item")
         if indexPath.row == images.count {
+            guard images.count < 9 else {
+                ProgressHUD.showFailed("最多9张图片")
+                return}
             var config = YPImagePickerConfiguration()
             config.library.maxNumberOfItems = 9
             let picker = YPImagePicker(configuration: config)
@@ -210,6 +226,7 @@ extension UpdateMessageViewController: UICollectionViewDelegate, UICollectionVie
                     case .photo(let photo):
                         print(photo)
                         if self.images.count <= 9 {
+                            self.newImages.append(photo.image)
                             self.images.append(photo.image)
                         }
                     case .video(let video):

@@ -119,7 +119,7 @@ class ForgetPasswordViewController: UIViewController {
             ProgressHUD.showFailed("两次密码不一致")
             return}
         guard let code = Int(codeTextField.text!) else {return}
-        user.refreshPW(id: idTextField.text!, key: key, code: code, pwd: pwdTextField.text!)
+        user.refreshPW(pho: idTextField.text!, key: key, code: code, pwd: pwdTextField.text!)
         self.navigationController?.popViewController(animated: true)
     }
     

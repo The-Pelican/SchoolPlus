@@ -28,7 +28,6 @@ class MainTabViewController: UITabBarController {
         let group = Navigator.getViewController(key: "组织")
         let info = Navigator.getViewController(key: "信息")
         let my = Navigator.getViewController(key: "我的")
-        let test  = MessagesViewController()
         let page = PageViewController()
         let auth = AuthenticationViewController()
         

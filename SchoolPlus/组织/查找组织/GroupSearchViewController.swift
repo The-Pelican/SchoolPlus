@@ -22,14 +22,13 @@ class GroupSearchViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
         let group = Organization()
-        group.name = "西二在线"
+        group.organizationName = "西二在线"
         group.slogan = "我在西二，为你在线"
-        group.description = "西二在线，成立于1998年。是集美貌与智慧于一身的历史最悠久最酷炫最强大的学生组织"
-        group.founder = "？？？"
-        group.memberCount = 29
+        group.intro = "西二在线，成立于1998年。是集美貌与智慧于一身的历史最悠久最酷炫最强大的学生组织"
+        group.auditor = "？？？"
         let group1 = Organization()
-        group1.name = "DBL街舞协会"
-        group1.description = "大菠萝"
+        group1.organizationName = "DBL街舞协会"
+        group1.intro = "大菠萝"
         groups.append(group)
         groups.append(group1)
         initTableView()
@@ -132,12 +131,12 @@ extension GroupSearchViewController: UITableViewDataSource, UITableViewDelegate 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: GroupTableViewCell.identifier, for: indexPath) as! GroupTableViewCell
          if self.searchController.isActive {
-            cell.nameLabel?.text = self.searchGroup[indexPath.row].name
-            cell.contentLabel?.text = self.searchGroup[indexPath.row].description
+            cell.nameLabel?.text = self.searchGroup[indexPath.row].organizationName
+            cell.contentLabel?.text = self.searchGroup[indexPath.row].intro
             return cell
          } else {
-            cell.nameLabel?.text = self.groups[indexPath.row].name
-            cell.contentLabel?.text = self.groups[indexPath.row].description
+            cell.nameLabel?.text = self.groups[indexPath.row].organizationName
+            cell.contentLabel?.text = self.groups[indexPath.row].intro
             return cell
         }
     }

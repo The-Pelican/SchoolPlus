@@ -7,34 +7,38 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 class Comment {
-    var sender = ""
-    var date = ""
-    var content = ""
-    var avartar = ""
-    var audioPath = ""
-    //var comment = 5
-    var like = 0
-    var userId = -1
-    var commentId = -1
-    var newsId = -1
-    var hasLiked = false
+    var commentId:Int?
+    var userId: Int?
+    var userInfo: UserInfo?
+    var newsId:Int?
+    var replyId:Int?
+    var text:String?
+    var pic:String?
+    var commentTime:Int?
+    var hasLiked:Bool?
+    var likesNum:Int?
+    var commentsNum:Int?
     
     init() {
         
     }
     
-    init(sender:String,date:String,content:String,audioPath:String,like:Int,hasLiked:Bool,avartar:String, userId:Int,newsId:Int,commentId:Int) {
-        self.sender = sender
-        self.date = date
-        self.content = content
-        self.audioPath = audioPath
-        self.like = like
-        self.hasLiked = hasLiked
-        self.avartar = avartar
-        self.userId = userId
-        self.newsId = newsId
-        self.commentId = commentId
+    
+    init(_ json:JSON) {
+        commentId = json["commentId"].int
+        userId = json["userId"].int
+        userInfo = UserInfo(json["user"])
+        newsId = json["newsId"].int
+        replyId = json["replyId"].int
+        text = json["text"].string
+        pic = json["pic"].string
+        commentTime = json["commentTime"].int
+        hasLiked = json["hasLiked"].bool
+        likesNum = json["likesNum"].int
+        commentsNum = json["commentsNum"].int
+        
     }
 }

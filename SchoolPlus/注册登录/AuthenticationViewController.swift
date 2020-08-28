@@ -32,6 +32,11 @@ class AuthenticationViewController: UIViewController {
         initSubView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        user.getMyMessage()
+    }
+    
     func initSubView() {
          title = "实名认证"
          self.view.backgroundColor = UIColor.white
@@ -100,7 +105,6 @@ class AuthenticationViewController: UIViewController {
         picker.didFinishPicking { [unowned picker] items, _ in
             if let photo = items.singlePhoto {
                 self.image = photo.image
-                
             }
             picker.dismiss(animated: true, completion: nil)
         }
@@ -110,28 +114,14 @@ class AuthenticationViewController: UIViewController {
     @objc func done() {
         
         guard image != nil else {return}
-        print("调用")
+        
         user.uploadAM(name: nameTextField.text!, num: numTextField.text!, card: image!).subscribe(onNext: { string in
             user.save()
             ProgressHUD.showSucceed("流程完成！")
         }, onError: { error in
             ProgressHUD.showError(error.localizedDescription)
         }).disposed(by:disposeBag)
-        /*guard image != nil else {return}
-        print("调用")
-        let studentName = nameTextField.text!.data(using: String.Encoding.utf8)
-        let studentNo = numTextField.text!.data(using: String.Encoding.utf8)
-        let cardData = image?.jpegData(compressionQuality: 1)
-        let headers: HTTPHeaders
-        headers = ["accessToken":user.accessToken]
-        print(cardData!)
-        AF.upload(multipartFormData: { (multiPart) in
-             multiPart.append(studentNo!, withName: "studentNo")
-             multiPart.append(studentName!, withName: "studentName")
-             multiPart.append(cardData!, withName: "card", fileName:  "card.jpeg", mimeType: "image/jpeg")
-        }, to: "http://www.chenzhimeng.top/fu-community/user/identity", usingThreshold:UInt64.init(), method: .put, headers:headers).response { response in
-            print(response)
-        }*/
+        
     }
     
     

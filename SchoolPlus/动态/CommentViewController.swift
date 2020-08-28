@@ -20,6 +20,7 @@ class CommentViewController: UIViewController {
     var textView = UITextView()
     var chooseButton = UIButton()
     var pic = UIImage()
+    let header = MJRefreshNormalHeader()
     let footer = MJRefreshBackNormalFooter()
     var model = InformationViewModel()
     var comments : [Comment] = [] {
@@ -29,7 +30,11 @@ class CommentViewController: UIViewController {
     }
     let disposeBag = DisposeBag()
     var bottomConstraint: Constraint?
-    var info =  Infomation(sender:"外研社",date:"2020-07-13",content:"",audioPath:["阿波罗","赫拉"],comment:5,like:5,hasLiked: false, hasSubscribe: false, avartar: "", userId: -1, organizationId: -1,newsId: -1)
+    var info =  Infomation() {
+        didSet {
+            
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,8 +45,9 @@ class CommentViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.model.pageNum = 0
         self.model.comment = []
-        model.getNewsComments(id: info.newsId).subscribe(onNext:{ string in
+        model.getNewsComments(id: info.newsId!).subscribe(onNext:{ string in
             self.comments = self.model.comment
             self.model.pageNum = self.model.pageNum + 1
         }, onError: { error in
@@ -61,6 +67,11 @@ class CommentViewController: UIViewController {
         tableView.sectionHeaderHeight = 10
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableView.automaticDimension
+        
+        header.setRefreshingTarget(self, refreshingAction: #selector(headerRefresh))
+        self.tableView.mj_header = header
+        header.setTitle("下拉可以刷新", for: .idle)
+        header.setTitle("正在刷新中", for: .refreshing)
         
         footer.setRefreshingTarget(self, refreshingAction: #selector(footerLoad))
         self.tableView.mj_footer = footer
@@ -143,8 +154,22 @@ class CommentViewController: UIViewController {
         }
     }
     
+    @objc func headerRefresh(){
+        self.model.pageNum = 0
+        self.model.comment = []
+        model.getNewsComments(id: (info.newsId)!).subscribe(onNext:{ string in
+            self.comments = self.model.comment
+            self.model.pageNum = self.model.pageNum + 1
+        }, onError: { error in
+            ProgressHUD.showError(error.localizedDescription)
+            }).disposed(by: disposeBag)
+        tableView.reloadData()
+        self.tableView.mj_header!.endRefreshing()
+    }
+    
+    
     @objc func footerLoad() {
-        model.getNewsComments(id: info.newsId).subscribe(onNext:{ string in
+        model.getNewsComments(id: (info.newsId)!).subscribe(onNext:{ string in
             self.comments = self.model.comment
             self.model.pageNum = self.model.pageNum + 1
         }, onError: { error in
@@ -157,8 +182,14 @@ class CommentViewController: UIViewController {
     @objc func sendMessage() {
         //关闭键盘
         print(textView.text!)
-        model.giveComment(newsId: info.newsId, text: textView.text!, pic: pic).subscribe(onNext:{ string in
-            ProgressHUD.showSuccess()
+        guard !((textView.text)!.isEmpty) else {return}
+        model.giveComment(newsId: info.newsId!, text: textView.text!, pic: pic).subscribe(onNext:{ string in
+            if string == "success" {
+                ProgressHUD.showSuccess()
+            } else {
+                ProgressHUD.showFailed(string)
+            }
+            
         }, onError: { error in
             ProgressHUD.showError(error.localizedDescription)
             }).disposed(by: disposeBag)
@@ -171,7 +202,6 @@ class CommentViewController: UIViewController {
         let picker = YPImagePicker(configuration: config)
         picker.didFinishPicking { [unowned picker] items, _ in
             if let photo = items.singlePhoto {
-                print(photo.image) // Final image selected by the user
                 self.pic = photo.image
             }
             picker.dismiss(animated: true, completion: nil)
@@ -190,7 +220,7 @@ class CommentViewController: UIViewController {
         }
         let delete = UIAlertAction(title: "删除", style: .default) {
             _ in
-            self.info.deleteNews(newsId: self.info.newsId).subscribe(onNext:{ string in
+            self.info.deleteNews(newsId: self.info.newsId!).subscribe(onNext:{ string in
                 ProgressHUD.showSucceed()
                 self.navigationController?.popViewController(animated: true)
             }, onError: { error in
@@ -238,8 +268,8 @@ extension CommentViewController: UITableViewDataSource, UITableViewDelegate {
             
             cell.frame = tableView.bounds
             cell.layoutIfNeeded()
-            
-            cell.reloadData(sender: info.sender, date: info.date, content: info.content, images: info.audioPath, like: info.like, comment: info.comment, avartar: info.avartar,hasLike: info.hasLiked, hasSubscribed: info.hasSubscribe)
+            cell.info = info
+            cell.reloadData( date: info.publishTime ?? "00000000", content: info.text ?? "", images: info.media ?? [String](), like: info.likesNum ?? 0, comment:info.commentsNum ?? 0, hasLike: info.hasLiked ?? false)
             return cell
         }
         
@@ -247,7 +277,7 @@ extension CommentViewController: UITableViewDataSource, UITableViewDelegate {
         cell.frame = tableView.bounds
         cell.layoutIfNeeded()
         
-        cell.reloadData(sender: comments[indexPath.row].sender, date: comments[indexPath.row].sender, content: comments[indexPath.row].content, audioPath: comments[indexPath.row].audioPath, like: comments[indexPath.row].like, hasLiked: comments[indexPath.row].hasLiked, avartar: comments[indexPath.row].avartar, userId: comments[indexPath.row].userId, newsId: comments[indexPath.row].newsId, commentId: comments[indexPath.row].commentId)
+        cell.reloadData(sender: (comments[indexPath.row].userInfo?.studentName) ?? "", date: "\(comments[indexPath.row].commentTime ?? 20202020)", content: comments[indexPath.row].text ?? "", audioPath: comments[indexPath.row].pic ?? "", like: comments[indexPath.row].likesNum ?? 0, hasLiked: comments[indexPath.row].hasLiked!, avartar: (comments[indexPath.row].userInfo?.avatar)!, userId: (comments[indexPath.row].userInfo?.userId)!, newsId: comments[indexPath.row].newsId!, commentId: comments[indexPath.row].commentId!)
         return cell
     }
 }

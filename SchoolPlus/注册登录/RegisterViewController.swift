@@ -116,7 +116,7 @@ class RegisterViewController: UIViewController {
             return}
         guard codeTextField.text != nil else {return}
         guard let code = Int(codeTextField.text!) else {return}
-        user.register(id: idTextField.text!, pwd: pwdTextField.text!, key: key, code: code).subscribe(onNext:{ string in
+        user.register(pho: idTextField.text!, pwd: pwdTextField.text!, key: key, code: code).subscribe(onNext:{ string in
             user.save()
             ProgressHUD.showSuccess("注册成功")
             self.navigationController?.pushViewController(Navigator.getViewController(key: "认证"), animated: true)

@@ -17,6 +17,7 @@ class MessagesViewController: UIViewController {
     var navigationBar:UINavigationBar?
     var loadView: UIView?
     let model = InformationViewModel()
+    var isAll = true
     var messages:[Infomation] = [] {
         didSet {
             tableView.reloadData()
@@ -25,7 +26,26 @@ class MessagesViewController: UIViewController {
     
     let disposeBag = DisposeBag()
     
+    let header = MJRefreshNormalHeader()
     let footer = MJRefreshBackNormalFooter()
+    
+    init(type:String) {
+
+        switch type {
+        case "全部":
+            self.isAll = true
+        case "已关注":
+            self.isAll = false
+        default:
+            self.isAll = true
+ 
+        }
+        super.init(nibName:nil, bundle:nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
 
     override func viewDidLoad() {
@@ -38,15 +58,23 @@ class MessagesViewController: UIViewController {
         super.viewWillAppear(animated)
         model.message = []
         model.pageNum = 0
-        model.getData().subscribe(onNext:{ string in
-            self.messages = self.model.message
-            self.model.pageNum = self.model.pageNum + 1
-        }, onError: { error in
-            ProgressHUD.showError(error.localizedDescription)
-            }).disposed(by: disposeBag)
+        if isAll {
+            model.getData().subscribe(onNext:{ string in
+                self.messages = self.model.message
+                self.model.pageNum = self.model.pageNum + 1
+            }, onError: { error in
+                ProgressHUD.showError(error.localizedDescription)
+                }).disposed(by: disposeBag)
+        } else {
+            model.getSubscribeData().subscribe(onNext:{ string in
+                self.messages = self.model.message
+                self.model.pageNum = self.model.pageNum + 1
+            }, onError: { error in
+                ProgressHUD.showError(error.localizedDescription)
+                }).disposed(by: disposeBag)
+            
+        }
     }
-    
-
     
     func initTableView() {
         self.view.addSubview(tableView)
@@ -65,19 +93,56 @@ class MessagesViewController: UIViewController {
         self.tableView.estimatedRowHeight = 44.0
         self.tableView.rowHeight = UITableView.automaticDimension
         
+        header.setRefreshingTarget(self, refreshingAction: #selector(headerRefresh))
+        self.tableView.mj_header = header
+        header.setTitle("下拉可以刷新", for: .idle)
+        header.setTitle("正在刷新中", for: .refreshing)
+        
         footer.setRefreshingTarget(self, refreshingAction: #selector(footerLoad))
         self.tableView.mj_footer = footer
+    }
+    
+    @objc func headerRefresh(){
+        model.message = []
+        model.pageNum = 0
+        if isAll {
+            model.getData().subscribe(onNext:{ string in
+                self.messages = self.model.message
+                self.model.pageNum = self.model.pageNum + 1
+            }, onError: { error in
+                ProgressHUD.showError(error.localizedDescription)
+                }).disposed(by: disposeBag)
+        } else {
+            model.getSubscribeData().subscribe(onNext:{ string in
+                self.messages = self.model.message
+                self.model.pageNum = self.model.pageNum + 1
+            }, onError: { error in
+                ProgressHUD.showError(error.localizedDescription)
+                }).disposed(by: disposeBag)
+            
+        }
+        tableView.reloadData()
+        self.tableView.mj_header!.endRefreshing()
     }
     
 
     
     @objc func footerLoad() {
-        model.getData().subscribe(onNext:{ string in
-            self.messages = self.model.message
-            self.model.pageNum = self.model.pageNum + 1
-        }, onError: { error in
-            ProgressHUD.showError(error.localizedDescription)
-            }).disposed(by: disposeBag)
+        if isAll {
+            model.getData().subscribe(onNext:{ string in
+                self.messages = self.model.message
+                self.model.pageNum = self.model.pageNum + 1
+            }, onError: { error in
+                ProgressHUD.showError(error.localizedDescription)
+                }).disposed(by: disposeBag)
+        } else {
+            model.getSubscribeData().subscribe(onNext:{ string in
+                self.messages = self.model.message
+                self.model.pageNum = self.model.pageNum + 1
+            }, onError: { error in
+                ProgressHUD.showError(error.localizedDescription)
+                }).disposed(by: disposeBag)
+        }
         tableView.reloadData()
         self.tableView.mj_footer!.endRefreshing()
     }
@@ -122,10 +187,8 @@ extension MessagesViewController: UITableViewDelegate,UITableViewDataSource {
         
         cell.frame = tableView.bounds
         cell.layoutIfNeeded()
-        
+        cell.reloadData( date: messages[indexPath.row].publishTime ?? "00000000", content: messages[indexPath.row].text ?? "", images: messages[indexPath.row].media ?? [String](), like: messages[indexPath.row].likesNum!, comment: messages[indexPath.row].commentsNum!,hasLike: messages[indexPath.row].hasLiked ?? false)
         cell.info = messages[indexPath.row]
-        cell.reloadData(sender: messages[indexPath.row].sender, date: messages[indexPath.row].date, content: messages[indexPath.row].content, images: messages[indexPath.row].audioPath, like: messages[indexPath.row].like, comment: messages[indexPath.row].comment,avartar:messages[indexPath.row].avartar, hasLike: messages[indexPath.row].hasLiked,hasSubscribed: messages[indexPath.row].hasSubscribe)
-        
         return cell
     }
     

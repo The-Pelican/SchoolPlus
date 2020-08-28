@@ -185,7 +185,7 @@ class LoginViewController: UIViewController {
                                       options: .regularExpression) != nil else {
                                         ProgressHUD.showFailed("电话号码不合法")
             return }
-        user.loginAuthCode(id: idTextField.text!)
+        user.loginAuthCode(pho: idTextField.text!)
     }
     
     @objc func login() {
@@ -195,15 +195,16 @@ class LoginViewController: UIViewController {
             return }
         if isCode {
             guard let intCode = Int(codeTextField.text!) else {return}
-            user.codeLogin(id: idTextField.text!,key:key,code: intCode ).subscribe(onNext: { string in
+            user.codeLogin(pho: idTextField.text!,key:key,code: intCode ).subscribe(onNext: { string in
                 if string == "unfinished" {
-                    print(user.id)
+                    print(user.pho)
                     let vc = SetPasswordViewController()
                     vc.code = intCode
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
                 if string == "finished" {
                     print(user.refreshToken)
+                    user.loginType = .logined
                     user.save()
                     let tabController = MainTabViewController()
                     tabController.initControllers()
@@ -215,7 +216,7 @@ class LoginViewController: UIViewController {
                 
                 }).disposed(by: disposeBag)
         } else {
-            user.pwdLogin(id: idTextField.text!, pwd: pwdTextField.text!).subscribe(onNext:{ string in
+            user.pwdLogin(pho: idTextField.text!, pwd: pwdTextField.text!).subscribe(onNext:{ string in
                 user.save()
                 ProgressHUD.showSucceed()
                 let tabController = MainTabViewController()

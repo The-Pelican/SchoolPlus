@@ -23,7 +23,32 @@ class MessageTableViewCell: UITableViewCell {
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var commentButton: UIButton!
     
-    var info = Infomation()
+    var info:Infomation? {
+        didSet {
+            if let publisher = info?.publisher?.studentName {
+                let i = (info?.publisher)!
+                userNameLabel.text = i.studentName
+                if let url = URL(string:i.avatar ?? "") {
+                      head.kf.setImage(with: url)
+                  }
+                if i.hasSubscribed ?? false {
+                    self.subscribeButton.backgroundColor = UIColor.darkGray
+                } else {
+                    self.subscribeButton.backgroundColor = UIColor(valueStr: "FBEA77")
+                }
+            }
+            
+            if let organization = info?.orgnization?.organizationName {
+                let i = (info?.orgnization)!
+                userNameLabel.text = i.organizationName
+                if i.hasSubscribed ?? false {
+                    self.subscribeButton.backgroundColor = UIColor.darkGray
+                } else {
+                    self.subscribeButton.backgroundColor = UIColor(valueStr: "FBEA77")
+                }
+            }
+        }
+    }
     let disposeBag = DisposeBag()
     
     var images:[String] = []
@@ -32,7 +57,6 @@ class MessageTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         initCollectionView()
-        subscribeButton.backgroundColor = UIColor(valueStr: "FBEA77")
         subscribeButton.layer.cornerRadius = 5
         likeButton.addTarget(self, action: #selector(likeNews), for: .touchUpInside)
         subscribeButton.addTarget(self, action: #selector(subscribe), for: .touchUpInside)
@@ -55,35 +79,72 @@ class MessageTableViewCell: UITableViewCell {
     }
     
     @objc func likeNews() {
-        if info.hasLiked {
-            info.dislikeNews(id:info.newsId).subscribe(onNext:{ string in
-                self.likeButton.setTitle("🖤", for: .normal)
-            }, onError: { error in
-                ProgressHUD.showError(error.localizedDescription)
-            }).disposed(by: disposeBag)
-        } else {
-            info.likeNews(id:info.newsId).subscribe(onNext:{ string in
-                self.likeButton.setTitle("💗", for: .normal)
-            }, onError: { error in
-                ProgressHUD.showError(error.localizedDescription)
-            }).disposed(by: disposeBag)
+        if let info = info {
+            print(info.likesNum!)
+            print((info.newsId)!)
+            if info.hasLiked! {
+                info.dislikeNews(id:(info.newsId)!).subscribe(onNext:{ string in
+                    self.likeButton.setTitle("🖤\(info.likesNum!-1)", for: .normal)
+                    info.hasLiked = false
+                }, onError: { error in
+                    ProgressHUD.showError(error.localizedDescription)
+                }).disposed(by: disposeBag)
+            } else {
+                info.likeNews(id:(info.newsId)!).subscribe(onNext:{ string in
+                    self.likeButton.setTitle("💗\(info.likesNum!+1)", for: .normal)
+                    info.hasLiked = true
+                }, onError: { error in
+                    ProgressHUD.showError(error.localizedDescription)
+                }).disposed(by: disposeBag)
+            }
         }
     }
     
     @objc func subscribe() {
-        if !info.hasSubscribe {
-            user.subscribeUser(userId: info.userId, organizationId: info.organizationId).subscribe(onNext:{ string in
-                self.subscribeButton.backgroundColor = UIColor.darkGray
+        
+        guard let info = info else {
+            print("info为nil")
+            return
+        }
+        
+        
+        if let n = info.publisher?.hasSubscribed  {
+            if n {
+                user.cancelSubscribe(userId: info.publisher?.userId!, organizationId: nil).subscribe(onNext:{ string in
+                self.subscribeButton.backgroundColor = UIColor(valueStr: "FBEA77")
+                    info.publisher?.hasSubscribed = false
                 }, onError: { error in
                     ProgressHUD.showError(error.localizedDescription)
                 }).disposed(by: disposeBag)
-        } else {
-            user.cancelSubscribe(userId: info.userId, organizationId: info.organizationId).subscribe(onNext:{ string in
-                self.subscribeButton.backgroundColor = UIColor(valueStr: "FBEA77")
-            }, onError: { error in
-                ProgressHUD.showError(error.localizedDescription)
-            }).disposed(by: disposeBag)
+            } else {
+                user.subscribeUser(userId: (info.publisher?.userId)!).subscribe(onNext:{ string in
+                self.subscribeButton.backgroundColor = UIColor.darkGray
+                    info.publisher?.hasSubscribed = true
+                }, onError: { error in
+                    ProgressHUD.showError(error.localizedDescription)
+                }).disposed(by: disposeBag)
+            }
         }
+
+        if let i = info.orgnization?.hasSubscribed {
+            if i {
+                user.cancelSubscribe(userId: nil, organizationId: info.orgnization?.organizationId!).subscribe(onNext:{ string in
+                   self.subscribeButton.backgroundColor = UIColor(valueStr: "FBEA77")
+                    info.orgnization?.hasSubscribed = false
+                   }, onError: { error in
+                       ProgressHUD.showError(error.localizedDescription)
+                   }).disposed(by: disposeBag)
+            } else {
+                user.subscribeOragnization(organizationId: (info.orgnization?.organizationId)!).subscribe(onNext:{ string in
+                self.subscribeButton.backgroundColor = UIColor.darkGray
+                    info.orgnization?.hasSubscribed = true
+                }, onError: { error in
+                    ProgressHUD.showError(error.localizedDescription)
+                }).disposed(by: disposeBag)
+            }
+        }
+
+      
     }
     
     
@@ -94,41 +155,23 @@ class MessageTableViewCell: UITableViewCell {
         self.collectionView!.register(UINib(nibName: "ImageCell", bundle: nil), forCellWithReuseIdentifier: ImageCell.identifier)
     }
     
-    func reloadData(sender:String,date:String,content:String,images:[String],like:Int,comment:Int,avartar:String,hasLike:Bool,hasSubscribed:Bool) {
-        self.userNameLabel.text = sender
+    func reloadData(date:String,content:String,images:[String],like:Int,comment:Int,hasLike:Bool) {
         self.dateLabel.text = date
         self.contentLabel.text = content
         self.images = images
         self.commentButton.setTitle("💬\(comment)", for: .normal)
-
-        if let url = URL(string:avartar) {
-            head.kf.setImage(with: url)
-        } else {
-            head.backgroundColor = UIColor.black
-        }
-        
         if hasLike {
             self.likeButton.setTitle("💗\(like)", for: .normal)
         } else {
             self.likeButton.setTitle("🖤\(like)", for: .normal)
         }
-        
-        if hasSubscribed {
-            self.subscribeButton.backgroundColor = UIColor.darkGray
-        } else {
-            self.subscribeButton.backgroundColor = UIColor(valueStr: "FBEA77")
-        }
-        
-        
         self.collectionView.reloadData()
         let contentSize = self.collectionView.collectionViewLayout.collectionViewContentSize
         collectionViewHeight.constant = contentSize.height
         if images.count == 0 {
-            collectionViewHeight.constant = 1
+            collectionViewHeight.constant = CGFloat(1.0)
         }
-                 
         self.collectionView.collectionViewLayout.invalidateLayout()
-
     }
     
     

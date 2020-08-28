@@ -10,7 +10,7 @@ import UIKit
 
 class SchoolPageViewController: UIViewController {
 
-    override func viewDidLoad() {
+   /* override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
         let vc = MessagesViewController().view
@@ -18,7 +18,7 @@ class SchoolPageViewController: UIViewController {
         if let vc = vc {
             self.view.addSubview(vc)
         }
-    }
+    }*/
     
 
 
