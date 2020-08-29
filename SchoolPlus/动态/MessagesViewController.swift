@@ -54,8 +54,8 @@ class MessagesViewController: UIViewController {
         initButton()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         model.message = []
         model.pageNum = 0
         if isAll {
@@ -149,8 +149,12 @@ class MessagesViewController: UIViewController {
     
     
     @objc func create() {
-          let vc = UpdateMessageViewController()
-          self.navigationController?.pushViewController(vc, animated: true)
+        if user.hasChecked == true {
+            let vc = UpdateMessageViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            ProgressHUD.showFailed("功能尚未解锁")
+        }
       }
     
     func initButton() {

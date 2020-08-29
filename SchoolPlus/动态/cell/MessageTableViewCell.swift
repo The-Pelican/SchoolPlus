@@ -79,12 +79,17 @@ class MessageTableViewCell: UITableViewCell {
     }
     
     @objc func likeNews() {
+        guard user.hasChecked == true else {
+            ProgressHUD.showFailed("功能尚未解锁")
+            return
+        }
         if let info = info {
             print(info.likesNum!)
             print((info.newsId)!)
             if info.hasLiked! {
                 info.dislikeNews(id:(info.newsId)!).subscribe(onNext:{ string in
                     self.likeButton.setTitle("🖤\(info.likesNum!-1)", for: .normal)
+                    info.likesNum! -= 1
                     info.hasLiked = false
                 }, onError: { error in
                     ProgressHUD.showError(error.localizedDescription)
@@ -93,6 +98,7 @@ class MessageTableViewCell: UITableViewCell {
                 info.likeNews(id:(info.newsId)!).subscribe(onNext:{ string in
                     self.likeButton.setTitle("💗\(info.likesNum!+1)", for: .normal)
                     info.hasLiked = true
+                    info.likesNum! += 1
                 }, onError: { error in
                     ProgressHUD.showError(error.localizedDescription)
                 }).disposed(by: disposeBag)
@@ -101,13 +107,15 @@ class MessageTableViewCell: UITableViewCell {
     }
     
     @objc func subscribe() {
+        guard user.hasChecked == true else {
+            ProgressHUD.showFailed("功能尚未解锁")
+            return
+        }
         
         guard let info = info else {
             print("info为nil")
             return
         }
-        
-        
         if let n = info.publisher?.hasSubscribed  {
             if n {
                 user.cancelSubscribe(userId: info.publisher?.userId!, organizationId: nil).subscribe(onNext:{ string in

@@ -31,14 +31,13 @@ class User: NSObject {
     var refreshToken = ""
     var userId = -1
     var hasChecked:Bool?
-    var avatar = ""
-    var name = ""
+    var avatar = "未设置"
+    var name = "无名"
     
     var loginType = LoginType.none
     let disposeBag = DisposeBag()
     
     override init() {
-        let ud = UserDefaults.standard
         let keychain = KeychainSwift()
         
         if let i = keychain.get("pho") { pho = i } else {pho = ""}
@@ -74,6 +73,38 @@ class User: NSObject {
         keychain.set(pwd, forKey: "password")
         keychain.set(accessToken, forKey: "accessToken")
         keychain.set(refreshToken, forKey: "refreshToken")
+    }
+    
+    func saveInfo() {
+        var state = 0
+        switch hasChecked {
+        case true:
+            state = 1
+        case false:
+            state = 0
+        case nil:
+            state = -1
+        default:
+            state = 0
+        }
+        
+        let keychain = KeychainSwift()
+        keychain.set("\(userId)", forKey: "userId")
+        keychain.set(avatar, forKey: "avatar")
+        keychain.set(name, forKey: "studentName")
+        keychain.set("\(state)", forKey: "hasChecked")
+    }
+    
+    func logout() {
+        pho = ""
+        pwd = ""
+        accessToken = ""
+        refreshToken = ""
+        userId = -1
+        avatar = "未设置"
+        name = "无名"
+        user.save()
+        user.saveInfo()
     }
     
     //MARK:-注册登录
@@ -320,18 +351,39 @@ class User: NSObject {
     
 //    MARK:- 获取个人信息
     //自动登录
-    func getMyMessage() {
+        func getMyMessage() -> Observable<String> {
         let url = URL(string: "http://www.chenzhimeng.top/fu-community/user/-1")!
         let headers:HTTPHeaders = ["accessToken":user.accessToken]
-        AF.request(url,method: .get,headers: headers).responseJSON(completionHandler: {
-            (response) in
-            switch response.result  {
-            case .success(let value):
-                print(value)
-            case .failure(let error):
-                print(error)
-            }
-        })
+        
+        return Observable<String>.create { (observer) -> Disposable in
+            AF.request(url,method: .get,headers: headers).responseJSON(completionHandler: {
+                (response) in
+                switch response.result  {
+                case .success(let value):
+                    let json = JSON(value)
+                    user.userId = json["userId"].int ?? -1
+                    user.hasChecked = json["hasCheck"].bool
+                    user.name = json["studentName"].string ?? "未设置"
+                    user.saveInfo()
+                    observer.onNext("success")
+                case .failure(let error):
+                    if let statusCode = response.response?.statusCode {
+                        switch statusCode {
+                        case 2387:
+                            observer.onNext("功能未解锁")
+                        case 2385:
+                            observer.onNext("token过期")
+                        case 2386:
+                            observer.onNext("账号异地登陆")
+                        default:
+                            break
+                        }
+                    }
+                    print(error)
+                }
+            })
+            return Disposables.create()
+        }
     }
     
     
@@ -355,9 +407,7 @@ class User: NSObject {
 
 //    MARK:-动态操作
     func subscribeUser(userId:Int) -> Observable<String>{
-        var para = ["userId":userId]
-
-                
+        let para = ["userId":userId]
         let url = URL(string: "http://www.chenzhimeng.top/fu-community/user/fans")!
         
         let headers: HTTPHeaders = [
@@ -377,7 +427,7 @@ class User: NSObject {
     }
     
     func subscribeOragnization(organizationId:Int) -> Observable<String>{
-        var para = ["organizationId":organizationId]
+        let para = ["organizationId":organizationId]
 
                 
         let url = URL(string: "http://www.chenzhimeng.top/fu-community/user/fans")!
@@ -430,7 +480,8 @@ class User: NSObject {
     }
     
     func uploadNews(text:String?,pic:[UIImage]) -> Observable<String>{
-        let textData = text?.data(using: .utf8)!
+        let text = text ?? ""
+        let textData = text.data(using: .utf8)!
         var jpegData = [Data]()
         for image in pic {
             let imageData = image.jpegData(compressionQuality: 0.2)
@@ -443,9 +494,7 @@ class User: NSObject {
         ]
         return Observable<String>.create { (observer) -> Disposable in
             AF.upload(multipartFormData: { (multipartFormData) in
-                if let textData = textData {
                     multipartFormData.append(textData, withName: "text")
-                }
                 if !jpegData.isEmpty {
                     for data in jpegData {
                          multipartFormData.append(data, withName: "files", fileName: "files"+".jpeg", mimeType: "image/jpeg")
@@ -479,5 +528,44 @@ class User: NSObject {
     }
     
     
+    func likeComment(commentId:Int) -> Observable<String>{
+        let url = URL(string: "http://www.chenzhimeng.top/fu-community/user/like")!
+        let para = ["commentId":commentId]
+        let headers: HTTPHeaders = [
+            "accessToken": user.accessToken
+        ]
+
+        return Observable<String>.create { (observer) -> Disposable in
+            AF.request(url, method: .post, parameters: para, headers: headers).response(completionHandler: {
+                          (response) in
+                          debugPrint(response)
+                          if let error = response.error {
+                              observer.onError(error)
+                          }
+                          observer.onNext("success")
+            })
+            return Disposables.create()
+        }
+    }
+    
+    func dislikeComment(commentId:Int) -> Observable<String> {
+        let url = URL(string: "http://www.chenzhimeng.top/fu-community/user/like")!
+        let para = ["commentId":commentId]
+        let headers: HTTPHeaders = [
+            "accessToken": user.accessToken
+        ]
+
+        return Observable<String>.create { (observer) -> Disposable in
+            AF.request(url, method: .delete, parameters: para, headers: headers).response(completionHandler: {
+                          (response) in
+                          debugPrint(response)
+                          if let error = response.error {
+                              observer.onError(error)
+                          }
+                          observer.onNext("success")
+            })
+            return Disposables.create()
+        }
+    }
     
 }

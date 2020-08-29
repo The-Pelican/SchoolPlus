@@ -16,6 +16,9 @@
 		2A5D98FC24F7F73F0070D9C0 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5D98FB24F7F73F0070D9C0 /* SettingViewController.swift */; };
 		2A5D98FE24F7F8680070D9C0 /* MyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5D98FD24F7F8680070D9C0 /* MyViewModel.swift */; };
 		2A78BCA824F8C95A00BC62EF /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A78BCA724F8C95A00BC62EF /* UserInfo.swift */; };
+		2A78BCAE24FA16A600BC62EF /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A78BCAD24FA16A600BC62EF /* DateExtension.swift */; };
+		2A78BCB124FA206D00BC62EF /* IntroAMViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A78BCB024FA206D00BC62EF /* IntroAMViewController.swift */; };
+		2A78BCB324FA207C00BC62EF /* EndAMViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A78BCB224FA207C00BC62EF /* EndAMViewController.swift */; };
 		2A8CD18B24E1433700E00A7C /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A8CD18924E1433700E00A7C /* ImageCell.swift */; };
 		2A8CD18C24E1433700E00A7C /* ImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A8CD18A24E1433700E00A7C /* ImageCell.xib */; };
 		2A8CD18E24E1465500E00A7C /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A8CD18D24E1465500E00A7C /* UIImageExtension.swift */; };
@@ -59,6 +62,12 @@
 		2ACDA43824C8581C006BB0DA /* Devices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACDA43724C8581C006BB0DA /* Devices.swift */; };
 		2ACDA43B24C8886E006BB0DA /* ImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACDA43A24C8886E006BB0DA /* ImageDetailViewController.swift */; };
 		2ACDA43D24C8921D006BB0DA /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACDA43C24C8921D006BB0DA /* ImageCollectionViewCell.swift */; };
+		2AF91ECC24FA4ABC0080BA56 /* UIAlertExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF91ECB24FA4ABC0080BA56 /* UIAlertExtension.swift */; };
+		2AF91ECF24FA54110080BA56 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF91ECD24FA54110080BA56 /* TableViewCell.swift */; };
+		2AF91ED024FA54110080BA56 /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AF91ECE24FA54110080BA56 /* TableViewCell.xib */; };
+		2AF91ED224FA56720080BA56 /* InfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF91ED124FA56720080BA56 /* InfoViewModel.swift */; };
+		2AF91ED424FA569F0080BA56 /* Notice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF91ED324FA569F0080BA56 /* Notice.swift */; };
+		2AF91ED624FA60570080BA56 /* NoticeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF91ED524FA60570080BA56 /* NoticeDetailViewController.swift */; };
 		4C59E51A904D5745DC011AB7 /* Pods_SchoolPlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A846935F67B477540773F2F /* Pods_SchoolPlus.framework */; };
 /* End PBXBuildFile section */
 
@@ -74,6 +83,9 @@
 		2A5D98FB24F7F73F0070D9C0 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		2A5D98FD24F7F8680070D9C0 /* MyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyViewModel.swift; sourceTree = "<group>"; };
 		2A78BCA724F8C95A00BC62EF /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		2A78BCAD24FA16A600BC62EF /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		2A78BCB024FA206D00BC62EF /* IntroAMViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroAMViewController.swift; sourceTree = "<group>"; };
+		2A78BCB224FA207C00BC62EF /* EndAMViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndAMViewController.swift; sourceTree = "<group>"; };
 		2A8CD18924E1433700E00A7C /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		2A8CD18A24E1433700E00A7C /* ImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
 		2A8CD18D24E1465500E00A7C /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
@@ -119,6 +131,12 @@
 		2ACDA43724C8581C006BB0DA /* Devices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Devices.swift; sourceTree = "<group>"; };
 		2ACDA43A24C8886E006BB0DA /* ImageDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailViewController.swift; sourceTree = "<group>"; };
 		2ACDA43C24C8921D006BB0DA /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		2AF91ECB24FA4ABC0080BA56 /* UIAlertExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAlertExtension.swift; sourceTree = "<group>"; };
+		2AF91ECD24FA54110080BA56 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		2AF91ECE24FA54110080BA56 /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
+		2AF91ED124FA56720080BA56 /* InfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewModel.swift; sourceTree = "<group>"; };
+		2AF91ED324FA569F0080BA56 /* Notice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notice.swift; sourceTree = "<group>"; };
+		2AF91ED524FA60570080BA56 /* NoticeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeDetailViewController.swift; sourceTree = "<group>"; };
 		71284590BD8E01A7BAE7271E /* Pods-SchoolPlus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SchoolPlus.release.xcconfig"; path = "Target Support Files/Pods-SchoolPlus/Pods-SchoolPlus.release.xcconfig"; sourceTree = "<group>"; };
 		7A846935F67B477540773F2F /* Pods_SchoolPlus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SchoolPlus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -147,14 +165,24 @@
 		2A24A3EF24E13C9900522DC6 /* 动态 */ = {
 			isa = PBXGroup;
 			children = (
-				2A8CD19624E53DBC00E00A7C /* InfomationViewModel.swift */,
 				2A8CD1A224F49C3900E00A7C /* PageViewController.swift */,
+				2A8CD19624E53DBC00E00A7C /* InfomationViewModel.swift */,
 				2A8CD19324E53CD800E00A7C /* MessagesViewController.swift */,
 				2A8CD19824E7F0B100E00A7C /* UpdateMessageViewController.swift */,
 				2A8CD19E24F11D1B00E00A7C /* CommentViewController.swift */,
 				2A8CD19524E53CE500E00A7C /* cell */,
 			);
 			path = "动态";
+			sourceTree = "<group>";
+		};
+		2A78BCAF24FA203300BC62EF /* 认证 */ = {
+			isa = PBXGroup;
+			children = (
+				2ACDA40724B8E8D2006BB0DA /* AuthenticationViewController.swift */,
+				2A78BCB024FA206D00BC62EF /* IntroAMViewController.swift */,
+				2A78BCB224FA207C00BC62EF /* EndAMViewController.swift */,
+			);
+			path = "认证";
 			sourceTree = "<group>";
 		};
 		2A8CD19524E53CE500E00A7C /* cell */ = {
@@ -204,6 +232,7 @@
 				2ACDA43724C8581C006BB0DA /* Devices.swift */,
 				2ACDA41324C1C351006BB0DA /* MainTabViewController.swift */,
 				2A5D98F324F6BD5A0070D9C0 /* StringExtension.swift */,
+				2A78BCAD24FA16A600BC62EF /* DateExtension.swift */,
 				2ACDA40B24B9A259006BB0DA /* UI */,
 				2ACDA3FD24B6FCEE006BB0DA /* Model */,
 				2ACDA43924C8796B006BB0DA /* 图片显示 */,
@@ -216,6 +245,7 @@
 				2ACDA3EC24B6F79A006BB0DA /* Assets.xcassets */,
 				2ACDA3F124B6F79A006BB0DA /* Info.plist */,
 				2A5D98F824F7A1F00070D9C0 /* Bridging-Header.h */,
+				2AF91ECB24FA4ABC0080BA56 /* UIAlertExtension.swift */,
 			);
 			path = SchoolPlus;
 			sourceTree = "<group>";
@@ -229,6 +259,7 @@
 				2ACDA41B24C5C8C4006BB0DA /* Infomation.swift */,
 				2A5D98F524F6BFC00070D9C0 /* Comment.swift */,
 				2A78BCA724F8C95A00BC62EF /* UserInfo.swift */,
+				2AF91ED324FA569F0080BA56 /* Notice.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -236,11 +267,11 @@
 		2ACDA40224B836A7006BB0DA /* 注册登录 */ = {
 			isa = PBXGroup;
 			children = (
+				2A78BCAF24FA203300BC62EF /* 认证 */,
 				2ACDA3FB24B6FBC5006BB0DA /* RegisterViewController.swift */,
 				2ACDA3F724B6F85E006BB0DA /* LoginViewController.swift */,
 				2ACDA40924B8ECAD006BB0DA /* ForgetPasswordViewController.swift */,
 				2ACDA40524B8E4FE006BB0DA /* SetPasswordViewController.swift */,
-				2ACDA40724B8E8D2006BB0DA /* AuthenticationViewController.swift */,
 			);
 			path = "注册登录";
 			sourceTree = "<group>";
@@ -275,7 +306,11 @@
 		2ACDA41F24C5CBAD006BB0DA /* 消息 */ = {
 			isa = PBXGroup;
 			children = (
+				2AF91ED124FA56720080BA56 /* InfoViewModel.swift */,
 				2ACDA42524C5D09B006BB0DA /* InfoViewController.swift */,
+				2AF91ECD24FA54110080BA56 /* TableViewCell.swift */,
+				2AF91ECE24FA54110080BA56 /* TableViewCell.xib */,
+				2AF91ED524FA60570080BA56 /* NoticeDetailViewController.swift */,
 			);
 			path = "消息";
 			sourceTree = "<group>";
@@ -400,6 +435,7 @@
 				2A8CD18C24E1433700E00A7C /* ImageCell.xib in Resources */,
 				2A8CD19224E1477C00E00A7C /* MessageTableViewCell.xib in Resources */,
 				2ACDA42C24C5E66D006BB0DA /* GroupTableViewCell.xib in Resources */,
+				2AF91ED024FA54110080BA56 /* TableViewCell.xib in Resources */,
 				2ACDA3ED24B6F79A006BB0DA /* Assets.xcassets in Resources */,
 				2A8CD1A724F49F8C00E00A7C /* TimeLineTableViewCell.xib in Resources */,
 			);
@@ -455,6 +491,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2A8CD1A624F49F8C00E00A7C /* TimeLineTableViewCell.swift in Sources */,
+				2AF91ED624FA60570080BA56 /* NoticeDetailViewController.swift in Sources */,
 				2A8CD19724E53DBC00E00A7C /* InfomationViewModel.swift in Sources */,
 				2ACDA42B24C5E66D006BB0DA /* GroupTableViewCell.swift in Sources */,
 				2ACDA40D24B9A281006BB0DA /* TimerButton.swift in Sources */,
@@ -462,10 +499,12 @@
 				2A5D98FC24F7F73F0070D9C0 /* SettingViewController.swift in Sources */,
 				2A24A3E824C9A00800522DC6 /* GroupDetailViewController.swift in Sources */,
 				2ACDA43224C84769006BB0DA /* UIViewExtension.swift in Sources */,
+				2A78BCB324FA207C00BC62EF /* EndAMViewController.swift in Sources */,
 				2ACDA40624B8E4FE006BB0DA /* SetPasswordViewController.swift in Sources */,
 				2A5D98F624F6BFC00070D9C0 /* Comment.swift in Sources */,
 				2A5D98FE24F7F8680070D9C0 /* MyViewModel.swift in Sources */,
 				2ACDA40F24BB570B006BB0DA /* NetworkPara.swift in Sources */,
+				2A78BCB124FA206D00BC62EF /* IntroAMViewController.swift in Sources */,
 				2ACDA40424B8C3FD006BB0DA /* HexColor.swift in Sources */,
 				2ACDA42424C5D080006BB0DA /* GroupSearchViewController.swift in Sources */,
 				2ACDA40A24B8ECAD006BB0DA /* ForgetPasswordViewController.swift in Sources */,
@@ -487,14 +526,19 @@
 				2ACDA40824B8E8D2006BB0DA /* AuthenticationViewController.swift in Sources */,
 				2ACDA3FA24B6FB98006BB0DA /* Navigator.swift in Sources */,
 				2ACDA3FF24B6FD0B006BB0DA /* User.swift in Sources */,
+				2AF91ED224FA56720080BA56 /* InfoViewModel.swift in Sources */,
 				2ACDA41A24C220BD006BB0DA /* Organization.swift in Sources */,
 				2A8CD19124E1477C00E00A7C /* MessageTableViewCell.swift in Sources */,
 				2A5D98FA24F7F72E0070D9C0 /* InfoDetailViewController.swift in Sources */,
 				2ACDA3FC24B6FBC5006BB0DA /* RegisterViewController.swift in Sources */,
+				2A78BCAE24FA16A600BC62EF /* DateExtension.swift in Sources */,
+				2AF91ED424FA569F0080BA56 /* Notice.swift in Sources */,
 				2ACDA41C24C5C8C4006BB0DA /* Infomation.swift in Sources */,
+				2AF91ECC24FA4ABC0080BA56 /* UIAlertExtension.swift in Sources */,
 				2ACDA42824C5D0CB006BB0DA /* MyViewController.swift in Sources */,
 				2A24A3EC24CA002600522DC6 /* MemberListViewController.swift in Sources */,
 				2ACDA42624C5D09B006BB0DA /* InfoViewController.swift in Sources */,
+				2AF91ECF24FA54110080BA56 /* TableViewCell.swift in Sources */,
 				2A8CD1A324F49C3900E00A7C /* PageViewController.swift in Sources */,
 				2ACDA43424C84C4D006BB0DA /* CreateGroupViewController.swift in Sources */,
 				2A78BCA824F8C95A00BC62EF /* UserInfo.swift in Sources */,

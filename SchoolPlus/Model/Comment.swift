@@ -8,6 +8,9 @@
 
 import Foundation
 import SwiftyJSON
+import RxSwift
+import Alamofire
+
 
 class Comment {
     var commentId:Int?
@@ -41,4 +44,6 @@ class Comment {
         commentsNum = json["commentsNum"].int
         
     }
+    
+
 }

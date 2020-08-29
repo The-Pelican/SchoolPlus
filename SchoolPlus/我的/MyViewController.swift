@@ -270,6 +270,7 @@ class MyViewController: UIViewController {
         setButton.setTitle("设置", for: .normal)
         setButton.setTitleColor(UIColor.systemBlue, for: .normal)
         self.scrollView.addSubview(setButton)
+        setButton.addTarget(self, action: #selector(setting), for: .touchUpInside)
         setButton.snp.makeConstraints({
             $0.top.equalToSuperview().offset(10)
             $0.right.equalTo(backView[0].snp.right)
@@ -277,6 +278,12 @@ class MyViewController: UIViewController {
             $0.height.equalTo(50)
         })
         
+    }
+    
+    
+    @objc func setting() {
+        let vc = SettingViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
 }

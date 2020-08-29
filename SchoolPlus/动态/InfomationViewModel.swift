@@ -43,6 +43,19 @@ class InformationViewModel {
                     
                 case .failure(let error):
                     print(error)
+                    if let statusCode = response.response?.statusCode {
+                        print(statusCode)
+                        switch statusCode {
+                        case 2387:
+                            observer.onNext("功能未解锁")
+                        case 2385:
+                            observer.onNext("token过期")
+                        case 2386:
+                            observer.onNext("账号异地登陆")
+                        default:
+                            break
+                        }
+                    }
                     observer.onError(error)
                 }
             })
@@ -212,4 +225,6 @@ class InformationViewModel {
             return Disposables.create()
         }
     }
+    
+
 }

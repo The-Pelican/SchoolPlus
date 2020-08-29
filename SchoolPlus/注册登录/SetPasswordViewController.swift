@@ -83,7 +83,7 @@ class SetPasswordViewController: UIViewController {
             return}
         user.register(pho: user.pho, pwd: pwdTextField.text!, key: key, code: code).subscribe(onNext: { string in
             user.save()
-            self.navigationController?.pushViewController(Navigator.getViewController(key: "认证"), animated: true)
+            self.navigationController?.pushViewController(IntroAMViewController(), animated: true)
         }, onError: { error in
             ProgressHUD.showError(error.localizedDescription)
             }).disposed(by: disponseBag)

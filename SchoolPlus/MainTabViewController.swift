@@ -29,7 +29,7 @@ class MainTabViewController: UITabBarController {
         let info = Navigator.getViewController(key: "信息")
         let my = Navigator.getViewController(key: "我的")
         let page = PageViewController()
-        let auth = AuthenticationViewController()
+        let auth = EndAMViewController()
         
         let schoolItem = UITabBarItem(title: "校园", image: nil, tag: 0)
         let groupItem = UITabBarItem(title: "组织", image: nil, tag: 1)
@@ -38,14 +38,14 @@ class MainTabViewController: UITabBarController {
         
         page.tabBarItem = schoolItem
         group.tabBarItem = groupItem
-        auth.tabBarItem = infoItem
+        info.tabBarItem = infoItem
         my.tabBarItem = myItem
         
         tabBar.backgroundImage = UIImage()
         tabBar.shadowImage = UIImage()
         tabBar.backgroundColor = UIColor.white
         
-        let viewControllers = [page,group,auth,my]
+        let viewControllers = [page,group,info,my]
         self.setViewControllers(viewControllers, animated: false)
         self.selectedIndex = 1
     }

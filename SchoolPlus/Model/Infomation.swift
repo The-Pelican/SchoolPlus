@@ -43,13 +43,14 @@ class Infomation {
         }
         
         if let dateArr = json["publishTime"].array {
+            var dateIntArr = [Int]()
             var date = ""
             for n in dateArr {
                 if let datePart = n.int {
-                    date += "\(datePart)"
+                    dateIntArr.append(datePart)
                 }
             }
-            publishTime = date
+            publishTime = getStringDate(date: dateIntArr)
         }
     }
     

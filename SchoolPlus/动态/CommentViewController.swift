@@ -45,6 +45,11 @@ class CommentViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        let userId = info.publisher?.userId ?? -2
+        let organizationId = info.orgnization?.organizationId ?? -2
+        if  (user.userId != userId) && (user.userId != organizationId){
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        }
         self.model.pageNum = 0
         self.model.comment = []
         model.getNewsComments(id: info.newsId!).subscribe(onNext:{ string in
@@ -126,8 +131,6 @@ class CommentViewController: UIViewController {
             $0.height.equalTo(30)
         })
         
-        
-        
         NotificationCenter.default.addObserver(self,
         selector: #selector(keyboardWillChange(_:)),
         name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
@@ -180,7 +183,10 @@ class CommentViewController: UIViewController {
     }
     
     @objc func sendMessage() {
-        //关闭键盘
+        guard user.hasChecked == true else {
+            ProgressHUD.showFailed("功能尚未解锁")
+            return
+        }
         print(textView.text!)
         guard !((textView.text)!.isEmpty) else {return}
         model.giveComment(newsId: info.newsId!, text: textView.text!, pic: pic).subscribe(onNext:{ string in
@@ -277,6 +283,7 @@ extension CommentViewController: UITableViewDataSource, UITableViewDelegate {
         cell.frame = tableView.bounds
         cell.layoutIfNeeded()
         
+        cell.comment = comments[indexPath.row]
         cell.reloadData(sender: (comments[indexPath.row].userInfo?.studentName) ?? "", date: "\(comments[indexPath.row].commentTime ?? 20202020)", content: comments[indexPath.row].text ?? "", audioPath: comments[indexPath.row].pic ?? "", like: comments[indexPath.row].likesNum ?? 0, hasLiked: comments[indexPath.row].hasLiked!, avartar: (comments[indexPath.row].userInfo?.avatar)!, userId: (comments[indexPath.row].userInfo?.userId)!, newsId: comments[indexPath.row].newsId!, commentId: comments[indexPath.row].commentId!)
         return cell
     }
