@@ -15,6 +15,11 @@ class InfoViewController: UIViewController {
     var tableView = UITableView()
     var notices:[Notice] = []{
         didSet{
+            for i in notices {
+                if i.type != 1 && i.type != 4 {
+                    model.read(id: i.messageId!)
+                }
+            }
             tableView.reloadData()
         }
     }
@@ -71,12 +76,16 @@ extension InfoViewController: UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(notices[indexPath.row].messageId!)
-        model.read(id: notices[indexPath.row].messageId!).subscribe(onNext:{ [weak self]string in
-            let vc = NoticeDetailViewController()
-            vc.textView.text = self?.notices[indexPath.row].content ?? "加载失败"
-            self?.navigationController?.pushViewController(vc, animated: true)
-        }, onError: { error in
-            ProgressHUD.showError()
-        }).disposed(by:disposeBag)
+        if notices[indexPath.row].type == 1 || notices[indexPath.row].type == 4 {
+            let vc = CommentViewController()
+            model.read(id: notices[indexPath.row].messageId!).subscribe(onNext:{ [weak self]string in
+                if let i = Int(self?.notices[indexPath.row].content ?? "-1") {
+                     vc.newsId = i
+                 }
+                self?.navigationController?.pushViewController(vc, animated: true)
+                   }, onError: { error in
+                       ProgressHUD.showError()
+                   }).disposed(by:disposeBag)
+        }
     }
 }

@@ -12,8 +12,8 @@ class GroupTableViewCell: UITableViewCell {
     static let identifier = "GroupTableViewCell"
     @IBOutlet weak var itemView: UIView!
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var logoView: UIImageView!
     @IBOutlet weak var lineView: UIView!
-    @IBOutlet weak var logoView: UIView!
     @IBOutlet weak var contentLabel: UILabel!
     
     override var frame: CGRect {

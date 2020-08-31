@@ -11,3 +11,12 @@ import UIKit
 var navigationBarHeight = UINavigationController().navigationBar.frame.height
 
 var tabBarHeight = UITabBarController().tabBar.frame.height
+
+var safeAreaTopHeight: CGFloat {
+    if #available(iOS 11.0, *) {
+        return (UIApplication.shared.delegate?.window?!.safeAreaInsets.top)!
+    }
+    else{
+        return UIApplication.shared.statusBarFrame.size.height
+    }
+}

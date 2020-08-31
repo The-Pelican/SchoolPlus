@@ -7,10 +7,15 @@
 //
 
 import UIKit
+import RxSwift
+import ProgressHUD
+import Kingfisher
+
 
 class MyViewController: UIViewController {
     let blockViewHeight = 250
-    
+    let disposeBag = DisposeBag()
+    let model = MyViewModel()
     var scrollView = UIScrollView()
     var logoImageView = UIImageView()
     var nameLabel = UILabel()
@@ -23,26 +28,73 @@ class MyViewController: UIViewController {
     var whiteView:[UIView] = []
     var backView:[UIView] = []
     var setButton = UIButton()
-    let groups = ["DBL","西二","花样跳绳"]
-    let users = ["张三","李四","王五"]
-    let subscribeGroup = ["?","?","?"]
-    let news = ["这是一条信息","这是另一条"]
+    var groups:[Organization] = [] {
+        didSet {
+            groupTableView.reloadData()
+        }
+    }
+    var users:[UserInfo] = [] {
+        didSet {
+            usersTableView.reloadData()
+        }
+    }
+
+    var news:[Infomation] = [] {
+        didSet {
+            newsTableView.reloadData()
+        }
+    }
+    
+    weak var delegate: MyViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         initSubView()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        getData()
+
+    }
+    
+    func getData() {
+        user.getMyMessage().subscribe(onNext:{ string in
+            self.logoImageView.kf.setImage(with: URL(string:user.avatar))
+        })
+        model.pageNum = 0
+        model.userList = []
+        model.organizationList = []
+        model.newsList =  []
+        model.getSuscribedUsers().subscribe(onNext:{ [weak self]string in
+            self?.users = self?.model.userList as! [UserInfo]
+        },onError: { [weak self]error in
+            ProgressHUD.showFailed()
+            self?.users = []
+        })
+        model.getSuscribedGroups().subscribe(onNext:{ [weak self]string in
+            self?.groups = self?.model.organizationList as! [Organization]
+        },onError: { [weak self]error in
+            ProgressHUD.showFailed()
+            self?.groups = []
+        })
+        model.getMyNews().subscribe(onNext:{ [weak self]string in
+            self?.news = self?.model.newsList as! [Infomation]
+        },onError: { [weak self]error in
+            ProgressHUD.showFailed()
+            self?.news = []
+        })
+    }
+    
+    
     func initSubView() {
         self.view.backgroundColor = UIColor.white
         scrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
         scrollView.contentSize = CGSize(width: self.view.bounds.width, height: 950)
         self.view.addSubview(scrollView)
-        
-        
-        
-        
         logoImageView.image = UIImage(named: "雅典娜")
+        logoImageView.layer.cornerRadius = 50
+        logoImageView.clipsToBounds = true
         self.scrollView.addSubview(logoImageView)
         logoImageView.snp.makeConstraints({
             $0.centerX.equalToSuperview()
@@ -51,9 +103,20 @@ class MyViewController: UIViewController {
             $0.top.equalTo(80)
         })
         
+        if let url = URL(string: user.avatar) {
+               print(user.avatar)
+                   do {
+                       let data = try Data(contentsOf: url)
+                       if let image = UIImage(data: data) {
+                           logoImageView.image = image
+                       }
+                   } catch let error as NSError {
+                       ProgressHUD.showFailed("头像加载失败")
+                   }
+               }
         
         
-        nameLabel.text = "特朗普"
+        nameLabel.text = user.name
         nameLabel.textAlignment = .center
         self.scrollView.addSubview(nameLabel)
         nameLabel.snp.makeConstraints({
@@ -134,6 +197,7 @@ class MyViewController: UIViewController {
         
         backView[0].addSubview(totalButton[0])
         totalButton[0].setTitle("查看全部", for: .normal)
+        totalButton[0].addTarget(self, action: #selector(groupList), for: .touchUpInside)
         totalButton[0].setTitleColor(UIColor.systemBlue, for: .normal)
         totalButton[0].snp.makeConstraints({
             $0.centerX.equalToSuperview()
@@ -196,6 +260,7 @@ class MyViewController: UIViewController {
         
         backView[1].addSubview(totalButton[1])
         totalButton[1].setTitle("查看全部", for: .normal)
+        totalButton[1].addTarget(self, action: #selector(userList), for: .touchUpInside)
         totalButton[1].setTitleColor(UIColor.systemBlue, for: .normal)
         totalButton[1].snp.makeConstraints({
             $0.centerX.equalToSuperview()
@@ -242,7 +307,7 @@ class MyViewController: UIViewController {
             $0.height.equalTo(30)
             $0.width.equalTo(100)
         })
-        introLabel[2].text = "我的组织"
+        introLabel[2].text = "我的动态"
         whiteView[2].addButtonLine()
         
         backView[2].addSubview(newsTableView)
@@ -260,6 +325,7 @@ class MyViewController: UIViewController {
         backView[2].addSubview(totalButton[2])
         totalButton[2].setTitle("查看全部", for: .normal)
         totalButton[2].setTitleColor(UIColor.systemBlue, for: .normal)
+        totalButton[2].addTarget(self, action: #selector(newsList), for: .touchUpInside)
         totalButton[2].snp.makeConstraints({
             $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview().offset(-3)
@@ -272,7 +338,7 @@ class MyViewController: UIViewController {
         self.scrollView.addSubview(setButton)
         setButton.addTarget(self, action: #selector(setting), for: .touchUpInside)
         setButton.snp.makeConstraints({
-            $0.top.equalToSuperview().offset(10)
+            $0.top.equalTo(safeAreaTopHeight)
             $0.right.equalTo(backView[0].snp.right)
             $0.width.equalTo(50)
             $0.height.equalTo(50)
@@ -283,6 +349,23 @@ class MyViewController: UIViewController {
     
     @objc func setting() {
         let vc = SettingViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func groupList() {
+        let vc = InfoDetailViewController()
+        vc.groups = self.groups
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func userList() {
+        let vc = InfoDetailViewController()
+        vc.users = self.users
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func newsList() {
+        let vc = MessagesViewController(type: "我的")
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -315,16 +398,50 @@ extension MyViewController: UITableViewDelegate, UITableViewDataSource {
             cell = UITableViewCell(style: .value1, reuseIdentifier: identifier)
         }
         if tableView == groupTableView {
-            cell?.textLabel?.text = groups[indexPath.row]
+            cell?.textLabel?.text = groups[indexPath.row].organizationName
+            cell?.imageView?.image = UIImage(named: "阿波罗")
         } else if tableView == usersTableView {
-            cell?.textLabel?.text = users[indexPath.row]
+            cell?.textLabel?.text = users[indexPath.row].studentName
+            if let strUrl = users[indexPath.row].avatar {
+                   if let url = URL(string: strUrl) {
+                       cell?.imageView?.kf.setImage(with:url)
+                   }
+            }
         } else {
-            cell?.textLabel?.text = news[indexPath.row]
+            cell?.textLabel?.text = news[indexPath.row].text
+            if let strUrl = news[indexPath.row].media?[0] {
+                if let url = URL(string: strUrl) {
+                    cell?.imageView?.kf.setImage(with:url)
+                }
+            }
         }
-        
-        cell?.imageView?.image  = UIImage(named: "阿波罗")
         return cell!
     }
     
     
+}
+
+
+protocol MyViewControllerDelegate: class {
+   func MyViewControllerDidAdd(_ controller:MyViewController,userList:[UserInfo])
+   func MyViewController(_ controller:MyViewController, groupList:[Organization])
+   func MyViewController(_ controller:MyViewController, newsList:[Infomation])
+}
+
+extension MyViewControllerDelegate {
+    func MyViewControllerDidAdd(_ controller:MyViewController,userList:[UserInfo]) {
+        print()
+    }
+}
+
+extension MyViewControllerDelegate {
+    func MyViewControllerDidAdd(_ controller:MyViewController, groupList:[Organization]) {
+        print()
+    }
+}
+
+extension MyViewControllerDelegate {
+    func MyViewController(_ controller:MyViewController, newsList:[Infomation]) {
+        print()
+    }
 }

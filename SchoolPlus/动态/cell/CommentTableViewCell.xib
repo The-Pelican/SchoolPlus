@@ -23,6 +23,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="47.5" height="47.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="j3n-ig-66W" secondAttribute="height" multiplier="1:1" id="PGd-Nl-f7e"/>
+                                    <constraint firstAttribute="height" constant="47.5" id="XWl-F8-LZ8"/>
+                                    <constraint firstAttribute="width" constant="47.5" id="jXP-Oc-pqs"/>
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="P6A-wg-Yxy">

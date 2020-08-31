@@ -108,15 +108,21 @@ class UpdateMessageViewController: UIViewController {
             print(newImages)
             print(info.media!)
             info.editNews(newsId:info.newsId!,text: textView.text!, media: info.media!,pic:newImages).subscribe(onNext:{ string in
-                if string == "success" {
+                guard string == "success" else {
+                    ProgressHUD.show(string)
+                    return
+                }
                     ProgressHUD.showSucceed()
                     self.navigationController?.popViewController(animated: true)
-                }
             }, onError: { error in
                 ProgressHUD.showError(error.localizedDescription)
                 }).disposed(by: disposeBag)
         } else {
             user.uploadNews(text: textView.text!, pic: images).subscribe(onNext:{ string in
+                guard string == "success" else {
+                    ProgressHUD.show(string)
+                    return
+                }
                 ProgressHUD.showSucceed()
                 self.navigationController?.popViewController(animated: true)
             }, onError: { error in

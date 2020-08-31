@@ -173,6 +173,10 @@ class AuthenticationViewController: UIViewController {
             }
         }
         user.uploadAM(name: nameTextField.text!, num: numTextField.text!, card: image!).subscribe(onNext: { [weak self]string in
+            guard string == "success" else {
+                ProgressHUD.show(string)
+                return
+            }
             user.save()
             ProgressHUD.showSucceed("提交成功")
             self?.navigationController?.pushViewController(EndAMViewController(), animated: true)

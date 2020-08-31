@@ -49,11 +49,13 @@
                     </imageView>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="rnV-R4-IhD" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="AMd-bX-Wti"/>
                     <constraint firstItem="tUh-0n-jkz" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="C0S-2v-aH1"/>
                     <constraint firstItem="rnV-R4-IhD" firstAttribute="leading" secondItem="yjk-Ln-Ghh" secondAttribute="leading" id="D5c-7F-WTW"/>
                     <constraint firstItem="rnV-R4-IhD" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="K7R-0u-Q7t"/>
                     <constraint firstItem="tUh-0n-jkz" firstAttribute="leading" secondItem="yjk-Ln-Ghh" secondAttribute="trailing" constant="8" id="L3E-IP-yyX"/>
                     <constraint firstItem="Yw7-Ry-jCp" firstAttribute="leading" secondItem="ThU-8g-wHq" secondAttribute="trailing" constant="8" id="NrP-bl-Lyb"/>
+                    <constraint firstItem="rnV-R4-IhD" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="O6h-Zw-mNh"/>
                     <constraint firstItem="ThU-8g-wHq" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="XcF-Z1-eu1"/>
                     <constraint firstItem="Yw7-Ry-jCp" firstAttribute="trailing" secondItem="tUh-0n-jkz" secondAttribute="trailing" id="aWk-Nm-dfH"/>
                     <constraint firstItem="yjk-Ln-Ghh" firstAttribute="top" secondItem="rnV-R4-IhD" secondAttribute="bottom" constant="8" id="b6b-pM-kMO"/>
@@ -72,7 +74,7 @@
                 <outlet property="contentLabel" destination="tUh-0n-jkz" id="z8A-Cn-Ww2"/>
                 <outlet property="itemView" destination="ThU-8g-wHq" id="09v-m4-4Uq"/>
                 <outlet property="lineView" destination="rnV-R4-IhD" id="waF-13-72p"/>
-                <outlet property="logoView" destination="yjk-Ln-Ghh" id="kGY-ue-kuF"/>
+                <outlet property="logoView" destination="yjk-Ln-Ghh" id="DRt-M4-CZA"/>
                 <outlet property="nameLabel" destination="Yw7-Ry-jCp" id="H5C-pN-wIE"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="108.48214285714285"/>

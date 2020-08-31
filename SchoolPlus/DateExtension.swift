@@ -18,7 +18,7 @@ func timeIntervalToString(timeInterval:Double,dateFormat:String? = "yyyy-MM-dd H
 
 func getStringDate(date:[Int]) -> String {
     var strDate = ""
-    let year = String(date[0])
+    let year = String(date[0])+"-"
     let month = String(date[1]) + "-"
     let day = String(date[2]) + " "
     let hour = String(date[3])+":"

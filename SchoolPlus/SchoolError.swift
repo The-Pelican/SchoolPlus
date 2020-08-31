@@ -7,20 +7,17 @@
 //
 
 enum SchoolError: Error {
-    case unexpected
-    //获取验证码失败
-    case codeFail(String)
-    //登录失败
-    case loginFail(String)
-    //设置密码失败
-    case setFail(String)
-    //认证失败
-    case authFail(String)
-    //Alamofire
-    case afError
+    case locked
+    //功能未解锁
+    case outdated
+    //token过期
+    case differentPlaces
+
 }
 
-extension SchoolError {
+
+
+/*extension SchoolError {
     var localizedDescription: String{
         switch self {
         case .unexpected:
@@ -37,4 +34,4 @@ extension SchoolError {
             return "服务器异常"
         }
     }
-}
+}*/

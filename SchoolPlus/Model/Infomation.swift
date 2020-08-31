@@ -44,7 +44,6 @@ class Infomation {
         
         if let dateArr = json["publishTime"].array {
             var dateIntArr = [Int]()
-            var date = ""
             for n in dateArr {
                 if let datePart = n.int {
                     dateIntArr.append(datePart)
@@ -66,9 +65,17 @@ class Infomation {
             AF.request(url, method: .post, parameters: para, headers: headers).response(completionHandler: {
                 (response) in
                 debugPrint(response)
+                if let statusCode = response.response?.statusCode {
+                    if statusCode == 2385 {
+                        user.outDated()
+                        observer.onNext("请重新再试")
+                    }
+                }
+                
                 if let error = response.error {
                     observer.onError(error)
                 }
+                
                 observer.onNext("success")
   
             })
@@ -87,10 +94,16 @@ class Infomation {
              AF.request(url, method: .delete, parameters: para, headers: headers).response(completionHandler: {
                            (response) in
                            debugPrint(response)
-                           if let error = response.error {
-                               observer.onError(error)
-                           }
-                           observer.onNext("success")
+                if let statusCode = response.response?.statusCode {
+                    if statusCode == 2385 {
+                        user.outDated()
+                        observer.onNext("请重新再试")
+                    }
+                }
+                if let error = response.error {
+                    observer.onError(error)
+                }
+                observer.onNext("success")
              })
             return Disposables.create()
         }
@@ -135,14 +148,20 @@ class Infomation {
                          observer.onNext("success")
                      } else {
                          if let msg = json["msg"].string {
-                             observer.onError(SchoolError.authFail(msg))
+                             observer.onNext(msg)
                              return
                          }
                      }
                  }
              case .failure(let error):
                  print(error)
-                 observer.onError(SchoolError.afError)
+                 if let statusCode = response.response?.statusCode {
+                     if statusCode == 2385 {
+                         user.outDated()
+                         observer.onNext("请重新再试")
+                     }
+                 }
+                 observer.onError(error)
              }
          }
             return Disposables.create()
@@ -160,6 +179,12 @@ class Infomation {
             AF.request(url, method: .delete, parameters: para, headers: headers).response(completionHandler: {
                           (response) in
                           debugPrint(response)
+                if let statusCode = response.response?.statusCode {
+                    if statusCode == 2385 {
+                        user.outDated()
+                        observer.onNext("请重新再试")
+                    }
+                }
                           if let error = response.error {
                               observer.onError(error)
                           }

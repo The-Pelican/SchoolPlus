@@ -7,30 +7,33 @@
 //
 
 import UIKit
+import RxSwift
+import ProgressHUD
+import Kingfisher
 
 class GroupSearchViewController: UIViewController {
     let model = GroupViewModel()
     var tableView =  UITableView()
     var searchController = UISearchController()
     var button = UIButton()
-    var groups = [Organization]()
+    var groups = [Organization]() {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    var recommendGroups = [Organization]() {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     var searchGroup = [Organization]() {
         didSet{self.tableView.reloadData()}
     }
+    let disposeBag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
-        let group = Organization()
-        group.organizationName = "西二在线"
-        group.slogan = "我在西二，为你在线"
-        group.intro = "西二在线，成立于1998年。是集美貌与智慧于一身的历史最悠久最酷炫最强大的学生组织"
-        group.auditor = "？？？"
-        let group1 = Organization()
-        group1.organizationName = "DBL街舞协会"
-        group1.intro = "大菠萝"
-        groups.append(group)
-        groups.append(group1)
         initTableView()
         initSearchController()
         initButton()
@@ -46,7 +49,21 @@ class GroupSearchViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        self.tableView.reloadData()
+        getData()
+    }
+    
+    func getData() {
+        model.groups = []
+        model.recommendGroup = []
+        model.searchGroup = []
+        if user.hasChecked ?? false {
+            model.getMyGroups().subscribe(onNext:{ string in
+                self.groups = self.model.groups
+                self.recommendGroups = self.model.recommendGroup
+            },onError:{ error in
+                ProgressHUD.showError()
+                }).disposed(by: disposeBag)
+        }
     }
     
     func initTableView() {
@@ -64,11 +81,12 @@ class GroupSearchViewController: UIViewController {
     }
     func initSearchController() {
         searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self  //两个样例使用不同的代理
         searchController.hidesNavigationBarDuringPresentation = false
+        searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.sizeToFit()
-        searchController.searchBar.placeholder = "寻找感兴趣的组织"
+        self.tableView.tableHeaderView = searchController.searchBar
         tableView.tableHeaderView = searchController.searchBar
     }
     func initButton() {
@@ -124,7 +142,10 @@ extension GroupSearchViewController: UITableViewDataSource, UITableViewDelegate 
             return self.searchGroup.count
            
         } else {
-            return self.groups.count
+            if section == 0 {
+                return self.groups.count
+            }
+            return self.recommendGroups.count
         }
     }
     
@@ -133,29 +154,76 @@ extension GroupSearchViewController: UITableViewDataSource, UITableViewDelegate 
          if self.searchController.isActive {
             cell.nameLabel?.text = self.searchGroup[indexPath.row].organizationName
             cell.contentLabel?.text = self.searchGroup[indexPath.row].intro
+            if let url = URL(string: self.searchGroup[indexPath.row].logo ?? "") {
+                cell.logoView.kf.setImage(with:url)
+            }
             return cell
          } else {
-            cell.nameLabel?.text = self.groups[indexPath.row].organizationName
-            cell.contentLabel?.text = self.groups[indexPath.row].intro
+            if indexPath.section == 0 {
+                cell.nameLabel?.text = self.groups[indexPath.row].organizationName
+                cell.contentLabel?.text = self.groups[indexPath.row].intro
+                if let url = URL(string: self.groups[indexPath.row].logo ?? "") {
+                               cell.logoView.kf.setImage(with:url)
+                           }
+            } else if indexPath.section == 1 {
+                cell.nameLabel?.text = self.recommendGroups[indexPath.row].organizationName
+                cell.contentLabel?.text = self.recommendGroups[indexPath.row].intro
+                if let url = URL(string: self.recommendGroups[indexPath.row].logo ?? "") {
+                    cell.logoView.kf.setImage(with:url)
+                }
+            }
+            
             return cell
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = GroupDetailViewController()
-        vc.group = groups[indexPath.row]
+        if self.searchController.isActive {
+            vc.organizationId = self.searchGroup[indexPath.row].organizationId ?? -1
+        } else {
+            if indexPath.section == 0 {
+                vc.organizationId = self.groups[indexPath.row].organizationId ?? -1
+            } else {
+                vc.organizationId = self.recommendGroups[indexPath.row].organizationId ?? -1
+            }
+        }
+        
         self.navigationController?.pushViewController(vc, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
-extension GroupSearchViewController:UISearchResultsUpdating {
+extension GroupSearchViewController:UISearchBarDelegate {
 
-    func updateSearchResults(for searchController: UISearchController) {
-        model.searchGroups(text: searchController.searchBar.text!)
+    /*func updateSearchResults(for searchController: UISearchController) {
+        model.searchGroup = []
+        model.searchGroups(text: searchController.searchBar.text!).subscribe(onNext:{ [weak self]string in
+            print(string)
+            self?.searchGroup = self?.model.searchGroup as! [Organization]
+        },onError: { error in
+            ProgressHUD.showError()
+            
+        })
         /*self.searchGroup = self.groups.filter({ (group) -> Bool in
             return group.name.contains(searchController.searchBar.text!)
             })*/
+    }*/
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        model.searchGroup = []
+        model.searchGroups(text: searchController.searchBar.text!).subscribe(onNext:{ [weak self]string in
+            print(string)
+            self?.searchGroup = self?.model.searchGroup as! [Organization]
+        },onError: { error in
+            ProgressHUD.showError()
+            
+        })
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        //self.searchGroup = self.groups
+        getData()
     }
     
 }

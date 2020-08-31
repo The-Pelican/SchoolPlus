@@ -206,6 +206,7 @@ class LoginViewController: UIViewController {
                     print(user.refreshToken)
                     user.loginType = .logined
                     user.save()
+                    user.getMyMessage()
                     let tabController = MainTabViewController()
                     tabController.initControllers()
                     let navigationController = UINavigationController(rootViewController: tabController)
@@ -217,12 +218,21 @@ class LoginViewController: UIViewController {
                 }).disposed(by: disposeBag)
         } else {
             user.pwdLogin(pho: idTextField.text!, pwd: pwdTextField.text!).subscribe(onNext:{ string in
-                user.save()
-                ProgressHUD.showSucceed()
-                let tabController = MainTabViewController()
-                tabController.initControllers()
-                let navigationController = UINavigationController(rootViewController: tabController)
-                Navigator.window().rootViewController = navigationController
+                user.getMyMessage().subscribe(onNext:{
+                    string in
+                    guard string == "success" else {
+                        ProgressHUD.show(string)
+                        return
+                    }
+                    user.loginType = .logined
+                    user.save()
+                    user.saveInfo()
+                    ProgressHUD.showSucceed()
+                    let tabController = MainTabViewController()
+                    tabController.initControllers()
+                    let navigationController = UINavigationController(rootViewController: tabController)
+                    Navigator.window().rootViewController = navigationController
+                })
             },onError: { error in
                 ProgressHUD.showError(error.localizedDescription)
                 }).disposed(by:disposeBag)

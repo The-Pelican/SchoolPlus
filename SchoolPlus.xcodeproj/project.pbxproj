@@ -10,6 +10,7 @@
 		2A24A3E824C9A00800522DC6 /* GroupDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24A3E724C9A00800522DC6 /* GroupDetailViewController.swift */; };
 		2A24A3EC24CA002600522DC6 /* MemberListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24A3EB24CA002600522DC6 /* MemberListViewController.swift */; };
 		2A24A3EE24D11F7C00522DC6 /* GroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24A3ED24D11F7C00522DC6 /* GroupViewModel.swift */; };
+		2A565C1924FC9CE4005BA3DA /* OnthersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A565C1824FC9CE4005BA3DA /* OnthersViewController.swift */; };
 		2A5D98F424F6BD5A0070D9C0 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5D98F324F6BD5A0070D9C0 /* StringExtension.swift */; };
 		2A5D98F624F6BFC00070D9C0 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5D98F524F6BFC00070D9C0 /* Comment.swift */; };
 		2A5D98FA24F7F72E0070D9C0 /* InfoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5D98F924F7F72E0070D9C0 /* InfoDetailViewController.swift */; };
@@ -68,6 +69,7 @@
 		2AF91ED224FA56720080BA56 /* InfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF91ED124FA56720080BA56 /* InfoViewModel.swift */; };
 		2AF91ED424FA569F0080BA56 /* Notice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF91ED324FA569F0080BA56 /* Notice.swift */; };
 		2AF91ED624FA60570080BA56 /* NoticeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF91ED524FA60570080BA56 /* NoticeDetailViewController.swift */; };
+		2AF91ED824FBF9E80080BA56 /* MyOrganization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF91ED724FBF9E80080BA56 /* MyOrganization.swift */; };
 		4C59E51A904D5745DC011AB7 /* Pods_SchoolPlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A846935F67B477540773F2F /* Pods_SchoolPlus.framework */; };
 /* End PBXBuildFile section */
 
@@ -76,6 +78,7 @@
 		2A24A3E724C9A00800522DC6 /* GroupDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailViewController.swift; sourceTree = "<group>"; };
 		2A24A3EB24CA002600522DC6 /* MemberListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberListViewController.swift; sourceTree = "<group>"; };
 		2A24A3ED24D11F7C00522DC6 /* GroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewModel.swift; sourceTree = "<group>"; };
+		2A565C1824FC9CE4005BA3DA /* OnthersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnthersViewController.swift; sourceTree = "<group>"; };
 		2A5D98F324F6BD5A0070D9C0 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		2A5D98F524F6BFC00070D9C0 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		2A5D98F824F7A1F00070D9C0 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
@@ -137,6 +140,7 @@
 		2AF91ED124FA56720080BA56 /* InfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewModel.swift; sourceTree = "<group>"; };
 		2AF91ED324FA569F0080BA56 /* Notice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notice.swift; sourceTree = "<group>"; };
 		2AF91ED524FA60570080BA56 /* NoticeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeDetailViewController.swift; sourceTree = "<group>"; };
+		2AF91ED724FBF9E80080BA56 /* MyOrganization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrganization.swift; sourceTree = "<group>"; };
 		71284590BD8E01A7BAE7271E /* Pods-SchoolPlus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SchoolPlus.release.xcconfig"; path = "Target Support Files/Pods-SchoolPlus/Pods-SchoolPlus.release.xcconfig"; sourceTree = "<group>"; };
 		7A846935F67B477540773F2F /* Pods_SchoolPlus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SchoolPlus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -260,6 +264,7 @@
 				2A5D98F524F6BFC00070D9C0 /* Comment.swift */,
 				2A78BCA724F8C95A00BC62EF /* UserInfo.swift */,
 				2AF91ED324FA569F0080BA56 /* Notice.swift */,
+				2AF91ED724FBF9E80080BA56 /* MyOrganization.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -320,6 +325,7 @@
 			children = (
 				2A5D98FD24F7F8680070D9C0 /* MyViewModel.swift */,
 				2ACDA42724C5D0CB006BB0DA /* MyViewController.swift */,
+				2A565C1824FC9CE4005BA3DA /* OnthersViewController.swift */,
 				2A5D98F924F7F72E0070D9C0 /* InfoDetailViewController.swift */,
 				2A5D98FB24F7F73F0070D9C0 /* SettingViewController.swift */,
 			);
@@ -530,6 +536,8 @@
 				2ACDA41A24C220BD006BB0DA /* Organization.swift in Sources */,
 				2A8CD19124E1477C00E00A7C /* MessageTableViewCell.swift in Sources */,
 				2A5D98FA24F7F72E0070D9C0 /* InfoDetailViewController.swift in Sources */,
+				2AF91ED824FBF9E80080BA56 /* MyOrganization.swift in Sources */,
+				2A565C1924FC9CE4005BA3DA /* OnthersViewController.swift in Sources */,
 				2ACDA3FC24B6FBC5006BB0DA /* RegisterViewController.swift in Sources */,
 				2A78BCAE24FA16A600BC62EF /* DateExtension.swift in Sources */,
 				2AF91ED424FA569F0080BA56 /* Notice.swift in Sources */,

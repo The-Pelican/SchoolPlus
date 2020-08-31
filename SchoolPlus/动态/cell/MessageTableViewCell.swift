@@ -36,6 +36,11 @@ class MessageTableViewCell: UITableViewCell {
                 } else {
                     self.subscribeButton.backgroundColor = UIColor(valueStr: "FBEA77")
                 }
+                if i.userId == user.userId {
+                    self.subscribeButton.isHidden = true
+                } else {
+                    self.subscribeButton.isHidden = false
+                }
             }
             
             if let organization = info?.orgnization?.organizationName {
@@ -60,6 +65,7 @@ class MessageTableViewCell: UITableViewCell {
         subscribeButton.layer.cornerRadius = 5
         likeButton.addTarget(self, action: #selector(likeNews), for: .touchUpInside)
         subscribeButton.addTarget(self, action: #selector(subscribe), for: .touchUpInside)
+        head.layer.cornerRadius = head.frame.width/2
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -176,9 +182,6 @@ class MessageTableViewCell: UITableViewCell {
         self.collectionView.reloadData()
         let contentSize = self.collectionView.collectionViewLayout.collectionViewContentSize
         collectionViewHeight.constant = contentSize.height
-        if images.count == 0 {
-            collectionViewHeight.constant = CGFloat(1.0)
-        }
         self.collectionView.collectionViewLayout.invalidateLayout()
     }
     
@@ -186,6 +189,8 @@ class MessageTableViewCell: UITableViewCell {
 }
 
 extension MessageTableViewCell: UICollectionViewDelegate,UICollectionViewDataSource {
+ 
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return images.count
     }

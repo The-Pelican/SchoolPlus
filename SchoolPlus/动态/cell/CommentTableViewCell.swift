@@ -25,6 +25,7 @@ class CommentTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         likeButton.addTarget(self, action: #selector(likeComment), for: .touchUpInside)
+        logoView.layer.cornerRadius = 23
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

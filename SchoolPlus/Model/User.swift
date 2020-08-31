@@ -125,7 +125,7 @@ class User: NSObject {
                 }
             case .failure(let error):
                 print(error)
-                ProgressHUD.showError(SchoolError.afError.localizedDescription)
+                ProgressHUD.showError()
             }
         }
     }
@@ -167,14 +167,14 @@ class User: NSObject {
                             }
                          } else {
                             if let m = json["msg"].string {
-                                observer.onError(SchoolError.loginFail(m))
+                                observer.onNext(m)
                                 return
                             }
                         }
                      }
                  case .failure(let error):
                     print(error)
-                    observer.onError(SchoolError.afError)
+                    observer.onError(error)
                  }
             }
             return Disposables.create()
@@ -191,7 +191,7 @@ class User: NSObject {
                 case .success(let value):
                     let json = JSON(value)
                     guard let result = json["result"].bool else {
-                        observer.onError(SchoolError.unexpected)
+                        observer.onNext("未知")
                         return
                     }
                     if result {
@@ -206,18 +206,17 @@ class User: NSObject {
                             observer.onNext("unfinished")
                             return
                         }
-                        observer.onError(SchoolError.unexpected)
                     } else {
                         guard let msg = json["msg"].string else {
-                            observer.onError(SchoolError.unexpected)
+                            observer.onNext("未知")
                             return
                         }
-                        observer.onError(SchoolError.authFail(msg))
+                        observer.onNext(msg)
                     }
                     
                 case .failure(let error):
                     print(error)
-                    observer.onError(SchoolError.afError)
+                    observer.onError(error)
                 }
             }
             return Disposables.create()
@@ -245,7 +244,7 @@ class User: NSObject {
                                 observer.onNext("success")
                                 return
                             }
-                            observer.onError(SchoolError.unexpected)
+                            observer.onNext("未知")
                             return
                         } else {
                             if let m = json["msg"].string {
@@ -256,7 +255,7 @@ class User: NSObject {
                     }
                 case .failure(let error):
                     print(error)
-                    observer.onError(SchoolError.afError)
+                    observer.onError(error)
                 }
             }
             return Disposables.create()
@@ -297,10 +296,7 @@ class User: NSObject {
         let studentName = name.data(using: String.Encoding.utf8)
         let studentNo = num.data(using: String.Encoding.utf8)
         let cardData = card.jpegData(compressionQuality: 0.1)
-        let para = ["studentName":studentName!, "studentNo":studentNo!,"card":cardData!] as [String:Any]
-        print(name)
-        print(num)
-        print(cardData!)
+        
         let headers: HTTPHeaders
             headers = [
             "accessToken":user.accessToken,"Content-type":"multipart/form-data","Content-Disposition":"form-data"
@@ -319,10 +315,15 @@ class User: NSObject {
                         observer.onNext("success")
                     case.failure(let error):
                         print(error)
+                        if let statusCode = response.response?.statusCode {
+                            if statusCode == 2385 {
+                                user.outDated()
+                                observer.onNext("请重新再试")
+                            }
+                        }
                         observer.onError(error)
                     }
              }
- 
             return Disposables.create()
         }
     }
@@ -330,8 +331,9 @@ class User: NSObject {
     
     
 //    MARK:-获取token
-    func updateToken(aT:String,rT:String) {
+    func updateToken(aT:String,rT:String)  -> Observable<String>{
         let para = ["accessToken":user.accessToken,"refreshToken":user.refreshToken]
+         return Observable<String>.create { (observer) -> Disposable in
         AF.request("http://www.chenzhimeng.top/fu-community/user/token", method: .put, parameters: para).responseJSON {
             (response) in
             switch response.result {
@@ -341,45 +343,65 @@ class User: NSObject {
                     user.accessToken = aT
                     user.refreshToken = rT
                     user.save()
+                    observer.onNext("success")
                 }
+                observer.onNext("fail")
             case.failure(let error):
                 print(error)
+                observer.onError(error)
             }
+        }
+            return Disposables.create()
         }
     }
     
+    func outDated() {
+            user.updateToken(aT: user.accessToken, rT: user.refreshToken).subscribe(onNext:{ string in
+                 if string == "fail" {
+                    ProgressHUD.showFailed("token过期，请重新再试")
+                     user.logout()
+                     let navigationController = UINavigationController(rootViewController: LoginViewController())
+                     Navigator.window().rootViewController = navigationController
+                 } else {
+                    return
+                }
+             },onError: { error in
+                 user.logout()
+                 let navigationController = UINavigationController(rootViewController: LoginViewController())
+                 Navigator.window().rootViewController = navigationController
+            }).disposed(by: self.disposeBag)
+    }
     
-//    MARK:- 获取个人信息
+    
+//    MARK:- 个人信息
     //自动登录
         func getMyMessage() -> Observable<String> {
         let url = URL(string: "http://www.chenzhimeng.top/fu-community/user/-1")!
         let headers:HTTPHeaders = ["accessToken":user.accessToken]
         
         return Observable<String>.create { (observer) -> Disposable in
+            let request = AF.request(url,method: .get,headers: headers)
             AF.request(url,method: .get,headers: headers).responseJSON(completionHandler: {
                 (response) in
                 switch response.result  {
                 case .success(let value):
+                    print(value)
                     let json = JSON(value)
                     user.userId = json["userId"].int ?? -1
                     user.hasChecked = json["hasCheck"].bool
                     user.name = json["studentName"].string ?? "未设置"
+                    user.avatar = json["avatar"].string ?? ""
                     user.saveInfo()
                     observer.onNext("success")
                 case .failure(let error):
+                    print(error)
                     if let statusCode = response.response?.statusCode {
-                        switch statusCode {
-                        case 2387:
-                            observer.onNext("功能未解锁")
-                        case 2385:
-                            observer.onNext("token过期")
-                        case 2386:
-                            observer.onNext("账号异地登陆")
-                        default:
-                            break
+                        if statusCode == 2385 {
+                            user.outDated()
+                            observer.onNext("请重新再试")
                         }
                     }
-                    print(error)
+                    observer.onError(error)
                 }
             })
             return Disposables.create()
@@ -387,20 +409,36 @@ class User: NSObject {
     }
     
     
-    func getSuscribedUsers() {
-        
-    }
+
     
-    func getSubscribedGroups() {
-        
-    }
-    
-    func changeAvatar() {
-        
-    }
-    
-    func getMessageList() {
-        
+    func changeAvatar(image:UIImage)-> Observable<String> {
+        let imageData = image.jpegData(compressionQuality: 0.1)
+        let headers: HTTPHeaders
+            headers = [
+            "accessToken":user.accessToken,"Content-type":"multipart/form-data","Content-Disposition":"form-data"
+        ]
+        return Observable<String>.create { (observer) -> Disposable in
+            AF.upload(multipartFormData: { (multiPart) in
+                multiPart.append(imageData!, withName: "avatar", fileName:  "avatar.jpeg", mimeType: "image/jpeg")
+                  }, to: "http://www.chenzhimeng.top/fu-community/user/avatar", usingThreshold:UInt64.init(), method: .put, headers:headers).responseJSON { (response) in
+                      debugPrint(response)
+                      switch response.result {
+                      case .success(let value):
+                          print(value)
+                          observer.onNext("success")
+                      case.failure(let error):
+                          print(error)
+                          if let statusCode = response.response?.statusCode {
+                              if statusCode == 2385 {
+                                  user.outDated()
+                                  observer.onNext("请重新再试")
+                              }
+                          }
+                          observer.onError(error)
+                      }
+               }
+            return Disposables.create()
+        }
     }
     
     
@@ -417,7 +455,12 @@ class User: NSObject {
             AF.request(url,method: .post,parameters: para,headers: headers).response {
                 (response) in
                 debugPrint(response)
-                if let error = response.error {
+                if let statusCode = response.response?.statusCode {
+                    if statusCode == 2385 {
+                        user.outDated()
+                        observer.onNext("请重新再试")
+                    }
+                } else if let error = response.error {
                     observer.onError(error)
                 }
                 observer.onNext("success")
@@ -439,6 +482,12 @@ class User: NSObject {
             AF.request(url,method: .post,parameters: para,headers: headers).response {
                 (response) in
                 debugPrint(response)
+                if let statusCode = response.response?.statusCode {
+                    if statusCode == 2385 {
+                        user.outDated()
+                        observer.onNext("请重新再试")
+                    }
+                }
                 if let error = response.error {
                     observer.onError(error)
                 }
@@ -470,6 +519,12 @@ class User: NSObject {
             AF.request(url,method: .delete,parameters: para,headers: headers).response {
                 (response) in
                 debugPrint(response)
+                if let statusCode = response.response?.statusCode {
+                    if statusCode == 2385 {
+                        user.outDated()
+                        observer.onNext("请重新再试")
+                    }
+                }
                 if let error = response.error {
                     observer.onError(error)
                 }
@@ -480,8 +535,7 @@ class User: NSObject {
     }
     
     func uploadNews(text:String?,pic:[UIImage]) -> Observable<String>{
-        let text = text ?? ""
-        let textData = text.data(using: .utf8)!
+        let textData = text?.data(using: .utf8)!
         var jpegData = [Data]()
         for image in pic {
             let imageData = image.jpegData(compressionQuality: 0.2)
@@ -492,9 +546,15 @@ class User: NSObject {
         let headers: HTTPHeaders = [
             "accessToken": user.accessToken
         ]
+        
+        print(textData)
+        print(jpegData)
+        print(headers)
         return Observable<String>.create { (observer) -> Disposable in
             AF.upload(multipartFormData: { (multipartFormData) in
+                if let textData = textData {
                     multipartFormData.append(textData, withName: "text")
+                }
                 if !jpegData.isEmpty {
                     for data in jpegData {
                          multipartFormData.append(data, withName: "files", fileName: "files"+".jpeg", mimeType: "image/jpeg")
@@ -509,18 +569,24 @@ class User: NSObject {
                     if let result = json["result"].bool {
                         if result {
                             observer.onNext("success")
-                            return
+                            
                         } else {
                             if let msg = json["msg"].string {
                                 
-                                observer.onError(SchoolError.authFail(msg))
-                                return
+                                observer.onNext(msg)
+                                
                             }
                         }
                     }
                 case .failure(let error):
                     print(error)
-                    observer.onError(SchoolError.afError)
+                    if let statusCode = response.response?.statusCode {
+                        if statusCode == 2385 {
+                            user.outDated()
+                            observer.onNext("请重新再试")
+                        }
+                    }
+                    observer.onError(error)
                 }
             }
             return Disposables.create()
@@ -539,10 +605,16 @@ class User: NSObject {
             AF.request(url, method: .post, parameters: para, headers: headers).response(completionHandler: {
                           (response) in
                           debugPrint(response)
-                          if let error = response.error {
+                if let statusCode = response.response?.statusCode {
+                    if statusCode == 2385 {
+                        user.outDated()
+                        observer.onNext("请重新再试")
+                    }
+                }
+                if let error = response.error {
                               observer.onError(error)
-                          }
-                          observer.onNext("success")
+                }
+                observer.onNext("success")
             })
             return Disposables.create()
         }
@@ -559,6 +631,13 @@ class User: NSObject {
             AF.request(url, method: .delete, parameters: para, headers: headers).response(completionHandler: {
                           (response) in
                           debugPrint(response)
+                
+                if let statusCode = response.response?.statusCode {
+                    if statusCode == 2385 {
+                        user.outDated()
+                        observer.onNext("请重新再试")
+                    }
+                }
                           if let error = response.error {
                               observer.onError(error)
                           }

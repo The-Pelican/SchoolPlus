@@ -11,6 +11,13 @@ import RxSwift
 import ProgressHUD
 import MJRefresh
 
+enum MessageType:Int {
+    case all = 1
+    case subscribed = 2
+    case my = 3
+    case group = 4
+}
+
 class MessagesViewController: UIViewController {
     var tableView =  UITableView()
     var addButton = UIButton()
@@ -23,6 +30,7 @@ class MessagesViewController: UIViewController {
             tableView.reloadData()
         }
     }
+    let infoType:MessageType
     
     let disposeBag = DisposeBag()
     
@@ -33,12 +41,15 @@ class MessagesViewController: UIViewController {
 
         switch type {
         case "全部":
-            self.isAll = true
+            infoType = .all
         case "已关注":
-            self.isAll = false
+            infoType = .subscribed
+        case "我的":
+            infoType = .my
+        case "组织":
+            infoType = .group
         default:
-            self.isAll = true
- 
+            infoType = .my
         }
         super.init(nibName:nil, bundle:nil)
     }
@@ -58,22 +69,32 @@ class MessagesViewController: UIViewController {
         super.viewDidAppear(animated)
         model.message = []
         model.pageNum = 0
-        if isAll {
+        if infoType == .all {
             model.getData().subscribe(onNext:{ string in
                 self.messages = self.model.message
                 self.model.pageNum = self.model.pageNum + 1
             }, onError: { error in
                 ProgressHUD.showError(error.localizedDescription)
                 }).disposed(by: disposeBag)
-        } else {
+        } else if infoType == .subscribed {
             model.getSubscribeData().subscribe(onNext:{ string in
                 self.messages = self.model.message
                 self.model.pageNum = self.model.pageNum + 1
             }, onError: { error in
                 ProgressHUD.showError(error.localizedDescription)
                 }).disposed(by: disposeBag)
-            
+        } else if infoType == .my {
+            model.getMyData().subscribe(onNext:{ string in
+                self.messages = self.model.message
+                self.model.pageNum = self.model.pageNum + 1
+            },onError: { error in
+                ProgressHUD.showError(error.localizedDescription)
+            })
         }
+    }
+    
+    func getData() {
+        
     }
     
     func initTableView() {
@@ -105,14 +126,14 @@ class MessagesViewController: UIViewController {
     @objc func headerRefresh(){
         model.message = []
         model.pageNum = 0
-        if isAll {
+        if infoType == .all {
             model.getData().subscribe(onNext:{ string in
                 self.messages = self.model.message
                 self.model.pageNum = self.model.pageNum + 1
             }, onError: { error in
                 ProgressHUD.showError(error.localizedDescription)
                 }).disposed(by: disposeBag)
-        } else {
+        } else if infoType == .subscribed{
             model.getSubscribeData().subscribe(onNext:{ string in
                 self.messages = self.model.message
                 self.model.pageNum = self.model.pageNum + 1
@@ -120,6 +141,13 @@ class MessagesViewController: UIViewController {
                 ProgressHUD.showError(error.localizedDescription)
                 }).disposed(by: disposeBag)
             
+        } else {
+            model.getMyData().subscribe(onNext:{ string in
+                self.messages = self.model.message
+                self.model.pageNum = self.model.pageNum + 1
+            }, onError: { error in
+                ProgressHUD.showError(error.localizedDescription)
+                }).disposed(by: disposeBag)
         }
         tableView.reloadData()
         self.tableView.mj_header!.endRefreshing()
@@ -128,15 +156,22 @@ class MessagesViewController: UIViewController {
 
     
     @objc func footerLoad() {
-        if isAll {
+        if infoType == .all {
             model.getData().subscribe(onNext:{ string in
                 self.messages = self.model.message
                 self.model.pageNum = self.model.pageNum + 1
             }, onError: { error in
                 ProgressHUD.showError(error.localizedDescription)
                 }).disposed(by: disposeBag)
-        } else {
+        } else if infoType == .subscribed{
             model.getSubscribeData().subscribe(onNext:{ string in
+                self.messages = self.model.message
+                self.model.pageNum = self.model.pageNum + 1
+            }, onError: { error in
+                ProgressHUD.showError(error.localizedDescription)
+                }).disposed(by: disposeBag)
+        } else {
+            model.getMyData().subscribe(onNext:{ string in
                 self.messages = self.model.message
                 self.model.pageNum = self.model.pageNum + 1
             }, onError: { error in
@@ -199,7 +234,7 @@ extension MessagesViewController: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("点击")
         let vc = CommentViewController()
-        vc.info = self.messages[indexPath.row]
+        vc.newsId = self.messages[indexPath.row].newsId ?? -1
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

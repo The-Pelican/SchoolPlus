@@ -13,6 +13,8 @@ import ProgressHUD
 import MJRefresh
 import YPImagePicker
 
+
+
 class CommentViewController: UIViewController {
     var tableView:UITableView!
     var sendButton = UIButton()
@@ -30,9 +32,10 @@ class CommentViewController: UIViewController {
     }
     let disposeBag = DisposeBag()
     var bottomConstraint: Constraint?
+    var newsId = -1
     var info =  Infomation() {
         didSet {
-            
+            tableView.reloadData()
         }
     }
 
@@ -45,14 +48,27 @@ class CommentViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         let userId = info.publisher?.userId ?? -2
         let organizationId = info.orgnization?.organizationId ?? -2
         if  (user.userId != userId) && (user.userId != organizationId){
             navigationItem.rightBarButtonItem?.isEnabled = false
         }
+        
+        model.getOneNews(newsId: newsId).subscribe(onNext:{ string in
+            self.info = self.model.oneMessage
+        },onError: { error in
+            ProgressHUD.showError()
+        }).disposed(by: disposeBag)
+        
+        
         self.model.pageNum = 0
         self.model.comment = []
-        model.getNewsComments(id: info.newsId!).subscribe(onNext:{ string in
+        model.getNewsComments(id: newsId).subscribe(onNext:{ string in
             self.comments = self.model.comment
             self.model.pageNum = self.model.pageNum + 1
         }, onError: { error in

@@ -14,6 +14,7 @@ import RxSwift
 class InformationViewModel {
     var message:[Infomation] = []
     var comment:[Comment] = []
+    var oneMessage = Infomation()
     let length = 5
     var pageNum = 0
     let disposeBag = DisposeBag()
@@ -92,6 +93,63 @@ class InformationViewModel {
             })
             return Disposables.create()
         }
+    }
+    
+    func getMyData() -> Observable<String> {
+        let url = URL(string: "http://www.chenzhimeng.top/fu-community/news/user/\(user.userId)/\(pageNum)/\(length)")
+        let headers: HTTPHeaders = [
+            "accessToken": user.accessToken
+        ]
+        print(user.accessToken)
+        return Observable<String>.create { (observer) -> Disposable in
+            AF.request(url!,method:.get,headers: headers).responseJSON(completionHandler: {
+                [weak self](response) in
+                debugPrint(response)
+                switch response.result {
+                case .success(let value):
+                    let json = JSON(value)
+                    print(value)
+                    if let newsJson = json.array {
+                        for news in newsJson {
+                            let info = Infomation(news)
+                            self?.message.append(info)
+                        }
+                        observer.onNext("success")
+                    }
+                    
+                case .failure(let error):
+                    print(error)
+                    observer.onError(error)
+                }
+            })
+            return Disposables.create()
+            }
+    }
+    
+    func getOneNews(newsId:Int)  -> Observable<String> {
+        let url = URL(string: "http://www.chenzhimeng.top/fu-community/news/\(newsId)")!
+        let headers: HTTPHeaders = [
+            "accessToken": user.accessToken
+        ]
+        return Observable<String>.create { (observer) -> Disposable in
+            AF.request(url,method:.get,headers: headers).responseJSON(completionHandler: {
+                [weak self](response) in
+                debugPrint(response)
+                switch response.result {
+                case .success(let value):
+                    let json = JSON(value)
+                    print(value)
+                    self?.oneMessage = Infomation(json)
+                    observer.onNext("success")
+                case .failure(let error):
+                    print(error)
+                    observer.onError(error)
+                }
+            })
+
+            
+            return Disposables.create()
+                   }
     }
     
     
@@ -196,7 +254,7 @@ class InformationViewModel {
                     }
                 case .failure(let error):
                     print(error)
-                    observer.onError(SchoolError.afError)
+                    observer.onError(error)
                 }
             }
                return Disposables.create()
