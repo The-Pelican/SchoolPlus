@@ -13,6 +13,7 @@ import RxSwift
 
 class LoginViewController: UIViewController {
      var nameLabel = UILabel()
+    var logoImage = UIImageView()
      var idTextField = UITextField()
      var pwdTextField = UITextField()
      var codeTextField = UITextField()
@@ -42,7 +43,7 @@ class LoginViewController: UIViewController {
        
     
     func initSubView() {
-        nameLabel.text = "\"校园+\"登录"
+        nameLabel.text = "登录"
         nameLabel.font = UIFont.boldSystemFont(ofSize: 30)
         nameLabel.textAlignment = .center
         self.view.addSubview(nameLabel)
@@ -50,8 +51,19 @@ class LoginViewController: UIViewController {
             $0.centerX.equalToSuperview()
             $0.height.equalTo(32)
             $0.width.equalTo(300)
-            $0.top.equalToSuperview().offset(200)
+            $0.top.equalToSuperview().offset(220)
         }
+        
+        logoImage.image = UIImage(named: "梅努斯")
+        logoImage.clipsToBounds = true
+        self.view.addSubview(logoImage)
+        logoImage.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.height.equalTo(100)
+            $0.width.equalTo(100)
+            $0.top.equalToSuperview().offset(100)
+        }
+        
         
         idTextField.placeholder = "请输入手机号"
         idTextField.borderStyle = .roundedRect
