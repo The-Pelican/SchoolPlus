@@ -126,6 +126,38 @@ class InformationViewModel {
             }
     }
     
+    //获取组织动态
+    func getGroupNews(organizationId:
+    Int) -> Observable<String> {
+        let url = URL(string: "http://www.chenzhimeng.top/fu-community/news/organization/\(organizationId)/\(pageNum)/\(length)")!
+        let headers:HTTPHeaders = ["accessToken":user.accessToken]
+        
+        return Observable<String>.create { (observer) -> Disposable in
+        
+        AF.request(url, method: .get, headers: headers).responseJSON {
+            (response) in
+            debugPrint(response)
+            switch response.result {
+            case .success(let value):
+                print(value)
+                let json = JSON(value)
+                if let newsJson = json.array {
+                    for oneNewJson in newsJson {
+                        let news = Infomation(oneNewJson)
+                        self.message.append(news)
+                    }
+                    observer.onNext("success")
+                }
+                observer.onNext("success")
+            case .failure(let error):
+                print(error)
+                observer.onError(error)
+            }
+        }
+            return Disposables.create()
+            }
+    }
+    
     func getOneNews(newsId:Int)  -> Observable<String> {
         let url = URL(string: "http://www.chenzhimeng.top/fu-community/news/\(newsId)")!
         let headers: HTTPHeaders = [

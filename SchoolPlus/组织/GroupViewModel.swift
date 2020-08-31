@@ -352,14 +352,14 @@ class GroupViewModel {
     func getApplicationList(organizationId:Int) -> Observable<String> {
         let headers:HTTPHeaders = ["accessToken":user.accessToken]
         return Observable<String>.create { (observer) -> Disposable in
-        AF.request("http://www.chenzhimeng.top/fu-community/user/organization/\(organizationId)", method: .get, headers: headers).responseJSON {
+        AF.request("http://www.chenzhimeng.top/fu-community/organization/member/application/\(organizationId)", method: .get, headers: headers).responseJSON {
             [weak self](response) in
             debugPrint(response)
             switch response.result {
             case .success(let value):
                 print(value)
                 let json = JSON(value)
-                if let usersJson = json["users"].array {
+                if let usersJson = json["applications"].array {
                     for userJson in usersJson {
                         let user = UserInfo(userJson)
                         self?.memberList.append(user)
@@ -394,7 +394,7 @@ class GroupViewModel {
                     observer.onError(error)
                 }
                 
-                observer.onNext("success")
+                observer.onNext("已同意")
              })
             return Disposables.create()
             }
@@ -418,7 +418,7 @@ class GroupViewModel {
                     observer.onError(error)
                 }
                 
-                observer.onNext("success")
+                observer.onNext("已拒绝")
              })
             return Disposables.create()
             }
@@ -427,7 +427,7 @@ class GroupViewModel {
     func removeMember(organizationId:Int,userId:Int) -> Observable<String> {
         let url = URL(string: "http://www.chenzhimeng.top/fu-community/member/remove")!
         let headers:HTTPHeaders = ["accessToken":user.accessToken]
-        let para = ["organizationId":organizationId,"userId":userId]
+        let para = ["organizationId":organizationId,"memberId":userId]
         return Observable<String>.create { (observer) -> Disposable in
             AF.request(url, method: .delete,parameters: para, headers: headers).responseJSON { (response) in
                debugPrint(response)

@@ -36,6 +36,11 @@ class CommentViewController: UIViewController {
     var info =  Infomation() {
         didSet {
             tableView.reloadData()
+            let userId = info.publisher?.userId ?? -2
+            let organizationId = info.orgnization?.organizationId ?? -2
+            if  (user.userId != userId) && (user.userId != organizationId){
+                navigationItem.rightBarButtonItem?.isEnabled = false
+            }
         }
     }
 
@@ -53,14 +58,10 @@ class CommentViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let userId = info.publisher?.userId ?? -2
-        let organizationId = info.orgnization?.organizationId ?? -2
-        if  (user.userId != userId) && (user.userId != organizationId){
-            navigationItem.rightBarButtonItem?.isEnabled = false
-        }
-        
+        ProgressHUD.show("正在加载中")
         model.getOneNews(newsId: newsId).subscribe(onNext:{ string in
             self.info = self.model.oneMessage
+            ProgressHUD.dismiss()
         },onError: { error in
             ProgressHUD.showError()
         }).disposed(by: disposeBag)
@@ -71,6 +72,7 @@ class CommentViewController: UIViewController {
         model.getNewsComments(id: newsId).subscribe(onNext:{ string in
             self.comments = self.model.comment
             self.model.pageNum = self.model.pageNum + 1
+            ProgressHUD.dismiss()
         }, onError: { error in
             ProgressHUD.showError(error.localizedDescription)
             }).disposed(by: disposeBag)

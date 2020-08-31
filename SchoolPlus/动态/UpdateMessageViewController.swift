@@ -107,6 +107,7 @@ class UpdateMessageViewController: UIViewController {
             print(info.newsId!)
             print(newImages)
             print(info.media!)
+            ProgressHUD.show("正在加载中")
             info.editNews(newsId:info.newsId!,text: textView.text!, media: info.media!,pic:newImages).subscribe(onNext:{ string in
                 guard string == "success" else {
                     ProgressHUD.show(string)
@@ -203,7 +204,7 @@ extension UpdateMessageViewController: UICollectionViewDelegate, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.identifier, for: indexPath) as! ImageCell
         if indexPath.row == images.count {
-            cell.imageView.backgroundColor = UIColor.systemPink
+            cell.imageView.image = UIImage(named: "zhaoxiangji")
         } else {
             cell.imageView.image = images[indexPath.row]
             if indexPath.row < images.count {

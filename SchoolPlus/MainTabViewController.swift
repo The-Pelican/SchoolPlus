@@ -31,10 +31,10 @@ class MainTabViewController: UITabBarController {
         let page = PageViewController()
         let auth = EndAMViewController()
         
-        let schoolItem = UITabBarItem(title: "校园", image: nil, tag: 0)
-        let groupItem = UITabBarItem(title: "组织", image: nil, tag: 1)
-        let infoItem = UITabBarItem(title: "信息", image: nil, tag: 2)
-        let myItem = UITabBarItem(title: "我的", image: nil, tag: 3)
+        let schoolItem = UITabBarItem(title: "学院", image: UIImage(named: "底部icon_学院"), tag: 0)
+        let groupItem = UITabBarItem(title: "组织", image: UIImage(named: "底部社团_icon"), tag: 1)
+        let infoItem = UITabBarItem(title: "信息", image: UIImage(named: "底部icon_消息"), tag: 2)
+        let myItem = UITabBarItem(title: "我的", image: UIImage(named: "底部icon_我的"), tag: 3)
         
         page.tabBarItem = schoolItem
         group.tabBarItem = groupItem

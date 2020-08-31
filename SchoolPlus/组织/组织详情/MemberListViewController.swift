@@ -59,21 +59,37 @@ class MemberListViewController: UIViewController {
         super.viewDidAppear(animated)
         if memberType == .member {
             getMemberData()
+        } else if memberType == .visitor {
+            getVisitorData()
         }
-        
     }
     
     func getMemberData() {
+         ProgressHUD.show("正在加载中")
+        model.memberList = []
         model.getMemberList(organizationId: organizationId).subscribe(onNext:{ string in
             print(string)
             self.users = self.model.memberList
+            ProgressHUD.dismiss()
         },onError: { error in
             ProgressHUD.showError()
         })
         model.groupDetail(organizationId: organizationId).subscribe(onNext:{ string in
             self.my = self.model.oneGroup
+            ProgressHUD.dismiss()
         },onError: { error in
             ProgressHUD.showError()
+        })
+    }
+    
+    func getVisitorData() {
+        ProgressHUD.show("正在加载中")
+        model.memberList = []
+        model.getApplicationList(organizationId: organizationId).subscribe(onNext:{ string in
+            self.users = self.model.memberList
+            ProgressHUD.dismiss()
+        },onError: { error in
+            ProgressHUD.showError(error.localizedDescription)
         })
     }
     
@@ -88,15 +104,21 @@ class MemberListViewController: UIViewController {
     }
     
     func initNaviBar() {
-        title = "成员"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "...", style: .plain, target: self, action: #selector(operation))
+        if memberType == .member {
+            title = "成员"
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "...", style: .plain, target: self, action: #selector(operation))
+        } else if memberType == .visitor {
+            title = "申请列表"
+        }
+        
     }
     
     @objc func operation() {
+        print(my.myIdentity)
         var alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
         alert.addAction(cancel)
-        if my.myIdentity != "FOUNDER" {
+        if my.myIdentity! != "FOUNDER" {
             let out = UIAlertAction(title: "退出组织", style: .cancel, handler: {
                 [weak self]action in
                 self?.model.withdrawMember(organizationId: self?.organizationId ?? -1).subscribe(onNext:{ string in
@@ -107,10 +129,11 @@ class MemberListViewController: UIViewController {
             })
              alert.addAction(out)
         }
-        if my.myIdentity != "MEMBER" {
-            let application = UIAlertAction(title: "组织申请", style: .cancel, handler: {
+        if my.myIdentity! != "MEMBER" {
+            let application = UIAlertAction(title: "部员申请", style: .default, handler: {
                 [weak self]action in
                 let vc = MemberListViewController(type: "访客")
+                vc.organizationId = self?.organizationId ?? -1
                 self?.navigationController?.pushViewController(vc, animated: true)
             })
             alert.addAction(application)
@@ -143,7 +166,7 @@ extension MemberListViewController:UITableViewDataSource,UITableViewDelegate {
     @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt
         indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let configuration = UISwipeActionsConfiguration(actions: [])
+        var configuration = UISwipeActionsConfiguration(actions: [])
         
          if memberType == .member && my.myIdentity != "MEMBER" {
             let delete = UIContextualAction(style: .destructive, title: "删除") {
@@ -158,13 +181,38 @@ extension MemberListViewController:UITableViewDataSource,UITableViewDelegate {
                  })
                  completionHandler(true)
              }
+            configuration =  UISwipeActionsConfiguration(actions: [delete])
         }
         
         if memberType == .visitor {
+             let allow = UIContextualAction(style: .destructive, title: "同意") {
+                 [weak self](action, view, completionHandler) in
+                 //将对应条目的数据删除
+                self?.model.applyApplication(organizationId: self?.organizationId ?? -1, userId: self?.users[indexPath.row].userId ?? -1).subscribe(onNext:{ string in
+                    ProgressHUD.showSucceed(string)
+                    
+                },onError: { error in
+                    ProgressHUD.showError(error.localizedDescription)
+                })
+                
+                 completionHandler(true)
+             }
+            allow.backgroundColor = UIColor.systemBlue
             
+            let reject = UIContextualAction(style: .destructive, title: "拒绝") {
+                [weak self](action, view, completionHandler) in
+                //将对应条目的数据删除
+               self?.model.rejectApplication(organizationId: self?.organizationId ?? -1, userId: self?.users[indexPath.row].userId ?? -1).subscribe(onNext:{ string in
+                   ProgressHUD.showSucceed(string)
+                self?.users.remove(at: indexPath.row)
+               },onError: { error in
+                   ProgressHUD.showError(error.localizedDescription)
+               })
+                completionHandler(true)
+            }
+            configuration =  UISwipeActionsConfiguration(actions: [allow,reject])
         }
         configuration.performsFirstActionWithFullSwipe = false
         return configuration
     }
-
 }

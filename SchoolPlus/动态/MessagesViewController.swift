@@ -23,6 +23,7 @@ class MessagesViewController: UIViewController {
     var addButton = UIButton()
     var navigationBar:UINavigationBar?
     var loadView: UIView?
+    var organizationId:Int?
     let model = InformationViewModel()
     var isAll = true
     var messages:[Infomation] = [] {
@@ -67,12 +68,14 @@ class MessagesViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        ProgressHUD.show("正在加载中")
         model.message = []
         model.pageNum = 0
         if infoType == .all {
             model.getData().subscribe(onNext:{ string in
                 self.messages = self.model.message
                 self.model.pageNum = self.model.pageNum + 1
+                ProgressHUD.dismiss()
             }, onError: { error in
                 ProgressHUD.showError(error.localizedDescription)
                 }).disposed(by: disposeBag)
@@ -80,6 +83,7 @@ class MessagesViewController: UIViewController {
             model.getSubscribeData().subscribe(onNext:{ string in
                 self.messages = self.model.message
                 self.model.pageNum = self.model.pageNum + 1
+                 ProgressHUD.dismiss()
             }, onError: { error in
                 ProgressHUD.showError(error.localizedDescription)
                 }).disposed(by: disposeBag)
@@ -87,15 +91,23 @@ class MessagesViewController: UIViewController {
             model.getMyData().subscribe(onNext:{ string in
                 self.messages = self.model.message
                 self.model.pageNum = self.model.pageNum + 1
+                 ProgressHUD.dismiss()
             },onError: { error in
                 ProgressHUD.showError(error.localizedDescription)
             })
+        } else if infoType == .group {
+            if let id = organizationId {
+                model.getGroupNews(organizationId:id).subscribe(onNext:{ string in
+                    self.messages = self.model.message
+                    self.model.pageNum = self.model.pageNum + 1
+                    ProgressHUD.dismiss()
+                },onError: { error in
+                    ProgressHUD.showError(error.localizedDescription)
+                })
+            }
         }
     }
     
-    func getData() {
-        
-    }
     
     func initTableView() {
         self.view.addSubview(tableView)

@@ -59,6 +59,7 @@ class MyViewController: UIViewController {
     }
     
     func getData() {
+        ProgressHUD.show("正在加载中")
         user.getMyMessage().subscribe(onNext:{ string in
             self.logoImageView.kf.setImage(with: URL(string:user.avatar))
         })
@@ -68,6 +69,7 @@ class MyViewController: UIViewController {
         model.newsList =  []
         model.getSuscribedUsers().subscribe(onNext:{ [weak self]string in
             self?.users = self?.model.userList as! [UserInfo]
+            
         },onError: { [weak self]error in
             ProgressHUD.showFailed()
             self?.users = []
@@ -80,6 +82,7 @@ class MyViewController: UIViewController {
         })
         model.getMyNews().subscribe(onNext:{ [weak self]string in
             self?.news = self?.model.newsList as! [Infomation]
+            ProgressHUD.dismiss()
         },onError: { [weak self]error in
             ProgressHUD.showFailed()
             self?.news = []

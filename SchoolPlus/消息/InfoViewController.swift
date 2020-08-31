@@ -36,10 +36,12 @@ class InfoViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        ProgressHUD.show("正在加载中")
         model.pageNum = 0
         model.notices = []
         model.getNotice().subscribe(onNext:{ [weak self]string in
             self?.notices = self?.model.notices as! [Notice]
+            ProgressHUD.dismiss()
         }, onError: { error in
             ProgressHUD.showError()
         }).disposed(by:disposeBag)

@@ -58,16 +58,19 @@ class GroupDetailViewController: UIViewController {
     }
     
     func getData() {
+        ProgressHUD.show("正在加载中")
         model.groupNews = []
         model.pageNum = 0
         model.groupDetail(organizationId:organizationId).subscribe(onNext:{ [weak self]string in
             self?.group = self?.model.oneGroup as! MyOrganization
+            ProgressHUD.dismiss()
         },onError:{ error in
             ProgressHUD.showError()
             }).disposed(by: disposeBag)
         
         model.getGroupNews(organizationId: organizationId).subscribe(onNext:{ [weak self]string in
             self?.news = self?.model.groupNews as! [Infomation]
+            ProgressHUD.dismiss()
         },onError:{ error in
             ProgressHUD.showError()
             }).disposed(by: disposeBag)
@@ -181,7 +184,9 @@ class GroupDetailViewController: UIViewController {
         }
         
         let newsEdit = UIAlertAction(title: "动态相关", style: .default, handler: { action in
-            
+            let vc = MessagesViewController(type: "组织")
+            vc.organizationId = self.organizationId
+            self.navigationController?.pushViewController(vc, animated: true)
         })
         let memManage = UIAlertAction(title: "成员相关", style: .default, handler: { action in
             let vc = MemberListViewController(type: "成员")
@@ -189,7 +194,7 @@ class GroupDetailViewController: UIViewController {
             self.navigationController?.pushViewController(vc, animated: true)
         })
 
-        switch group.myIdentity! {
+        switch group.myIdentity {
         case "MEMBER":
             alert.addAction(memManage)
         default:
