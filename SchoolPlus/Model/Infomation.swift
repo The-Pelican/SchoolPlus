@@ -110,6 +110,7 @@ class Infomation {
     }
     
     func editNews(newsId:Int, text:String, media:[String],pic: [UIImage])  -> Observable<String> {
+        print("newsId:\(newsId)\ntext:\(text)\nmedia:\(media)\npic:\(pic)")
      let url = URL(string: "http://www.chenzhimeng.top/fu-community/news")!
      let headers: HTTPHeaders = [
             "accessToken": user.accessToken

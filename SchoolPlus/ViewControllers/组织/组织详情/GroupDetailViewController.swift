@@ -189,7 +189,7 @@ class GroupDetailViewController: UIViewController {
             self.navigationController?.pushViewController(vc, animated: true)
         })
         let memManage = UIAlertAction(title: "成员相关", style: .default, handler: { action in
-            let vc = MemberListViewController(type: "成员")
+            let vc = MemberListViewController()
             vc.organizationId = self.organizationId
             self.navigationController?.pushViewController(vc, animated: true)
         })

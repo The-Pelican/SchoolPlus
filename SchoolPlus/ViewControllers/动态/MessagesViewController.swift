@@ -22,10 +22,8 @@ class MessagesViewController: UIViewController {
     var tableView =  UITableView()
     var addButton = UIButton()
     var navigationBar:UINavigationBar?
-    var loadView: UIView?
     var organizationId:Int?
     let model = InformationViewModel()
-    var isAll = true
     var messages:[Infomation] = [] {
         didSet {
             tableView.reloadData()
@@ -245,10 +243,12 @@ extension MessagesViewController: UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("点击")
+        tableView.deselectRow(at: indexPath, animated: false)
         let vc = CommentViewController()
         vc.newsId = self.messages[indexPath.row].newsId ?? -1
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         //print("正在滚动")

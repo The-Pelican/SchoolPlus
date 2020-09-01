@@ -347,6 +347,11 @@ class MyViewController: UIViewController {
             $0.height.equalTo(50)
         })
         
+        for i in logo {
+            i.backgroundColor = UIColor.white
+            i.image = UIImage(named: "shetuan-1")
+        }
+        
     }
     
     

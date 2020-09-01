@@ -161,9 +161,13 @@ class UpdateMessageViewController: UIViewController {
         let btn = sender as! UIButton
         let cell = superUICollectionViewCell(of: btn)!
         let indexPath = collectionView.indexPath(for: cell)
-        images.remove(at: indexPath!.item)
-        if !(info?.media)!.isEmpty && indexPath!.row < (info?.media)!.count {
-            info?.media?.remove(at: indexPath!.item)
+        if indexPath?.item ?? 100 < images.count {
+            images.remove(at: indexPath!.item)
+        }
+        if let info = info {
+            if !(info.media)!.isEmpty && indexPath!.row < (info.media)!.count {
+                info.media?.remove(at: indexPath!.item)
+            }
         }
     }
     

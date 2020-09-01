@@ -24,7 +24,7 @@ class MainTabViewController: UITabBarController {
     }
     
     func initControllers() {
-        let school = Navigator.getViewController(key: "校园")
+        //let school = Navigator.getViewController(key: "校园")
         let group = Navigator.getViewController(key: "组织")
         let info = Navigator.getViewController(key: "信息")
         let my = Navigator.getViewController(key: "我的")

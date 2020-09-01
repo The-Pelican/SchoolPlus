@@ -18,7 +18,8 @@ class GroupViewModel {
     var recommendGroup = [Organization]()
     var searchGroup = [Organization]()
     var groupNews = [Infomation]()
-    var memberList = [UserInfo]()
+    var memberList : [String:[UserInfo]] = [:]
+    var applicationList = [UserInfo]()
     var oneGroup = MyOrganization()
     let disposeBag = DisposeBag()
     var pageNum = 0
@@ -89,7 +90,7 @@ class GroupViewModel {
     
     //创建组织
     func createGroup(name:String,logo:UIImage,slogan:String,intro:String,contact:String) -> Observable<String> {
-        let url = URL(string: "http://www.chenzhimeng.top/fu-community/news/organization")!
+        let url = URL(string: "http://www.chenzhimeng.top/fu-community/organization")!
         let headers: HTTPHeaders = [
                "accessToken": user.accessToken
            ]
@@ -322,9 +323,9 @@ class GroupViewModel {
     }
     
     //获取成员列表
-    func getMemberList(organizationId:Int) -> Observable<String> {
+    func getMemberList(organizationId:Int) -> Observable<[String:[UserInfo]]> {
         let headers:HTTPHeaders = ["accessToken":user.accessToken]
-        return Observable<String>.create { (observer) -> Disposable in
+        return Observable<[String:[UserInfo]]>.create { (observer) -> Disposable in
         AF.request("http://www.chenzhimeng.top/fu-community/user/organization/\(organizationId)", method: .get, headers: headers).responseJSON {
             [weak self](response) in
             debugPrint(response)
@@ -332,14 +333,31 @@ class GroupViewModel {
             case .success(let value):
                 print(value)
                 let json = JSON(value)
-                if let usersJson = json["users"].array {
-                    for userJson in usersJson {
-                        let user = UserInfo(userJson)
-                        self?.memberList.append(user)
-                    }
-                    observer.onNext("success")
+                
+                var founderList = [UserInfo]()
+                var adminList = [UserInfo]()
+                var membersList = [UserInfo]()
+                let founderJson = json["founder"]
+                let founder = UserInfo(founderJson)
+                founderList.append(founder)
+                
+                
+                if let admins = json["admins"].array {
+                      for adminJson in admins {
+                          let admin = UserInfo(adminJson)
+                          adminList.append(admin)
+                      }
                 }
-                observer.onNext("?")
+              
+                
+                if let members = json["members"].array {
+                    for memberJson in members {
+                        let member = UserInfo(memberJson)
+                        membersList.append(member)
+                    }
+                }
+                self?.memberList = ["founder":founderList,"admin":adminList,"member":membersList]
+                observer.onNext(self!.memberList)
             case .failure(let error):
                 print(error)
                 observer.onError(error)
@@ -349,9 +367,9 @@ class GroupViewModel {
             }
     }
     
-    func getApplicationList(organizationId:Int) -> Observable<String> {
+    func getApplicationList(organizationId:Int) -> Observable<[UserInfo]> {
         let headers:HTTPHeaders = ["accessToken":user.accessToken]
-        return Observable<String>.create { (observer) -> Disposable in
+        return Observable<[UserInfo]>.create { (observer) -> Disposable in
         AF.request("http://www.chenzhimeng.top/fu-community/organization/member/application/\(organizationId)", method: .get, headers: headers).responseJSON {
             [weak self](response) in
             debugPrint(response)
@@ -359,14 +377,14 @@ class GroupViewModel {
             case .success(let value):
                 print(value)
                 let json = JSON(value)
+                var appList = [UserInfo]()
                 if let usersJson = json["applications"].array {
                     for userJson in usersJson {
                         let user = UserInfo(userJson)
-                        self?.memberList.append(user)
+                        appList.append(user)
                     }
-                    observer.onNext("success")
+                    observer.onNext(appList)
                 }
-                observer.onNext("?")
             case .failure(let error):
                 print(error)
                 observer.onError(error)
@@ -381,7 +399,7 @@ class GroupViewModel {
         let headers:HTTPHeaders = ["accessToken":user.accessToken]
         let para = ["organizationId":organizationId,"userId":userId]
         return Observable<String>.create { (observer) -> Disposable in
-            AF.request(url, method: .post,parameters: para, headers: headers).response(completionHandler: {
+            AF.request(url, method: .put,parameters: para, headers: headers).response(completionHandler: {
                            (response) in
                            debugPrint(response)
                  if let statusCode = response.response?.statusCode {
@@ -425,7 +443,7 @@ class GroupViewModel {
     }
     
     func removeMember(organizationId:Int,userId:Int) -> Observable<String> {
-        let url = URL(string: "http://www.chenzhimeng.top/fu-community/member/remove")!
+        let url = URL(string: "http://www.chenzhimeng.top/fu-community/organization/member/remove")!
         let headers:HTTPHeaders = ["accessToken":user.accessToken]
         let para = ["organizationId":organizationId,"memberId":userId]
         return Observable<String>.create { (observer) -> Disposable in
@@ -456,6 +474,38 @@ class GroupViewModel {
                     observer.onError(error)
                 }
             }
+            return Disposables.create()
+            }
+    }
+    
+    //委任管理员
+    func chooseNewAdmin(organizationId:Int,adminId:Int) -> Observable<String> {
+        let url = URL(string: "http://www.chenzhimeng.top/fu-community/organization/admin")!
+        let para = ["organizationId":organizationId,"adminId":adminId]
+        let headers:HTTPHeaders = ["accessToken":user.accessToken]
+        return Observable<String>.create { (observer) -> Disposable in
+        AF.request(url, method: .post,parameters: para, headers: headers).responseJSON {
+            [weak self](response) in
+            debugPrint(response)
+            switch response.result {
+            case .success(let value):
+                print(value)
+                let json = JSON(value)
+                if let result = json["result"].bool {
+                    if result {
+                        observer.onNext("success")
+                    } else {
+                        if let msg = json["msg"].string {
+                            observer.onNext(msg)
+                        }
+                    }
+                }
+                
+            case .failure(let error):
+                print(error)
+                observer.onError(error)
+            }
+        }
             return Disposables.create()
             }
     }

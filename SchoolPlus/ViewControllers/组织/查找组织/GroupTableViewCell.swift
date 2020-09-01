@@ -10,7 +10,8 @@ import UIKit
 
 class GroupTableViewCell: UITableViewCell {
     static let identifier = "GroupTableViewCell"
-    @IBOutlet weak var itemView: UIView!
+
+    @IBOutlet weak var itemView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var logoView: UIImageView!
     @IBOutlet weak var lineView: UIView!
@@ -35,6 +36,8 @@ class GroupTableViewCell: UITableViewCell {
         self.layer.borderWidth = 1
         self.layer.cornerRadius = 5
         self.layer.borderColor = UIColor.black.cgColor
+        logoView.layer.cornerRadius = logoView.frame.width / 2
+        itemView.image = UIImage(named: "shetuan-1")
         lineView.addButtonLine()
         //initSubView()
     }

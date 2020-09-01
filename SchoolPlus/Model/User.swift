@@ -267,7 +267,6 @@ class User: NSObject {
         let digest = pwd.md5()
         let para = ["key":key, "authCode":code,"password":digest] as [String:Any]
         print(para)
-        print("http://www.chenzhimeng.top:10001/user/password/\(pho)")
         AF.request("http://www.chenzhimeng.top/fu-community/user/password/\(pho)", method: .put, parameters: ["key":key, "authCode":code,"password":digest]).responseJSON {
             (response) in
             debugPrint(response)

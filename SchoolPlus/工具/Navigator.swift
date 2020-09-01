@@ -49,7 +49,7 @@ extension Navigator {
         case "组织":
             vc = GroupSearchViewController()
         case "信息":
-            vc = InfoViewController()
+            vc = CatalogueViewController()
         case"我的":
             vc = MyViewController()
 

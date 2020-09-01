@@ -10,6 +10,9 @@
 		2A24A3E824C9A00800522DC6 /* GroupDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24A3E724C9A00800522DC6 /* GroupDetailViewController.swift */; };
 		2A24A3EC24CA002600522DC6 /* MemberListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24A3EB24CA002600522DC6 /* MemberListViewController.swift */; };
 		2A24A3EE24D11F7C00522DC6 /* GroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24A3ED24D11F7C00522DC6 /* GroupViewModel.swift */; };
+		2A3D384424FDC4F100C7E25C /* CatalogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3D384324FDC4F100C7E25C /* CatalogueViewController.swift */; };
+		2A3D384724FE7F4D00C7E25C /* ApplicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3D384624FE7F4D00C7E25C /* ApplicationViewController.swift */; };
+		2A3D384924FE844D00C7E25C /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3D384824FE844D00C7E25C /* TestViewController.swift */; };
 		2A565C1924FC9CE4005BA3DA /* OnthersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A565C1824FC9CE4005BA3DA /* OnthersViewController.swift */; };
 		2A5D98F424F6BD5A0070D9C0 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5D98F324F6BD5A0070D9C0 /* StringExtension.swift */; };
 		2A5D98F624F6BFC00070D9C0 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5D98F524F6BFC00070D9C0 /* Comment.swift */; };
@@ -63,12 +66,14 @@
 		2ACDA43824C8581C006BB0DA /* Devices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACDA43724C8581C006BB0DA /* Devices.swift */; };
 		2ACDA43B24C8886E006BB0DA /* ImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACDA43A24C8886E006BB0DA /* ImageDetailViewController.swift */; };
 		2ACDA43D24C8921D006BB0DA /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACDA43C24C8921D006BB0DA /* ImageCollectionViewCell.swift */; };
+		2AD1AC7924FE9783001BD8CB /* BaseMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AD1AC7824FE9783001BD8CB /* BaseMessageViewController.swift */; };
+		2AD1AC7F24FE9B23001BD8CB /* MessageTypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AD1AC7D24FE9B23001BD8CB /* MessageTypeTableViewCell.swift */; };
+		2AD1AC8024FE9B23001BD8CB /* MessageTypeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AD1AC7E24FE9B23001BD8CB /* MessageTypeTableViewCell.xib */; };
 		2AF91ECC24FA4ABC0080BA56 /* UIAlertExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF91ECB24FA4ABC0080BA56 /* UIAlertExtension.swift */; };
 		2AF91ECF24FA54110080BA56 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF91ECD24FA54110080BA56 /* TableViewCell.swift */; };
 		2AF91ED024FA54110080BA56 /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AF91ECE24FA54110080BA56 /* TableViewCell.xib */; };
 		2AF91ED224FA56720080BA56 /* InfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF91ED124FA56720080BA56 /* InfoViewModel.swift */; };
 		2AF91ED424FA569F0080BA56 /* Notice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF91ED324FA569F0080BA56 /* Notice.swift */; };
-		2AF91ED624FA60570080BA56 /* NoticeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF91ED524FA60570080BA56 /* NoticeDetailViewController.swift */; };
 		2AF91ED824FBF9E80080BA56 /* MyOrganization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF91ED724FBF9E80080BA56 /* MyOrganization.swift */; };
 		4C59E51A904D5745DC011AB7 /* Pods_SchoolPlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A846935F67B477540773F2F /* Pods_SchoolPlus.framework */; };
 /* End PBXBuildFile section */
@@ -78,6 +83,9 @@
 		2A24A3E724C9A00800522DC6 /* GroupDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailViewController.swift; sourceTree = "<group>"; };
 		2A24A3EB24CA002600522DC6 /* MemberListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberListViewController.swift; sourceTree = "<group>"; };
 		2A24A3ED24D11F7C00522DC6 /* GroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewModel.swift; sourceTree = "<group>"; };
+		2A3D384324FDC4F100C7E25C /* CatalogueViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogueViewController.swift; sourceTree = "<group>"; };
+		2A3D384624FE7F4D00C7E25C /* ApplicationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationViewController.swift; sourceTree = "<group>"; };
+		2A3D384824FE844D00C7E25C /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		2A565C1824FC9CE4005BA3DA /* OnthersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnthersViewController.swift; sourceTree = "<group>"; };
 		2A5D98F324F6BD5A0070D9C0 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		2A5D98F524F6BFC00070D9C0 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
@@ -134,12 +142,14 @@
 		2ACDA43724C8581C006BB0DA /* Devices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Devices.swift; sourceTree = "<group>"; };
 		2ACDA43A24C8886E006BB0DA /* ImageDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailViewController.swift; sourceTree = "<group>"; };
 		2ACDA43C24C8921D006BB0DA /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		2AD1AC7824FE9783001BD8CB /* BaseMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseMessageViewController.swift; sourceTree = "<group>"; };
+		2AD1AC7D24FE9B23001BD8CB /* MessageTypeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTypeTableViewCell.swift; sourceTree = "<group>"; };
+		2AD1AC7E24FE9B23001BD8CB /* MessageTypeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageTypeTableViewCell.xib; sourceTree = "<group>"; };
 		2AF91ECB24FA4ABC0080BA56 /* UIAlertExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAlertExtension.swift; sourceTree = "<group>"; };
 		2AF91ECD24FA54110080BA56 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		2AF91ECE24FA54110080BA56 /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
 		2AF91ED124FA56720080BA56 /* InfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewModel.swift; sourceTree = "<group>"; };
 		2AF91ED324FA569F0080BA56 /* Notice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notice.swift; sourceTree = "<group>"; };
-		2AF91ED524FA60570080BA56 /* NoticeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeDetailViewController.swift; sourceTree = "<group>"; };
 		2AF91ED724FBF9E80080BA56 /* MyOrganization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrganization.swift; sourceTree = "<group>"; };
 		71284590BD8E01A7BAE7271E /* Pods-SchoolPlus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SchoolPlus.release.xcconfig"; path = "Target Support Files/Pods-SchoolPlus/Pods-SchoolPlus.release.xcconfig"; sourceTree = "<group>"; };
 		7A846935F67B477540773F2F /* Pods_SchoolPlus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SchoolPlus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -162,6 +172,8 @@
 			children = (
 				2A24A3E724C9A00800522DC6 /* GroupDetailViewController.swift */,
 				2A24A3EB24CA002600522DC6 /* MemberListViewController.swift */,
+				2A3D384624FE7F4D00C7E25C /* ApplicationViewController.swift */,
+				2A3D384824FE844D00C7E25C /* TestViewController.swift */,
 			);
 			path = "组织详情";
 			sourceTree = "<group>";
@@ -177,6 +189,32 @@
 				2A8CD19524E53CE500E00A7C /* cell */,
 			);
 			path = "动态";
+			sourceTree = "<group>";
+		};
+		2A3D384224FDC48C00C7E25C /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				2AF91ECD24FA54110080BA56 /* TableViewCell.swift */,
+				2AF91ECE24FA54110080BA56 /* TableViewCell.xib */,
+				2AD1AC7D24FE9B23001BD8CB /* MessageTypeTableViewCell.swift */,
+				2AD1AC7E24FE9B23001BD8CB /* MessageTypeTableViewCell.xib */,
+			);
+			path = cell;
+			sourceTree = "<group>";
+		};
+		2A3D384524FE679000C7E25C /* 工具 */ = {
+			isa = PBXGroup;
+			children = (
+				2ACDA3F924B6FB98006BB0DA /* Navigator.swift */,
+				2ACDA40E24BB570B006BB0DA /* NetworkPara.swift */,
+				2ACDA40324B8C3FD006BB0DA /* HexColor.swift */,
+				2ACDA43124C84769006BB0DA /* UIViewExtension.swift */,
+				2A8CD18D24E1465500E00A7C /* UIImageExtension.swift */,
+				2ACDA43724C8581C006BB0DA /* Devices.swift */,
+				2A5D98F324F6BD5A0070D9C0 /* StringExtension.swift */,
+				2A78BCAD24FA16A600BC62EF /* DateExtension.swift */,
+			);
+			path = "工具";
 			sourceTree = "<group>";
 		};
 		2A78BCAF24FA203300BC62EF /* 认证 */ = {
@@ -227,25 +265,12 @@
 			children = (
 				2ACDA3E324B6F799006BB0DA /* AppDelegate.swift */,
 				2ACDA3EE24B6F79A006BB0DA /* LaunchScreen.storyboard */,
-				2ACDA3F924B6FB98006BB0DA /* Navigator.swift */,
-				2ACDA40324B8C3FD006BB0DA /* HexColor.swift */,
-				2ACDA43124C84769006BB0DA /* UIViewExtension.swift */,
-				2A8CD18D24E1465500E00A7C /* UIImageExtension.swift */,
-				2ACDA40E24BB570B006BB0DA /* NetworkPara.swift */,
 				2ACDA41124C0634A006BB0DA /* SchoolError.swift */,
-				2ACDA43724C8581C006BB0DA /* Devices.swift */,
-				2ACDA41324C1C351006BB0DA /* MainTabViewController.swift */,
-				2A5D98F324F6BD5A0070D9C0 /* StringExtension.swift */,
-				2A78BCAD24FA16A600BC62EF /* DateExtension.swift */,
+				2A3D384524FE679000C7E25C /* 工具 */,
 				2ACDA40B24B9A259006BB0DA /* UI */,
 				2ACDA3FD24B6FCEE006BB0DA /* Model */,
-				2ACDA43924C8796B006BB0DA /* 图片显示 */,
-				2ACDA40224B836A7006BB0DA /* 注册登录 */,
+				2AD1AC7724FE95C6001BD8CB /* ViewControllers */,
 				2ACDA41E24C5CBA2006BB0DA /* 校园 */,
-				2ACDA41D24C5CA65006BB0DA /* 组织 */,
-				2ACDA41F24C5CBAD006BB0DA /* 消息 */,
-				2ACDA42024C5CBB3006BB0DA /* 我的 */,
-				2A24A3EF24E13C9900522DC6 /* 动态 */,
 				2ACDA3EC24B6F79A006BB0DA /* Assets.xcassets */,
 				2ACDA3F124B6F79A006BB0DA /* Info.plist */,
 				2A5D98F824F7A1F00070D9C0 /* Bridging-Header.h */,
@@ -311,11 +336,10 @@
 		2ACDA41F24C5CBAD006BB0DA /* 消息 */ = {
 			isa = PBXGroup;
 			children = (
+				2A3D384324FDC4F100C7E25C /* CatalogueViewController.swift */,
 				2AF91ED124FA56720080BA56 /* InfoViewModel.swift */,
 				2ACDA42524C5D09B006BB0DA /* InfoViewController.swift */,
-				2AF91ECD24FA54110080BA56 /* TableViewCell.swift */,
-				2AF91ECE24FA54110080BA56 /* TableViewCell.xib */,
-				2AF91ED524FA60570080BA56 /* NoticeDetailViewController.swift */,
+				2A3D384224FDC48C00C7E25C /* cell */,
 			);
 			path = "消息";
 			sourceTree = "<group>";
@@ -357,6 +381,21 @@
 				2ACDA43C24C8921D006BB0DA /* ImageCollectionViewCell.swift */,
 			);
 			path = "图片显示";
+			sourceTree = "<group>";
+		};
+		2AD1AC7724FE95C6001BD8CB /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				2ACDA41324C1C351006BB0DA /* MainTabViewController.swift */,
+				2AD1AC7824FE9783001BD8CB /* BaseMessageViewController.swift */,
+				2ACDA43924C8796B006BB0DA /* 图片显示 */,
+				2ACDA40224B836A7006BB0DA /* 注册登录 */,
+				2ACDA41D24C5CA65006BB0DA /* 组织 */,
+				2ACDA41F24C5CBAD006BB0DA /* 消息 */,
+				2ACDA42024C5CBB3006BB0DA /* 我的 */,
+				2A24A3EF24E13C9900522DC6 /* 动态 */,
+			);
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		636607CBD12BE905711AEF09 /* Frameworks */ = {
@@ -441,6 +480,7 @@
 				2A8CD18C24E1433700E00A7C /* ImageCell.xib in Resources */,
 				2A8CD19224E1477C00E00A7C /* MessageTableViewCell.xib in Resources */,
 				2ACDA42C24C5E66D006BB0DA /* GroupTableViewCell.xib in Resources */,
+				2AD1AC8024FE9B23001BD8CB /* MessageTypeTableViewCell.xib in Resources */,
 				2AF91ED024FA54110080BA56 /* TableViewCell.xib in Resources */,
 				2ACDA3ED24B6F79A006BB0DA /* Assets.xcassets in Resources */,
 				2A8CD1A724F49F8C00E00A7C /* TimeLineTableViewCell.xib in Resources */,
@@ -497,7 +537,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2A8CD1A624F49F8C00E00A7C /* TimeLineTableViewCell.swift in Sources */,
-				2AF91ED624FA60570080BA56 /* NoticeDetailViewController.swift in Sources */,
+				2A3D384924FE844D00C7E25C /* TestViewController.swift in Sources */,
 				2A8CD19724E53DBC00E00A7C /* InfomationViewModel.swift in Sources */,
 				2ACDA42B24C5E66D006BB0DA /* GroupTableViewCell.swift in Sources */,
 				2ACDA40D24B9A281006BB0DA /* TimerButton.swift in Sources */,
@@ -510,6 +550,7 @@
 				2A5D98F624F6BFC00070D9C0 /* Comment.swift in Sources */,
 				2A5D98FE24F7F8680070D9C0 /* MyViewModel.swift in Sources */,
 				2ACDA40F24BB570B006BB0DA /* NetworkPara.swift in Sources */,
+				2A3D384724FE7F4D00C7E25C /* ApplicationViewController.swift in Sources */,
 				2A78BCB124FA206D00BC62EF /* IntroAMViewController.swift in Sources */,
 				2ACDA40424B8C3FD006BB0DA /* HexColor.swift in Sources */,
 				2ACDA42424C5D080006BB0DA /* GroupSearchViewController.swift in Sources */,
@@ -519,12 +560,15 @@
 				2ACDA3F824B6F85E006BB0DA /* LoginViewController.swift in Sources */,
 				2ACDA42224C5D010006BB0DA /* SchoolPageViewController.swift in Sources */,
 				2A8CD18E24E1465500E00A7C /* UIImageExtension.swift in Sources */,
+				2AD1AC7F24FE9B23001BD8CB /* MessageTypeTableViewCell.swift in Sources */,
 				2A24A3EE24D11F7C00522DC6 /* GroupViewModel.swift in Sources */,
+				2A3D384424FDC4F100C7E25C /* CatalogueViewController.swift in Sources */,
 				2A8CD19924E7F0B100E00A7C /* UpdateMessageViewController.swift in Sources */,
 				2A8CD19F24F11D1B00E00A7C /* CommentViewController.swift in Sources */,
 				2A8CD18B24E1433700E00A7C /* ImageCell.swift in Sources */,
 				2ACDA43824C8581C006BB0DA /* Devices.swift in Sources */,
 				2ACDA41424C1C351006BB0DA /* MainTabViewController.swift in Sources */,
+				2AD1AC7924FE9783001BD8CB /* BaseMessageViewController.swift in Sources */,
 				2ACDA41224C0634A006BB0DA /* SchoolError.swift in Sources */,
 				2A8CD19424E53CD800E00A7C /* MessagesViewController.swift in Sources */,
 				2ACDA43B24C8886E006BB0DA /* ImageDetailViewController.swift in Sources */,

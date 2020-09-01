@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftyJSON
+var notices = [Notice]()
 
 class Notice {
     var messageId:Int?
@@ -24,7 +25,6 @@ class Notice {
         time = json["time"].intValue
         content = json["content"].stringValue
         hasRead = json["hasRead"].boolValue
-        
     }
     
 }
