@@ -18,7 +18,7 @@ class PageViewController: UIViewController,UIPageViewControllerDelegate {
     var scrollView = UIScrollView()
     let allButton = UIButton()
     let subButton = UIButton()
-    var vc : [MessagesViewController] = [MessagesViewController(type: "全部"),MessagesViewController(type:"已关注")]
+    var vc : [UIViewController] = [AllMessagesViewController(),SubscribeMessageViewController()]
     var tabView = UIView()
     var tabHeight = CGFloat(100)
     

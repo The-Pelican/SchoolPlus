@@ -373,7 +373,7 @@ class MyViewController: UIViewController {
     }
     
     @objc func newsList() {
-        let vc = MessagesViewController(type: "我的")
+        let vc = MyMessagesViewController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

@@ -13,6 +13,7 @@ import MJRefresh
 
 class BaseMessageViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     var tableView = UITableView()
+    var addButton = UIButton()
     var showAddButton = true
     var showNaviBar = false
     var organizationId:Int?
@@ -20,12 +21,18 @@ class BaseMessageViewController: UIViewController,UITableViewDelegate,UITableVie
     let disposeBag = DisposeBag()
     let header = MJRefreshNormalHeader()
     let footer = MJRefreshBackNormalFooter()
-    var messages:[Infomation] = []
+    var messages:[Infomation] = [] {
+        didSet {
+            tableView.reloadData()
+            ProgressHUD.dismiss()
+        }
+    }
     
-    init(showAddButton:Bool = true, showNaviBar:Bool = false, nibName: String? = nil, bundle: Bundle? = nil) {
+    init(organizationId:Int = -1,showAddButton:Bool = true, showNaviBar:Bool = false, nibName: String? = nil, bundle: Bundle? = nil) {
         super.init(nibName: nibName, bundle: bundle)
         self.showAddButton = showAddButton
         self.showNaviBar = showNaviBar
+        self.organizationId = organizationId
     }
     
     required init?(coder: NSCoder) {
@@ -35,6 +42,7 @@ class BaseMessageViewController: UIViewController,UITableViewDelegate,UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         initTableView()
+        initButton()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -43,10 +51,10 @@ class BaseMessageViewController: UIViewController,UITableViewDelegate,UITableVie
     }
     
     func loadData() {
+        ProgressHUD.show("正在加载中")
         model.message = []
         model.pageNum = 0
-        messages = getData(self)
-        tableView.reloadData()
+        self.messages = getData(self)
     }
     
     func initTableView() {
@@ -75,16 +83,43 @@ class BaseMessageViewController: UIViewController,UITableViewDelegate,UITableVie
         self.tableView.mj_footer = footer
     }
     
+    func initButton() {
+        addButton.setTitle("➕", for: .normal)
+        addButton.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+        addButton.setTitleColor(UIColor.black, for: .normal)
+        addButton.layer.borderWidth = 0.5
+        addButton.layer.cornerRadius = 25
+        addButton.layer.shadowOffset = CGSize(width: 3,height: 3)
+        addButton.layer.shadowOpacity = 0.8
+        addButton.layer.shadowColor = UIColor.init(valueStr: "FBEA77").cgColor
+        addButton.backgroundColor = UIColor(valueStr: "FBEA77")
+        addButton.addTarget(self, action: #selector(create), for: .touchUpInside)
+        self.view.addSubview(addButton)
+        addButton.snp.makeConstraints({
+            $0.right.equalToSuperview().offset(-10)
+            $0.bottom.equalTo(tableView.snp.bottom).offset(-100)
+            $0.width.equalTo(50)
+            $0.height.equalTo(50)
+        })
+    }
+    
+    @objc func create() {
+      if user.hasChecked == true {
+          let vc = UpdateMessageViewController()
+          self.navigationController?.pushViewController(vc, animated: true)
+      } else {
+          ProgressHUD.showFailed("功能尚未解锁")
+      }
+    }
+    
     @objc func headerRefresh() {
         model.message = []
         model.pageNum = 0
-        messages = getData(self)
-        model.pageNum += 1
+        self.messages = getData(self)
     }
     
     @objc func footerLoad() {
-        messages = getData(self)
-        model.pageNum += 1
+        self.messages = getData(self)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

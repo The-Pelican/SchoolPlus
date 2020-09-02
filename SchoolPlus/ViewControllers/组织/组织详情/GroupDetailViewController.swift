@@ -184,7 +184,7 @@ class GroupDetailViewController: UIViewController {
         }
         
         let newsEdit = UIAlertAction(title: "动态相关", style: .default, handler: { action in
-            let vc = MessagesViewController(type: "组织")
+            let vc = GroupMessageViewController(organizationId:self.group.organizationInfo?.organizationId ?? -1)
             vc.organizationId = self.organizationId
             self.navigationController?.pushViewController(vc, animated: true)
         })

@@ -21,13 +21,13 @@ class InformationViewModel {
     
  
     
-    func getData() -> Observable<String> {
+    func getData() -> Observable<[Infomation]> {
         print(pageNum)
         let url = URL(string: "http://www.chenzhimeng.top/fu-community/news/\(pageNum)/\(length)")
         let headers: HTTPHeaders = [
             "accessToken": user.accessToken
         ]
-        return Observable<String>.create { (observer) -> Disposable in
+        return Observable<[Infomation]>.create { (observer) -> Disposable in
             AF.request(url!,method:.get,headers: headers).responseJSON(completionHandler: {
                 [weak self](response) in
                 debugPrint(response)
@@ -39,23 +39,13 @@ class InformationViewModel {
                             let info = Infomation(news)
                             self?.message.append(info)
                         }
-                        observer.onNext("success")
+                        observer.onNext(self!.message)
                     }
                     
                 case .failure(let error):
                     print(error)
                     if let statusCode = response.response?.statusCode {
                         print(statusCode)
-                        switch statusCode {
-                        case 2387:
-                            observer.onNext("功能未解锁")
-                        case 2385:
-                            observer.onNext("token过期")
-                        case 2386:
-                            observer.onNext("账号异地登陆")
-                        default:
-                            break
-                        }
                     }
                     observer.onError(error)
                 }
@@ -64,13 +54,13 @@ class InformationViewModel {
         }
     }
     
-    func getSubscribeData() -> Observable<String> {
+    func getSubscribeData() -> Observable<[Infomation]> {
         let url = URL(string: "http://www.chenzhimeng.top/fu-community/news/subscribed/\(pageNum)/\(length)")
         let headers: HTTPHeaders = [
             "accessToken": user.accessToken
         ]
         print(user.accessToken)
-        return Observable<String>.create { (observer) -> Disposable in
+        return Observable<[Infomation]>.create { (observer) -> Disposable in
             AF.request(url!,method:.get,headers: headers).responseJSON(completionHandler: {
                 [weak self](response) in
                 debugPrint(response)
@@ -83,7 +73,7 @@ class InformationViewModel {
                             let info = Infomation(news)
                             self?.message.append(info)
                         }
-                        observer.onNext("success")
+                        observer.onNext(self!.message)
                     }
                     
                 case .failure(let error):
@@ -95,13 +85,13 @@ class InformationViewModel {
         }
     }
     
-    func getMyData() -> Observable<String> {
+    func getMyData() -> Observable<[Infomation]> {
         let url = URL(string: "http://www.chenzhimeng.top/fu-community/news/user/\(user.userId)/\(pageNum)/\(length)")
         let headers: HTTPHeaders = [
             "accessToken": user.accessToken
         ]
         print(user.accessToken)
-        return Observable<String>.create { (observer) -> Disposable in
+        return Observable<[Infomation]>.create { (observer) -> Disposable in
             AF.request(url!,method:.get,headers: headers).responseJSON(completionHandler: {
                 [weak self](response) in
                 debugPrint(response)
@@ -114,7 +104,7 @@ class InformationViewModel {
                             let info = Infomation(news)
                             self?.message.append(info)
                         }
-                        observer.onNext("success")
+                        observer.onNext(self!.message)
                     }
                     
                 case .failure(let error):
@@ -128,11 +118,11 @@ class InformationViewModel {
     
     //获取组织动态
     func getGroupNews(organizationId:
-    Int) -> Observable<String> {
+    Int) -> Observable<[Infomation]> {
         let url = URL(string: "http://www.chenzhimeng.top/fu-community/news/organization/\(organizationId)/\(pageNum)/\(length)")!
         let headers:HTTPHeaders = ["accessToken":user.accessToken]
         
-        return Observable<String>.create { (observer) -> Disposable in
+        return Observable<[Infomation]>.create { (observer) -> Disposable in
         
         AF.request(url, method: .get, headers: headers).responseJSON {
             (response) in
@@ -146,9 +136,8 @@ class InformationViewModel {
                         let news = Infomation(oneNewJson)
                         self.message.append(news)
                     }
-                    observer.onNext("success")
+                    observer.onNext(self.message)
                 }
-                observer.onNext("success")
             case .failure(let error):
                 print(error)
                 observer.onError(error)
