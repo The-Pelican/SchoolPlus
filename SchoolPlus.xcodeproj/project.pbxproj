@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A00C13C2500B0CC0074CAD1 /* GroupUpdateMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A00C13B2500B0CC0074CAD1 /* GroupUpdateMessageViewController.swift */; };
 		2A24A3E824C9A00800522DC6 /* GroupDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24A3E724C9A00800522DC6 /* GroupDetailViewController.swift */; };
 		2A24A3EC24CA002600522DC6 /* MemberListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24A3EB24CA002600522DC6 /* MemberListViewController.swift */; };
 		2A24A3EE24D11F7C00522DC6 /* GroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24A3ED24D11F7C00522DC6 /* GroupViewModel.swift */; };
@@ -72,7 +73,6 @@
 		2AD1AC8424FF1329001BD8CB /* SubscribeMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AD1AC8324FF1329001BD8CB /* SubscribeMessageViewController.swift */; };
 		2AD1AC8624FF1646001BD8CB /* MyMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AD1AC8524FF1646001BD8CB /* MyMessagesViewController.swift */; };
 		2AD1AC8824FF17CB001BD8CB /* GroupMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AD1AC8724FF17CB001BD8CB /* GroupMessageViewController.swift */; };
-		2AD1AC8C24FF8D32001BD8CB /* GroupUpdateMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AD1AC8B24FF8D32001BD8CB /* GroupUpdateMessageViewController.swift */; };
 		2AF91ECC24FA4ABC0080BA56 /* UIAlertExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF91ECB24FA4ABC0080BA56 /* UIAlertExtension.swift */; };
 		2AF91ECF24FA54110080BA56 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF91ECD24FA54110080BA56 /* TableViewCell.swift */; };
 		2AF91ED024FA54110080BA56 /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AF91ECE24FA54110080BA56 /* TableViewCell.xib */; };
@@ -84,6 +84,7 @@
 
 /* Begin PBXFileReference section */
 		028B67D19DB4579CBBD2008F /* Pods-SchoolPlus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SchoolPlus.debug.xcconfig"; path = "Target Support Files/Pods-SchoolPlus/Pods-SchoolPlus.debug.xcconfig"; sourceTree = "<group>"; };
+		2A00C13B2500B0CC0074CAD1 /* GroupUpdateMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupUpdateMessageViewController.swift; sourceTree = "<group>"; };
 		2A24A3E724C9A00800522DC6 /* GroupDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailViewController.swift; sourceTree = "<group>"; };
 		2A24A3EB24CA002600522DC6 /* MemberListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberListViewController.swift; sourceTree = "<group>"; };
 		2A24A3ED24D11F7C00522DC6 /* GroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewModel.swift; sourceTree = "<group>"; };
@@ -152,7 +153,6 @@
 		2AD1AC8324FF1329001BD8CB /* SubscribeMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeMessageViewController.swift; sourceTree = "<group>"; };
 		2AD1AC8524FF1646001BD8CB /* MyMessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMessagesViewController.swift; sourceTree = "<group>"; };
 		2AD1AC8724FF17CB001BD8CB /* GroupMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMessageViewController.swift; sourceTree = "<group>"; };
-		2AD1AC8B24FF8D32001BD8CB /* GroupUpdateMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupUpdateMessageViewController.swift; sourceTree = "<group>"; };
 		2AF91ECB24FA4ABC0080BA56 /* UIAlertExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAlertExtension.swift; sourceTree = "<group>"; };
 		2AF91ECD24FA54110080BA56 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		2AF91ECE24FA54110080BA56 /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
@@ -182,7 +182,7 @@
 				2A24A3EB24CA002600522DC6 /* MemberListViewController.swift */,
 				2A3D384624FE7F4D00C7E25C /* ApplicationViewController.swift */,
 				2AD1AC8724FF17CB001BD8CB /* GroupMessageViewController.swift */,
-				2AD1AC8B24FF8D32001BD8CB /* GroupUpdateMessageViewController.swift */,
+				2A00C13B2500B0CC0074CAD1 /* GroupUpdateMessageViewController.swift */,
 			);
 			path = "组织详情";
 			sourceTree = "<group>";
@@ -587,7 +587,7 @@
 				2A3D384424FDC4F100C7E25C /* CatalogueViewController.swift in Sources */,
 				2A8CD19924E7F0B100E00A7C /* UpdateMessageViewController.swift in Sources */,
 				2A8CD19F24F11D1B00E00A7C /* CommentViewController.swift in Sources */,
-				2AD1AC8C24FF8D32001BD8CB /* GroupUpdateMessageViewController.swift in Sources */,
+				2A00C13C2500B0CC0074CAD1 /* GroupUpdateMessageViewController.swift in Sources */,
 				2A8CD18B24E1433700E00A7C /* ImageCell.swift in Sources */,
 				2ACDA43824C8581C006BB0DA /* Devices.swift in Sources */,
 				2ACDA41424C1C351006BB0DA /* MainTabViewController.swift in Sources */,

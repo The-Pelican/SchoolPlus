@@ -12,13 +12,19 @@ import ProgressHUD
 import MJRefresh
 
 class InfoViewController: UIViewController {
-    var typeIndex = 0
     var tableView = UITableView()
-    var notices:[Notice] = []
+    var notices:[Notice] = []{
+        didSet{
+            for i in notices {
+                if i.type != 1 && i.type != 4 {
+                    model.read(id: i.messageId!)
+                }
+            }
+            tableView.reloadData()
+        }
+    }
     let model = InfoViewModel()
     let disposeBag = DisposeBag()
-    let header = MJRefreshNormalHeader()
-    let footer = MJRefreshBackNormalFooter()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +36,15 @@ class InfoViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print(typeIndex)
+        ProgressHUD.show("正在加载中")
+        model.pageNum = 0
+        model.notices = []
+        model.getNotice().subscribe(onNext:{ [weak self]string in
+            self?.notices = self?.model.notices as! [Notice]
+            ProgressHUD.dismiss()
+        }, onError: { error in
+            ProgressHUD.showError()
+        }).disposed(by:disposeBag)
     }
     
     func initTableView() {
@@ -42,41 +56,7 @@ class InfoViewController: UIViewController {
         tableView.register(UINib(nibName: "TableViewCell", bundle: nil), forCellReuseIdentifier: TableViewCell.identifier)
         self.tableView.estimatedRowHeight = 44.0
         self.tableView.rowHeight = UITableView.automaticDimension
-        
-        header.setRefreshingTarget(self, refreshingAction: #selector(headerRefresh))
-        self.tableView.mj_header = header
-        header.setTitle("下拉可以刷新", for: .idle)
-        header.setTitle("正在刷新中", for: .refreshing)
-        
-        footer.setRefreshingTarget(self, refreshingAction: #selector(footerLoad))
-        self.tableView.mj_footer = footer
-        
         self.view.addSubview(tableView)
-    }
-    
-    @objc func headerRefresh(){
-        self.model.pageNum = 0
-        self.model.notices = [1:[Notice](),3:[Notice](),4:[Notice](),5:[Notice](),6:[Notice]()]
-        model.moreNotice(type: typeIndex).subscribe(onNext:{ notices in
-            self.notices = notices
-            self.model.pageNum += 1
-        },onError: { error in
-            ProgressHUD.showError()
-            } ).disposed(by: disposeBag)
-        tableView.reloadData()
-        self.tableView.mj_header!.endRefreshing()
-    }
-    
-    
-    @objc func footerLoad() {
-        model.moreNotice(type: typeIndex).subscribe(onNext:{ notices in
-            self.notices = notices
-            self.model.pageNum += 1
-        },onError: { error in
-            ProgressHUD.showError()
-            } ).disposed(by: disposeBag)
-        tableView.reloadData()
-        self.tableView.mj_footer!.endRefreshing()
     }
 }
 

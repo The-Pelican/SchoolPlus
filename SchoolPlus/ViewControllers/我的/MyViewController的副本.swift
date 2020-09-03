@@ -417,11 +417,11 @@ extension MyViewController: UITableViewDelegate, UITableViewDataSource {
             }
         } else {
             cell?.textLabel?.text = news[indexPath.row].text
-           /* if let strUrl = news[indexPath.row].media?[0] {
+            if let strUrl = news[indexPath.row].media?[0] {
                 if let url = URL(string: strUrl) {
                     cell?.imageView?.kf.setImage(with:url)
                 }
-            }*/
+            }
         }
         return cell!
     }
