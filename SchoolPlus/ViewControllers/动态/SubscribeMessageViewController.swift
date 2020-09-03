@@ -20,6 +20,8 @@ class SubscribeMessageViewController: BaseMessageViewController {
     override func getData(_ controller: BaseMessageViewController) -> [Infomation] {
         model.getSubscribeData().subscribe(onNext:{ [weak self]list in
             self?.messages = list
+            self?.model.pageNum  += 1
+            ProgressHUD.dismiss()
             },onError: { error in
                 ProgressHUD.showError(error.localizedDescription)
             }).disposed(by: disposeBag)

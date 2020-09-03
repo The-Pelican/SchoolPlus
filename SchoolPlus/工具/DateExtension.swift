@@ -12,7 +12,7 @@ func timeIntervalToString(timeInterval:Double,dateFormat:String? = "yyyy-MM-dd H
     let timestampDoubleInSec:Double = timeInterval / 1000
     let date:NSDate = NSDate.init(timeIntervalSince1970: timestampDoubleInSec)
     let formatter = DateFormatter.init()
-    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    formatter.dateFormat = "yyyy-MM-dd HH:mm"
     return formatter.string(from: date as Date)
 }
 

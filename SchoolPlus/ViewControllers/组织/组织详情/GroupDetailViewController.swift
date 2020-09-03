@@ -163,6 +163,10 @@ class GroupDetailViewController: UIViewController {
     }
     
     @objc func checkIdentity() {
+        guard user.hasChecked == true else {
+            ProgressHUD.showFailed("功能尚未解锁")
+            return
+        }
         var alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
         alert.addAction(cancel)

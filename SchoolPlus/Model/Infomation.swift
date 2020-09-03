@@ -147,11 +147,10 @@ class Infomation {
                  if let result = json.bool {
                      if result {
                          observer.onNext("success")
-                     } else {
-                         if let msg = json["msg"].string {
-                             observer.onNext(msg)
-                             return
-                         }
+                     }
+                      if let msg = json["msg"].string {
+                         observer.onNext(msg)
+                        
                      }
                  }
              case .failure(let error):

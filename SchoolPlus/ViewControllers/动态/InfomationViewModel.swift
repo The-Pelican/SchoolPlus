@@ -186,10 +186,8 @@ class InformationViewModel {
         return Observable<String>.create { (observer) -> Disposable in
             AF.request(url, method: .get, parameters: para, headers: headers).responseJSON(completionHandler: {
                 (response) in
-                debugPrint(response)
                 switch response.result {
                 case .success(let value):
-                    print(value)
                     let json = JSON(value)
                     if let commentJSON = json.array {
                         for comment in commentJSON {

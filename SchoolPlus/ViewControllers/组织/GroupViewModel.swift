@@ -213,6 +213,68 @@ class GroupViewModel {
             }
     }
     
+    func uploadNews(organizationId:Int,text:String?,pic:[UIImage]) -> Observable<String>{
+        let strId = String(organizationId)
+        let idData = strId.data(using: .utf8)
+        let textData = text?.data(using: .utf8)!
+        var jpegData = [Data]()
+        for image in pic {
+            let imageData = image.jpegData(compressionQuality: 0.2)
+            if let data = imageData {
+                jpegData.append(data)
+            }
+        }
+        let headers: HTTPHeaders = [
+            "accessToken": user.accessToken
+        ]
+        
+        print(textData)
+        print(jpegData)
+        print(headers)
+        return Observable<String>.create { (observer) -> Disposable in
+            AF.upload(multipartFormData: { (multipartFormData) in
+                multipartFormData.append(idData!, withName: "organizationId")
+                if let textData = textData {
+                    multipartFormData.append(textData, withName: "text")
+                }
+                if !jpegData.isEmpty {
+                    for data in jpegData {
+                         multipartFormData.append(data, withName: "files", fileName: "files"+".jpeg", mimeType: "image/jpeg")
+                     }
+                }
+            }, to: "http://www.chenzhimeng.top/fu-community/news", method: .post,headers: headers).responseJSON { (response) in
+                debugPrint(response)
+                switch response.result {
+                case .success(let value):
+                    print(value)
+                    let json = JSON(value)
+                    if let result = json["result"].bool {
+                        if result {
+                            observer.onNext("success")
+                            
+                        } else {
+                            if let msg = json["msg"].string {
+                                
+                                observer.onNext(msg)
+                                
+                            }
+                        }
+                    }
+                case .failure(let error):
+                    print(error)
+                    if let statusCode = response.response?.statusCode {
+                        if statusCode == 2385 {
+                            user.outDated()
+                            observer.onNext("请重新再试")
+                        }
+                    }
+                    observer.onError(error)
+                }
+            }
+            return Disposables.create()
+        }
+    }
+    
     //编辑动态
     func editNews(newsId:Int, text:String, media:[String],files: [UIImage])  -> Observable<String> {
      let url = URL(string: "http://www.chenzhimeng.top/fu-community/news/organization")!

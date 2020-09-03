@@ -27,7 +27,6 @@ class UpdateMessageViewController: UIViewController {
             collectionView.reloadData()
         }
     }
-    
     var info: Infomation?
     let disposeBag = DisposeBag()
 
@@ -58,6 +57,7 @@ class UpdateMessageViewController: UIViewController {
                     }
                 }
             }
+            
         }
     }
     
@@ -74,10 +74,10 @@ class UpdateMessageViewController: UIViewController {
         textView.addButtonLine()
 
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 150, height: 150)
+        layout.itemSize = CGSize(width: 180, height: 180)
         layout.sectionInset = UIEdgeInsets(top: 15, left: 15, bottom: 20, right: 15)
         layout.minimumInteritemSpacing = 1.0
-        collectionView = UICollectionView(frame: CGRect(x: 0, y: 45, width: self.view.frame.width, height: 100), collectionViewLayout: layout)
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 45, width: self.view.frame.width, height: 300), collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.isScrollEnabled = false
@@ -102,6 +102,39 @@ class UpdateMessageViewController: UIViewController {
     }
     
     @objc func done() {
+        uploadMessage()
+        /*if let info = info {
+            print("编辑")
+            print(info.newsId!)
+            print(newImages)
+            print(info.media!)
+            ProgressHUD.show("正在加载中")
+            info.editNews(newsId:info.newsId!,text: textView.text!, media: info.media!,pic:newImages).subscribe(onNext:{ string in
+                guard string == "success" else {
+                    ProgressHUD.dismiss()
+                    ProgressHUD.show(string)
+                    return
+                }
+                    ProgressHUD.showSucceed()
+                    self.navigationController?.popViewController(animated: true)
+            }, onError: { error in
+                ProgressHUD.showError(error.localizedDescription)
+                }).disposed(by: disposeBag)
+        } else {
+            user.uploadNews(text: textView.text!, pic: images).subscribe(onNext:{ string in
+                guard string == "success" else {
+                    ProgressHUD.show(string)
+                    return
+                }
+                ProgressHUD.showSucceed()
+                self.navigationController?.popViewController(animated: true)
+            }, onError: { error in
+                ProgressHUD.showError(error.localizedDescription)
+                }).disposed(by: disposeBag)
+        }*/
+    }
+    
+    func uploadMessage() {
         if let info = info {
             print("编辑")
             print(info.newsId!)
@@ -110,6 +143,7 @@ class UpdateMessageViewController: UIViewController {
             ProgressHUD.show("正在加载中")
             info.editNews(newsId:info.newsId!,text: textView.text!, media: info.media!,pic:newImages).subscribe(onNext:{ string in
                 guard string == "success" else {
+                    ProgressHUD.dismiss()
                     ProgressHUD.show(string)
                     return
                 }

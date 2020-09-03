@@ -9,7 +9,12 @@
 import UIKit
 
 class MessageTypeTableViewCell: UITableViewCell {
-
+    static let identifier = "MessageTypeTableViewCell"
+    @IBOutlet weak var logoImageView: UIImageView!
+    @IBOutlet weak var typeLabel: UILabel!
+    @IBOutlet weak var contentLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

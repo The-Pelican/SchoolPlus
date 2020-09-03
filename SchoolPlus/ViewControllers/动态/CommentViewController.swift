@@ -36,10 +36,14 @@ class CommentViewController: UIViewController {
     var info =  Infomation() {
         didSet {
             tableView.reloadData()
-            let userId = info.publisher?.userId ?? -2
-            let organizationId = info.orgnization?.organizationId ?? -2
-            if  (user.userId != userId) && (user.userId != organizationId){
-                navigationItem.rightBarButtonItem?.isEnabled = false
+            if judgeGroup() {
+                 navigationItem.rightBarButtonItem?.isEnabled = true
+            } else {
+                let userId = info.publisher?.userId ?? -2
+                let organizationId = info.orgnization?.organizationId ?? -2
+                if  (user.userId != userId) && (user.userId != organizationId){
+                    navigationItem.rightBarButtonItem?.isEnabled = false
+                }
             }
         }
     }
@@ -76,6 +80,7 @@ class CommentViewController: UIViewController {
         }, onError: { error in
             ProgressHUD.showError(error.localizedDescription)
             }).disposed(by: disposeBag)
+        //judge()
     }
     
     func initSubView() {
@@ -104,6 +109,29 @@ class CommentViewController: UIViewController {
     func initNaviBar() {
         title = "动态详情"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "...", style: .plain, target: self, action: #selector(operation))
+    }
+    
+    //根据数据要求判断禁用条件
+    func judgeGroup() -> Bool {
+        print("判断")
+        var index = 0
+        if let vcs = self.navigationController?.viewControllers {
+            print("获得")
+            for i in 0 ..< vcs.count {
+                print(vcs[i])
+                if self == vcs[i] {
+                   index = i
+                    print(i)
+                }
+            }
+            
+            if let vc = vcs[index-1] as? GroupMessageViewController {
+                print("组织动态")
+                navigationItem.rightBarButtonItem?.isEnabled = true
+                return true
+            }
+        }
+        return false
     }
     
     func initCommentBar() {

@@ -17,6 +17,20 @@ class GroupMessageViewController: BaseMessageViewController {
         
     }
     
+    
+    override func create() {
+        guard let id = self.organizationId else {
+            return
+        }
+        if user.hasChecked == true {
+            let vc = GroupUpdateMessageViewController()
+            vc.organizationId = id
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            ProgressHUD.showFailed("功能尚未解锁")
+        }
+    }
+    
     override func getData(_ controller: BaseMessageViewController) -> [Infomation] {
         model.getGroupNews(organizationId: organizationId ?? -1).subscribe(onNext:{ [weak self]list in
             self?.messages = list

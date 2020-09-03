@@ -8,8 +8,11 @@
 
 
 import UIKit
+import RxSwift
 
 class MainTabViewController: UITabBarController {
+    let model =  InfoViewModel()
+    let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +24,7 @@ class MainTabViewController: UITabBarController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.isNavigationBarHidden = false
+        
     }
     
     func initControllers() {
@@ -48,5 +52,11 @@ class MainTabViewController: UITabBarController {
         let viewControllers = [page,group,info,my]
         self.setViewControllers(viewControllers, animated: false)
         self.selectedIndex = 1
+        
+        model.unread().subscribe(onNext: { string in
+            infoItem.badgeValue = string
+        },onError: { error in
+            
+            }).disposed(by: disposeBag)
     }
 }

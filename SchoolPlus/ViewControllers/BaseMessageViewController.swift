@@ -104,22 +104,27 @@ class BaseMessageViewController: UIViewController,UITableViewDelegate,UITableVie
     }
     
     @objc func create() {
-      if user.hasChecked == true {
+        check()
+      /*if user.hasChecked == true {
           let vc = UpdateMessageViewController()
           self.navigationController?.pushViewController(vc, animated: true)
       } else {
           ProgressHUD.showFailed("功能尚未解锁")
-      }
+      }*/
     }
     
     @objc func headerRefresh() {
         model.message = []
         model.pageNum = 0
         self.messages = getData(self)
+        tableView.reloadData()
+        self.tableView.mj_header!.endRefreshing()
     }
     
     @objc func footerLoad() {
         self.messages = getData(self)
+        tableView.reloadData()
+        self.tableView.mj_footer!.endRefreshing()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -144,5 +149,14 @@ class BaseMessageViewController: UIViewController,UITableViewDelegate,UITableVie
     }
     
     open func getData(_ controller:BaseMessageViewController) -> [Infomation] {return [Infomation]()}
+    
+    open func check() {
+        if user.hasChecked == true {
+            let vc = UpdateMessageViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            ProgressHUD.showFailed("功能尚未解锁")
+        }
+    }
     
 }
