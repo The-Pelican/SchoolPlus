@@ -17,7 +17,9 @@ class InfoViewController: UIViewController {
     var notices:[Notice] = [] {
         didSet {
             for i in notices {
+                print("获取成功\(i.type)")
                 if (i.type! != 1 && i.type! != 4) {
+                    print("阅读")
                     model.read(id: i.messageId ?? -1)
                 }
             }
@@ -64,7 +66,7 @@ class InfoViewController: UIViewController {
     
     @objc func headerRefresh(){
         self.model.pageNum = 0
-        self.model.notices = [1:[Notice](),3:[Notice](),4:[Notice](),5:[Notice](),6:[Notice]()]
+        self.model.notices = [1:[Notice](),2:[Notice](),3:[Notice](),4:[Notice](),5:[Notice](),6:[Notice]()]
         model.moreNotice(type: typeIndex).subscribe(onNext:{ notices in
             self.notices = notices
             self.model.pageNum += 1
@@ -107,15 +109,20 @@ extension InfoViewController: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(notices[indexPath.row].messageId!)
         if notices[indexPath.row].type == 1 || notices[indexPath.row].type == 4 {
-            let vc = CommentViewController()
-            model.read(id: notices[indexPath.row].messageId!).subscribe(onNext:{ [weak self]string in
+            if let i = Int(self.notices[indexPath.row].content ?? "-1") {
+                let vc = CommentViewController()
+                model.read(id: notices[indexPath.row].messageId!)
+                vc.newsId = i
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+            /*model.read(id: notices[indexPath.row].messageId!).subscribe(onNext:{ [weak self]string in
                 if let i = Int(self?.notices[indexPath.row].content ?? "-1") {
                      vc.newsId = i
                  }
                 self?.navigationController?.pushViewController(vc, animated: true)
                    }, onError: { error in
                        ProgressHUD.showError()
-                   }).disposed(by:disposeBag)
+                   }).disposed(by:disposeBag)*/
         }
     }
 }

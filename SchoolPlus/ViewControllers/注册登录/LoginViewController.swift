@@ -153,7 +153,7 @@ class LoginViewController: UIViewController {
               $0.height.equalTo(50)
         }
                
-         chooseButton.setTitle("账号密码登录", for: .normal)
+         chooseButton.setTitle("手机验证码登录", for: .normal)
          chooseButton.setTitleColor(UIColor.lightGray, for: .normal)
          chooseButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
          chooseButton.addTarget(self, action: #selector(choose), for: .touchUpInside)
@@ -232,16 +232,19 @@ class LoginViewController: UIViewController {
             user.pwdLogin(pho: idTextField.text!, pwd: pwdTextField.text!).subscribe(onNext:{ string in
                 user.getMyMessage().subscribe(onNext:{
                     string in
+                    ProgressHUD.dismiss()
                     if (user.name == "" && user.hasChecked == nil) {
                         let navigationController = UINavigationController(rootViewController: AuthenticationViewController())
                        Navigator.window().rootViewController = navigationController
                     } else if let check = user.hasChecked {
                         print(check)
                         if !check {
+                            ProgressHUD.showFailed("认证被拒绝，请重新认证")
                             let navigationController = UINavigationController(rootViewController: AuthenticationViewController())
         
                             Navigator.window().rootViewController = navigationController
                         } else {
+                            ProgressHUD.showSucceed("登陆成功")
                             user.loginType = .logined
                             user.save()
                             user.saveInfo()

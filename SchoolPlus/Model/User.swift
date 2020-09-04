@@ -33,6 +33,7 @@ class User: NSObject {
     var hasChecked:Bool?
     var avatar = "未设置"
     var name = "无名"
+    var timer:Timer?
     
     var loginType = LoginType.none
     let disposeBag = DisposeBag()
@@ -245,6 +246,7 @@ class User: NSObject {
     func pwdLogin(pho:String,pwd:String) -> Observable<String> {
         print("密码登录")
         let digest = pwd.md5()
+        print(digest)
         let para = ["password":digest]
         return Observable<String>.create { (observer) -> Disposable in
             AF.request("http://www.chenzhimeng.top/fu-community/user/login/password/\(pho)", method: .post, parameters: para).responseJSON {
@@ -401,6 +403,8 @@ class User: NSObject {
             }).disposed(by: self.disposeBag)
     }
     
+    
+//    MARK:- 定时检查用户情况
     
 //    MARK:- 个人信息
     //自动登录

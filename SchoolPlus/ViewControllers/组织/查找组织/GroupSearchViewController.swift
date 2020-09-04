@@ -53,6 +53,7 @@ class GroupSearchViewController: UIViewController {
     }
     
     func getData() {
+        print("getdata")
         model.groups = []
         model.recommendGroup = []
         model.searchGroup = []

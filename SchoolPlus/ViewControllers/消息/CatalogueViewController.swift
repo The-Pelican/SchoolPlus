@@ -29,7 +29,7 @@ class CatalogueViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         ProgressHUD.show("正在加载中")
-        self.model.notices = [1:[Notice](),3:[Notice](),4:[Notice](),5:[Notice](),6:[Notice]()]
+        self.model.notices = [1:[Notice](),2:[Notice](),3:[Notice](),4:[Notice](),5:[Notice](),6:[Notice]()]
         model.getNotice().subscribe(onNext:{ notices in
             self.notices = self.model.notices
             ProgressHUD.dismiss()

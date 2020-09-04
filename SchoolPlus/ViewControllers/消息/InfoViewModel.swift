@@ -10,12 +10,13 @@ import Foundation
 import SwiftyJSON
 import Alamofire
 import RxSwift
+import ProgressHUD
 
 
 class InfoViewModel {
     let length = 5
     var pageNum = 0
-    var notices:[Int:[Notice]] = [1:[Notice](),3:[Notice](),4:[Notice](),5:[Notice](),6:[Notice]()]
+    var notices:[Int:[Notice]] = [1:[Notice](),2:[Notice](),3:[Notice](),4:[Notice](),5:[Notice](),6:[Notice]()]
     let disposeBag = DisposeBag()
     
     func getNotice() -> Observable<[Int:[Notice]]> {
@@ -89,23 +90,22 @@ class InfoViewModel {
     
     
     
-    func read(id:Int) -> Observable<String> {
+    func read(id:Int)  {
+        print("read加载")
         let url = URL(string: "http://www.chenzhimeng.top/fu-community/message/read")!
         let headers: HTTPHeaders = [
             "accessToken": user.accessToken
         ]
         let para = ["messageId":id]
-        return Observable<String>.create { (observer) -> Disposable in
+        
         AF.request(url,method:.put,parameters:para, headers: headers).response(completionHandler: {
             (response) in
             debugPrint(response)
             if let error = response.error {
-                observer.onError(error)
+                ProgressHUD.showError(error.localizedDescription)
             }
-            observer.onNext("success")
+            
         })
-            return Disposables.create()
-        }
     }
     
     func unread() -> Observable<String> {
