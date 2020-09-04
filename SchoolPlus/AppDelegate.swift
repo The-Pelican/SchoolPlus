@@ -45,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabBarController = MainTabViewController()
         self.tabBarController.initControllers()
         var navigationController = UINavigationController(rootViewController: self.tabBarController)
-        if user.hasChecked == false {
+        if user.hasChecked == false || (user.name == "" && user.hasChecked == nil) {
             navigationController = UINavigationController(rootViewController: AuthenticationViewController())
         }
             self.window!.rootViewController = navigationController

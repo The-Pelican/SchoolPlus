@@ -145,6 +145,26 @@ class User: NSObject {
             }
         }
     }
+    
+    func  rePWAuthCode(pho:String){
+        AF.request("http://www.chenzhimeng.top/fu-community/user/auth/verify", method: .post, parameters: ["phoneNo":pho]).responseJSON { (response) in
+                   switch response.result {
+                   case .success(let value):
+                       print(value)
+                       let json = JSON(value)
+                       if let result = json["result"].int {
+                           if result == 1 {
+                               if let k = json["key"].string { key = k}
+                           } else {
+                               if let m = json["msg"].string { ProgressHUD.showFailed(m) }
+                           }
+                       }
+                   case .failure(let error):
+                       print(error)
+                       ProgressHUD.showError()
+                   }
+               }
+    }
 
     func register(pho:String,pwd:String,key:String,code:Int) -> Observable<String> {
         let digest = pwd.md5()
@@ -168,7 +188,6 @@ class User: NSObject {
                          } else {
                             if let m = json["msg"].string {
                                 observer.onNext(m)
-                                return
                             }
                         }
                      }
@@ -248,6 +267,7 @@ class User: NSObject {
                             return
                         } else {
                             if let m = json["msg"].string {
+                                ProgressHUD.showFailed(m)
                                 observer.onNext(m)
                                 return
                             }
@@ -311,7 +331,17 @@ class User: NSObject {
                     switch response.result {
                     case .success(let value):
                         print(value)
-                        observer.onNext("success")
+                        let json = JSON(value)
+                        if let result = json["result"].bool {
+                            if result {
+                                observer.onNext("success")
+                            } else {
+                                if let m = json["msg"].string {
+                                    observer.onNext(m)
+                                }
+                            }
+                        }
+                        
                     case.failure(let error):
                         print(error)
                         if let statusCode = response.response?.statusCode {
@@ -357,12 +387,12 @@ class User: NSObject {
     func outDated() {
             user.updateToken(aT: user.accessToken, rT: user.refreshToken).subscribe(onNext:{ string in
                  if string == "fail" {
-                    ProgressHUD.showFailed("token过期，请重新再试")
+                    ProgressHUD.showFailed("token过期，请重新登录")
                      user.logout()
                      let navigationController = UINavigationController(rootViewController: LoginViewController())
                      Navigator.window().rootViewController = navigationController
                  } else {
-                    return
+                    ProgressHUD.showSucceed("请刷新再试")
                 }
              },onError: { error in
                  user.logout()
@@ -388,7 +418,7 @@ class User: NSObject {
                     let json = JSON(value)
                     user.userId = json["userId"].int ?? -1
                     user.hasChecked = json["hasCheck"].bool
-                    user.name = json["studentName"].string ?? "未设置"
+                    user.name = json["studentName"].string ?? ""
                     user.avatar = json["avatar"].string ?? ""
                     user.saveInfo()
                     observer.onNext("success")

@@ -110,6 +110,10 @@ class GroupSearchViewController: UIViewController {
     }
     
     @objc func create() {
+        if user.hasChecked != true {
+            ProgressHUD.showFailed("功能尚未解锁")
+            return
+        }
         let vc = CreateGroupViewController()
         vc.hidesBottomBarWhenPushed = false
         self.navigationController?.pushViewController(vc, animated: true)
@@ -178,6 +182,10 @@ extension GroupSearchViewController: UITableViewDataSource, UITableViewDelegate 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if user.hasChecked != true {
+            ProgressHUD.showFailed("功能尚未解锁")
+            return
+        }
         let vc = GroupDetailViewController()
         if self.searchController.isActive {
             vc.organizationId = self.searchGroup[indexPath.row].organizationId ?? -1

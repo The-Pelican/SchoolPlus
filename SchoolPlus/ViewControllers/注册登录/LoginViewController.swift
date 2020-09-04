@@ -232,18 +232,35 @@ class LoginViewController: UIViewController {
             user.pwdLogin(pho: idTextField.text!, pwd: pwdTextField.text!).subscribe(onNext:{ string in
                 user.getMyMessage().subscribe(onNext:{
                     string in
-                    guard string == "success" else {
-                        ProgressHUD.show(string)
-                        return
+                    if (user.name == "" && user.hasChecked == nil) {
+                        let navigationController = UINavigationController(rootViewController: AuthenticationViewController())
+                       Navigator.window().rootViewController = navigationController
+                    } else if let check = user.hasChecked {
+                        print(check)
+                        if !check {
+                            let navigationController = UINavigationController(rootViewController: AuthenticationViewController())
+        
+                            Navigator.window().rootViewController = navigationController
+                        } else {
+                            user.loginType = .logined
+                            user.save()
+                            user.saveInfo()
+                            ProgressHUD.showSucceed()
+                            let tabController = MainTabViewController()
+                            tabController.initControllers()
+                            let navigationController = UINavigationController(rootViewController: tabController)
+                            Navigator.window().rootViewController = navigationController
+                        }
+                    } else if (user.name != "" && user.hasChecked == nil) {
+                        user.loginType = .logined
+                        user.save()
+                        user.saveInfo()
+                        ProgressHUD.showSucceed()
+                        let tabController = MainTabViewController()
+                        tabController.initControllers()
+                        let navigationController = UINavigationController(rootViewController: tabController)
+                        Navigator.window().rootViewController = navigationController
                     }
-                    user.loginType = .logined
-                    user.save()
-                    user.saveInfo()
-                    ProgressHUD.showSucceed()
-                    let tabController = MainTabViewController()
-                    tabController.initControllers()
-                    let navigationController = UINavigationController(rootViewController: tabController)
-                    Navigator.window().rootViewController = navigationController
                 })
             },onError: { error in
                 ProgressHUD.showError(error.localizedDescription)

@@ -163,23 +163,23 @@ class AuthenticationViewController: UIViewController {
     @objc func done() {
         guard !(nameTextField.text!.isEmpty) && !(numTextField.text!.isEmpty) && image != nil else {
             ProgressHUD.showFailed("请完善")
-        
             return
         }
         
-        for char in nameTextField.text! {
-            if !("\u{4E00}" <= char && char <= "\u{9FA5}") {
+        /*for char in nameTextField.text! {
+            /*if !("\u{4E00}" <= char && char <= "\u{9FA5}") {
                 ProgressHUD.showFailed("请输入正确的姓名")
-            }
-        }
+            }*/
+        }*/
         user.uploadAM(name: nameTextField.text!, num: numTextField.text!, card: image!).subscribe(onNext: { [weak self]string in
-            guard string == "success" else {
-                ProgressHUD.show(string)
-                return
+            if string == "success" {
+                user.save()
+                ProgressHUD.showSucceed("提交成功")
+                self?.navigationController?.pushViewController(EndAMViewController(), animated: true)
+            } else {
+                ProgressHUD.showFailed(string)
             }
-            user.save()
-            ProgressHUD.showSucceed("提交成功")
-            self?.navigationController?.pushViewController(EndAMViewController(), animated: true)
+           
         }, onError: { error in
             ProgressHUD.showFailed("提交失败")
         }).disposed(by:disposeBag)

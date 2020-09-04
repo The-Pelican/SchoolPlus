@@ -54,21 +54,25 @@ class IntroAMViewController: UIViewController {
         
         self.view.addSubview(nextButton)
         nextButton.setTitle("下一步", for: .normal)
-        introLabel.snp.makeConstraints({
+        nextButton.backgroundColor = UIColor.green
+        nextButton.setTitleColor(UIColor.black, for: .normal)
+        nextButton.snp.makeConstraints({
             $0.centerX.equalToSuperview()
-            $0.height.equalTo(80)
+            $0.height.equalTo(50)
             $0.width.equalTo(100)
-            $0.top.equalTo(introLabel.snp.bottom).offset(10)
+            $0.top.equalTo(introLabel.snp.bottom).offset(30)
         })
         nextButton.addTarget(self, action: #selector(nextStep), for: .touchUpInside)
         
         self.view.addSubview(backButton)
-        nextButton.setTitle("退出", for: .normal)
-        introLabel.snp.makeConstraints({
-            $0.height.equalTo(50)
+        backButton.setTitle("退出", for: .normal)
+        backButton.backgroundColor = UIColor.green
+        backButton.setTitleColor(UIColor.black, for: .normal)
+        backButton.snp.makeConstraints({
+            $0.height.equalTo(40)
             $0.width.equalTo(50)
             $0.top.equalTo(nameLabel.snp.top)
-            $0.right.equalToSuperview().offset(10)
+            $0.right.equalToSuperview().offset(-28)
         })
         backButton.addTarget(self, action: #selector(back), for: .touchUpInside)
         

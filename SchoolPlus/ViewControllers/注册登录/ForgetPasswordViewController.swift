@@ -104,7 +104,7 @@ class ForgetPasswordViewController: UIViewController {
                                       options: .regularExpression) != nil else {
                                         ProgressHUD.showFailed("电话号码不合法")
             return }
-        user.regiAuthCode(id: idTextField.text!)
+        user.rePWAuthCode(pho: idTextField.text!)
     }
         
     @objc func done() {

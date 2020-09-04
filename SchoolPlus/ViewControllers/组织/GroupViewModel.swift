@@ -59,7 +59,7 @@ class GroupViewModel {
         
         return Observable<String>.create { (observer) -> Disposable in
         
-        AF.request("http://www.chenzhimeng.top/fu-community/organization/my", method: .get, headers: headers).responseJSON {
+        AF.request("http://www.chenzhimeng.top/fu-community/organization/user", method: .get, headers: headers).responseJSON {
             (response) in
             debugPrint(response)
             switch response.result {

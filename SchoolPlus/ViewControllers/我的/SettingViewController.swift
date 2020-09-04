@@ -68,7 +68,7 @@ class SettingViewController: UIViewController {
                     if let image = UIImage(data: data) {
                         imageView.image = image
                     }
-                }catch let error as NSError {
+                } catch let error as NSError {
                     ProgressHUD.showFailed("头像加载失败")
                 }
             }

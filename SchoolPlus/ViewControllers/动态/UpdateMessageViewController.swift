@@ -142,24 +142,28 @@ class UpdateMessageViewController: UIViewController {
             print(info.media!)
             ProgressHUD.show("正在加载中")
             info.editNews(newsId:info.newsId!,text: textView.text!, media: info.media!,pic:newImages).subscribe(onNext:{ string in
-                guard string == "success" else {
+                if string == "success" {
+                    print("????\(string)")
+                    ProgressHUD.dismiss()
+                    self.navigationController?.popViewController(animated: true)
+                } else {
+                    print("????\(string)")
                     ProgressHUD.dismiss()
                     ProgressHUD.show(string)
-                    return
                 }
-                    ProgressHUD.showSucceed()
-                    self.navigationController?.popViewController(animated: true)
+                    
             }, onError: { error in
                 ProgressHUD.showError(error.localizedDescription)
                 }).disposed(by: disposeBag)
         } else {
             user.uploadNews(text: textView.text!, pic: images).subscribe(onNext:{ string in
-                guard string == "success" else {
+                if string == "success" {
+                    ProgressHUD.showSucceed()
+                    self.navigationController?.popViewController(animated: true)
+                } else {
+                    ProgressHUD.dismiss()
                     ProgressHUD.show(string)
-                    return
                 }
-                ProgressHUD.showSucceed()
-                self.navigationController?.popViewController(animated: true)
             }, onError: { error in
                 ProgressHUD.showError(error.localizedDescription)
                 }).disposed(by: disposeBag)

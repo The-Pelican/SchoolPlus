@@ -66,6 +66,10 @@ class MessageTableViewCell: UITableViewCell {
         likeButton.addTarget(self, action: #selector(likeNews), for: .touchUpInside)
         subscribeButton.addTarget(self, action: #selector(subscribe), for: .touchUpInside)
         head.layer.cornerRadius = head.frame.width/2
+        
+        head.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(personalInformation))
+        head.addGestureRecognizer(tap)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -82,6 +86,30 @@ class MessageTableViewCell: UITableViewCell {
             frame.origin.y += 10
             super.frame  = frame
         }
+    }
+    
+    @objc func personalInformation() {
+        let vc = firstViewController()
+        if info?.publisher?.userId == user.userId {
+            let toVc = MyViewController()
+            vc?.navigationController?.pushViewController(toVc, animated: true)
+            return
+        }
+        
+        if let user = info?.publisher {
+            let toVc = OnthersViewController()
+            toVc.user = user
+            vc?.navigationController?.pushViewController(toVc, animated: true)
+            return
+        }
+        
+        if let group = info?.orgnization {
+            let toVc = GroupDetailViewController()
+            toVc.organizationId = group.organizationId ?? -1
+            vc?.navigationController?.pushViewController(toVc, animated: true)
+            return
+        }
+        
     }
     
     @objc func likeNews() {
@@ -134,6 +162,7 @@ class MessageTableViewCell: UITableViewCell {
                 user.subscribeUser(userId: (info.publisher?.userId)!).subscribe(onNext:{ string in
                 self.subscribeButton.backgroundColor = UIColor.darkGray
                     info.publisher?.hasSubscribed = true
+                    ProgressHUD.showSucceed("已关注")
                 }, onError: { error in
                     ProgressHUD.showError(error.localizedDescription)
                 }).disposed(by: disposeBag)

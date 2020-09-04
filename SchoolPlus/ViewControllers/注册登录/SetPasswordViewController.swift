@@ -82,12 +82,13 @@ class SetPasswordViewController: UIViewController {
             ProgressHUD.showFailed("两次密码不一致")
             return}
         user.register(pho: user.pho, pwd: pwdTextField.text!, key: key, code: code).subscribe(onNext: { string in
-            guard string == "success" else {
-                ProgressHUD.show(string)
-                return
+            if string == "success" {
+                user.save()
+                self.navigationController?.pushViewController(IntroAMViewController(), animated: true)
+            } else {
+                 ProgressHUD.showFailed(string)
             }
-            user.save()
-            self.navigationController?.pushViewController(IntroAMViewController(), animated: true)
+            
         }, onError: { error in
             ProgressHUD.showError(error.localizedDescription)
             }).disposed(by: disponseBag)

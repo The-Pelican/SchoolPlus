@@ -45,7 +45,6 @@ class MyViewController: UIViewController {
         }
     }
     
-    weak var delegate: MyViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -318,6 +317,7 @@ class MyViewController: UIViewController {
         newsTableView.dataSource = self
         newsTableView.separatorStyle = .none
         newsTableView.isScrollEnabled = false
+        newsTableView.register(UINib(nibName: "TimeLineTableViewCell", bundle: nil), forCellReuseIdentifier: TimeLineTableViewCell.identifier)
         newsTableView.snp.makeConstraints({
             $0.centerX.equalToSuperview()
             $0.left.equalTo(whiteView[2].snp.left)
@@ -353,7 +353,6 @@ class MyViewController: UIViewController {
         }
         
     }
-    
     
     @objc func setting() {
         let vc = SettingViewController()
@@ -400,11 +399,52 @@ extension MyViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let identifier = "cell"
+        if tableView == newsTableView {
+            let cell = tableView.dequeueReusableCell(withIdentifier: TimeLineTableViewCell.identifier, for: indexPath) as! TimeLineTableViewCell
+            cell.contentLabel?.text = news[indexPath.row].text
+            cell.dateLabel.text = news[indexPath.row].publishTime
+            if let media = news[indexPath.row].media {
+                if !media.isEmpty {
+                    if let url = URL(string: media.first ?? "") {
+                        cell.picView?.kf.setImage(with:url)
+                    }
+                }
+            }
+            return cell
+        } else {
+            let identifier = "cell"
+            var cell = tableView.dequeueReusableCell(withIdentifier: identifier)
+            if cell == nil {
+                cell = UITableViewCell(style: .value1, reuseIdentifier: identifier)
+            }
+            if tableView == groupTableView {
+                cell?.textLabel?.text = groups[indexPath.row].organizationName
+                if let strUrl = groups[indexPath.row].logo {
+                       if let url = URL(string: strUrl) {
+                           cell?.imageView?.kf.setImage(with:url)
+                       }
+                }
+            } else if tableView == usersTableView {
+                cell?.textLabel?.text = users[indexPath.row].studentName
+                if let strUrl = users[indexPath.row].avatar {
+                       if let url = URL(string: strUrl) {
+                           cell?.imageView?.kf.setImage(with:url)
+                       }
+                }
+            }
+            return cell!
+        }
+        
+        
+        
+        
+        
+       /* let identifier = "cell"
         var cell = tableView.dequeueReusableCell(withIdentifier: identifier)
         if cell == nil {
             cell = UITableViewCell(style: .value1, reuseIdentifier: identifier)
         }
+        cell?.imageView?.layer.cornerRadius = (cell?.imageView?.frame.width ?? 0)/2
         if tableView == groupTableView {
             cell?.textLabel?.text = groups[indexPath.row].organizationName
             cell?.imageView?.image = UIImage(named: "阿波罗")
@@ -417,39 +457,19 @@ extension MyViewController: UITableViewDelegate, UITableViewDataSource {
             }
         } else {
             cell?.textLabel?.text = news[indexPath.row].text
-           /* if let strUrl = news[indexPath.row].media?[0] {
-                if let url = URL(string: strUrl) {
-                    cell?.imageView?.kf.setImage(with:url)
+            if let media = news[indexPath.row].media {
+                if !media.isEmpty {
+                    if let url = URL(string: media.first ?? "") {
+                        cell?.imageView?.kf.setImage(with:url)
+                    }
                 }
-            }*/
+            }
         }
-        return cell!
+        return cell!*/
     }
     
     
 }
 
 
-protocol MyViewControllerDelegate: class {
-   func MyViewControllerDidAdd(_ controller:MyViewController,userList:[UserInfo])
-   func MyViewController(_ controller:MyViewController, groupList:[Organization])
-   func MyViewController(_ controller:MyViewController, newsList:[Infomation])
-}
 
-extension MyViewControllerDelegate {
-    func MyViewControllerDidAdd(_ controller:MyViewController,userList:[UserInfo]) {
-        print()
-    }
-}
-
-extension MyViewControllerDelegate {
-    func MyViewControllerDidAdd(_ controller:MyViewController, groupList:[Organization]) {
-        print()
-    }
-}
-
-extension MyViewControllerDelegate {
-    func MyViewController(_ controller:MyViewController, newsList:[Infomation]) {
-        print()
-    }
-}

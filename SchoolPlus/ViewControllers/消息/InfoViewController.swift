@@ -14,7 +14,15 @@ import MJRefresh
 class InfoViewController: UIViewController {
     var typeIndex = 0
     var tableView = UITableView()
-    var notices:[Notice] = []
+    var notices:[Notice] = [] {
+        didSet {
+            for i in notices {
+                if (i.type! != 1 && i.type! != 4) {
+                    model.read(id: i.messageId ?? -1)
+                }
+            }
+        }
+    }
     let model = InfoViewModel()
     let disposeBag = DisposeBag()
     let header = MJRefreshNormalHeader()
@@ -30,7 +38,7 @@ class InfoViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print(typeIndex)
+        
     }
     
     func initTableView() {

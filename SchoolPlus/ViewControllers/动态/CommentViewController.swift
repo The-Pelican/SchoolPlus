@@ -235,9 +235,10 @@ class CommentViewController: UIViewController {
         }
         print(textView.text!)
         guard !((textView.text)!.isEmpty) else {return}
-        model.giveComment(newsId: info.newsId!, text: textView.text!, pic: pic).subscribe(onNext:{ string in
+        model.giveComment(newsId: info.newsId!, text: textView.text!, pic: pic).subscribe(onNext:{ [weak self]string in
             if string == "success" {
-                ProgressHUD.showSuccess()
+                ProgressHUD.showSucceed()
+                self?.tableView.reloadData()
             } else {
                 ProgressHUD.showFailed(string)
             }

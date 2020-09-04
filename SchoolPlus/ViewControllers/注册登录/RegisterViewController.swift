@@ -117,12 +117,17 @@ class RegisterViewController: UIViewController {
         guard codeTextField.text != nil else {return}
         guard let code = Int(codeTextField.text!) else {return}
         user.register(pho: idTextField.text!, pwd: pwdTextField.text!, key: key, code: code).subscribe(onNext:{ string in
-            user.save()
-            if string != "success" {
-                ProgressHUD.show(string)
+            
+            if string == "success" {
+                ProgressHUD.showSuccess("注册成功")
+                user.save()
+                self.navigationController?.pushViewController(Navigator.getViewController(key: "认证"), animated: true)
+            } else {
+                ProgressHUD.showFailed(string)
             }
-            ProgressHUD.showSuccess("注册成功")
-            self.navigationController?.pushViewController(Navigator.getViewController(key: "认证"), animated: true)
+
+            
+            
         }, onError: { error in
             ProgressHUD.showError(error.localizedDescription)
             }).disposed(by:disposeBag)

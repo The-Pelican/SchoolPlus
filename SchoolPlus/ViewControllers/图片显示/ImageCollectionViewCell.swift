@@ -73,8 +73,8 @@ class ImageCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func tapSingleDid(_ ges:UITapGestureRecognizer){
-        if let nav = self.responderViewController()?.navigationController {
-            nav.popViewController(animated: true)
+       if let nav = self.responderViewController()?.navigationController{
+            nav.setNavigationBarHidden(!nav.isNavigationBarHidden, animated: true)
         }
     }
     

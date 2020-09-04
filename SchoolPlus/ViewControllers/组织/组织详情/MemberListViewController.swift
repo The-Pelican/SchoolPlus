@@ -147,12 +147,69 @@ extension MemberListViewController:UITableViewDataSource,UITableViewDelegate {
         return cell!
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = OnthersViewController()
+        vc.user = list[indexPath.row]
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
 
     @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt
         indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         var configuration =  UISwipeActionsConfiguration(actions: [])
-        if  my.myIdentity != "MEMBER" && indexPath.row != 0 {
+        switch my.myIdentity {
+        case "ADMIN":
+            if indexPath.row < (users["admin"]?.count ?? -1 + 1) {
+                let delete = UIContextualAction(style: .destructive, title: "删除") {
+                    [weak self](action, view, completionHandler) in
+                    //将对应条目的数据删除
+                    self?.model.removeMember(organizationId: self?.organizationId ?? -1, userId: self?.list[indexPath.row].userId ?? -1).subscribe(onNext:{ string in
+                        self?.list.remove(at: indexPath.row)
+                        tableView.reloadData()
+                    },onError: { error in
+                        print(error)
+                        ProgressHUD.showFailed("移除失败")
+                    })
+                    completionHandler(true)
+                }
+                configuration =  UISwipeActionsConfiguration(actions: [delete])
+            }
+        case "FOUNDER":
+            let delete = UIContextualAction(style: .destructive, title: "删除") {
+                [weak self](action, view, completionHandler) in
+                //将对应条目的数据删除
+                guard indexPath.row != 0 else {return}
+                self?.model.removeMember(organizationId: self?.organizationId ?? -1, userId: self?.list[indexPath.row].userId ?? -1).subscribe(onNext:{ string in
+                    self?.list.remove(at: indexPath.row)
+                    tableView.reloadData()
+                },onError: { error in
+                    print(error)
+                    ProgressHUD.showFailed("移除失败")
+                })
+                completionHandler(true)
+            }
+            let tell = UIContextualAction(style: .normal, title: "任命管理员") {
+                [weak self](action, view, completionHandler) in
+                //将对应条目的数据删除
+                guard indexPath.row > self?.users["admin"]?.count ?? 10000000 + 1 else {return}
+                self?.model.chooseNewAdmin(organizationId: self?.organizationId ?? -1, adminId: self?.list[indexPath.row].userId ?? -1).subscribe(onNext:{ string in
+                    if string == "success" {
+                        ProgressHUD.showSucceed()
+                    } else {
+                        ProgressHUD.showFailed(string)
+                    }
+                },onError: { error in
+                    print(error)
+                    ProgressHUD.showFailed("移除失败")
+                })
+                completionHandler(true)
+            }
+            configuration =  UISwipeActionsConfiguration(actions: [delete,tell])
+        default:
+            configuration = UISwipeActionsConfiguration(actions: [])
+        }
+       /* if  my.myIdentity != "MEMBER" && indexPath.row != 0 {
             let delete = UIContextualAction(style: .destructive, title: "删除") {
                 [weak self](action, view, completionHandler) in
                 //将对应条目的数据删除
@@ -185,7 +242,7 @@ extension MemberListViewController:UITableViewDataSource,UITableViewDelegate {
                 completionHandler(true)
             }
             configuration =  UISwipeActionsConfiguration(actions: [tell])
-        }
+        }*/
         configuration.performsFirstActionWithFullSwipe = false
         return configuration
     }

@@ -8,8 +8,12 @@
 
 import UIKit
 import YPImagePicker
+import ProgressHUD
+import RxSwift
 
 class CreateGroupViewController: UIViewController {
+    let model = GroupViewModel()
+    let disposeBag = DisposeBag()
     var logoLabel = UILabel()
     var logo = UIImageView()
     var groupLabel = UILabel()
@@ -19,6 +23,8 @@ class CreateGroupViewController: UIViewController {
     var contentLabel = UILabel()
     var contentTextView = UITextView()
     var button = UIButton()
+    var contactLabel = UILabel()
+    var contactTextField = UITextField()
     var image:UIImage? {
         didSet {
             guard let image = image else {return}
@@ -103,11 +109,32 @@ class CreateGroupViewController: UIViewController {
             $0.width.equalTo(200)
         })
         
+        contactLabel.text = "联系方式："
+        contactLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        self.view.addSubview(contactLabel)
+        contactLabel.snp.makeConstraints({
+            $0.top.equalTo(sloganLabel.snp.bottom).offset(30)
+            $0.left.equalTo(logoLabel.snp.left)
+            $0.height.equalTo(30)
+            $0.width.equalTo(130)
+        })
+        
+        contactTextField.borderStyle = .none
+        contactTextField.addButtonLine()
+        contactTextField.placeholder = "请输入qq号码"
+        self.view.addSubview(contactTextField)
+        contactTextField.snp.makeConstraints({
+            $0.top.equalTo(contactLabel.snp.top)
+            $0.left.equalTo(contactLabel.snp.right)
+            $0.height.equalTo(30)
+            $0.width.equalTo(200)
+        })
+        
         contentLabel.text = "简介:"
         contentLabel.font = UIFont.boldSystemFont(ofSize: 20)
         self.view.addSubview(contentLabel)
         contentLabel.snp.makeConstraints({
-            $0.top.equalTo(sloganLabel.snp.bottom).offset(30)
+            $0.top.equalTo(contactLabel.snp.bottom).offset(30)
             $0.left.equalTo(logoLabel.snp.left)
             $0.height.equalTo(30)
             $0.width.equalTo(80)
@@ -131,7 +158,7 @@ class CreateGroupViewController: UIViewController {
         button.layer.shadowOpacity = 0.8
         button.layer.shadowColor = UIColor.init(valueStr: "FBEA77").cgColor
         button.backgroundColor = UIColor(valueStr: "FBEA77")
-        //button.addTarget(self, action: #selector(create), for: .touchUpInside)
+        button.addTarget(self, action: #selector(create), for: .touchUpInside)
         self.view.addSubview(button)
         button.snp.makeConstraints({
             $0.centerX.equalToSuperview()
@@ -174,6 +201,24 @@ class CreateGroupViewController: UIViewController {
         groupTextField.resignFirstResponder()
         sloganTextField.resignFirstResponder()
         contentTextView.resignFirstResponder()
+    }
+    
+    @objc func create() {
+        guard groupTextField.text != nil && sloganTextField.text != nil && contentTextView.text != nil && contactTextField.text != nil else {
+            ProgressHUD.showFailed("请完善信息")
+            return
+        }
+        guard image != nil else {
+            return
+        }
+        model.createGroup(name: groupTextField.text!, logo: image!, slogan: sloganTextField.text!, intro: contentTextView.text! , contact: contactTextField.text!).subscribe(onNext:{ string in
+            if string == "success" {
+                ProgressHUD.showSucceed()
+                self.navigationController?.popViewController(animated: true)
+            }
+        },onError: { error in
+            ProgressHUD.showError()
+        }).disposed(by:disposeBag)
     }
 
     

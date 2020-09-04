@@ -144,13 +144,12 @@ class Infomation {
              case .success(let value):
                  print(value)
                  let json = JSON(value)
-                 if let result = json.bool {
+                 if let result = json["result"].bool {
                      if result {
                          observer.onNext("success")
                      }
                       if let msg = json["msg"].string {
                          observer.onNext(msg)
-                        
                      }
                  }
              case .failure(let error):

@@ -67,6 +67,12 @@ extension ApplicationViewController:UITableViewDelegate,UITableViewDataSource {
         return cell!
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = OnthersViewController()
+        vc.user = list[indexPath.row]
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt
         indexPath: IndexPath) -> UISwipeActionsConfiguration? {

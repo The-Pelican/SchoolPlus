@@ -30,6 +30,7 @@ class MainTabViewController: UITabBarController {
     func initControllers() {
         //let school = Navigator.getViewController(key: "校园")
         let group = Navigator.getViewController(key: "组织")
+        //let info = IntroAMViewController()
         let info = Navigator.getViewController(key: "信息")
         let my = Navigator.getViewController(key: "我的")
         let page = PageViewController()
@@ -55,6 +56,9 @@ class MainTabViewController: UITabBarController {
         
         model.unread().subscribe(onNext: { string in
             infoItem.badgeValue = string
+            if string == "0" {
+                infoItem.badgeValue = nil
+            }
         },onError: { error in
             
             }).disposed(by: disposeBag)
