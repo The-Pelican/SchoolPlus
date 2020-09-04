@@ -67,6 +67,10 @@ class User: NSObject {
         if let rT = keychain.get("refreshToken") {refreshToken = rT} else {refreshToken = ""}
     }
     
+    deinit {
+        self.removeTimer()
+    }
+    
     func save() {
         let keychain = KeychainSwift()
         
@@ -405,6 +409,29 @@ class User: NSObject {
     
     
 //    MARK:- 定时检查用户情况
+    @objc func check(){
+        getMyMessage().subscribe(onNext:{ string in
+            print("定时检查要求\(string)")
+        },onError: { error in
+            print(error)
+        })
+       }
+    
+    func addTimer() {
+        print("addTimer")
+        if timer != nil { return }
+        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(check), userInfo: nil, repeats: true)
+        timer?.fire()
+    }
+    
+    func removeTimer(){
+        timer?.invalidate()
+        timer = nil
+    }
+    
+    
+    
+    
     
 //    MARK:- 个人信息
     //自动登录
@@ -413,7 +440,6 @@ class User: NSObject {
         let headers:HTTPHeaders = ["accessToken":user.accessToken]
         
         return Observable<String>.create { (observer) -> Disposable in
-            let request = AF.request(url,method: .get,headers: headers)
             AF.request(url,method: .get,headers: headers).responseJSON(completionHandler: {
                 (response) in
                 switch response.result  {
@@ -425,6 +451,9 @@ class User: NSObject {
                     user.name = json["studentName"].string ?? ""
                     user.avatar = json["avatar"].string ?? ""
                     user.saveInfo()
+                    if user.hasChecked == true && user.timer != nil {
+                        user.removeTimer()
+                    }
                     observer.onNext("success")
                 case .failure(let error):
                     print(error)
