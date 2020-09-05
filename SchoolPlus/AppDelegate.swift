@@ -45,10 +45,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabBarController = MainTabViewController()
         self.tabBarController.initControllers()
         var navigationController = UINavigationController(rootViewController: self.tabBarController)
-        if user.hasChecked == false  {
+        if user.hasChecked == false || (user.name == "" && user.hasChecked == nil)  {
             navigationController = UINavigationController(rootViewController: AuthenticationViewController())
-            } else if (user.name == "" && user.hasChecked == nil) {
-            navigationController = UINavigationController(rootViewController: AuthenticationViewController())
+        } else if user.hasChecked == nil && user.name != "" {
             user.addTimer()
         }
             self.window!.rootViewController = navigationController

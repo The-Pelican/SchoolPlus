@@ -42,13 +42,15 @@ class EndAMViewController: UIViewController {
         })
         
         button.setTitle("开启游客模式", for: .normal)
-        button.setTitleColor(UIColor.black, for: .normal)
+        button.layer.cornerRadius = 5
+        button.backgroundColor = UIColor(valueStr: "4899D0")
         button.addTarget(self, action: #selector(start), for: .touchUpInside)
         self.view.addSubview(button)
         button.snp.makeConstraints({
             $0.centerX.equalToSuperview()
             $0.top.equalTo(label.snp.bottom).offset(30)
             $0.height.equalTo(50)
+            $0.width.equalTo(200)
         })
     }
     

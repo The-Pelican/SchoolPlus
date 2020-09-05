@@ -153,12 +153,14 @@ class GroupDetailViewController: UIViewController {
         messageView.separatorStyle = .none
         let nib = UINib(nibName: "TimeLineTableViewCell", bundle: nil)
         messageView.register(nib, forCellReuseIdentifier: TimeLineTableViewCell.identifier)
+        messageView.layer.borderWidth = 1
+        messageView.layer.cornerRadius = 5
         self.view.addSubview(messageView)
         messageView.snp.makeConstraints({
             $0.top.equalTo(messageLabel.snp.bottom).offset(15)
             $0.centerX.equalToSuperview()
-            $0.height.equalTo(500)
-            $0.width.equalTo(400)
+            $0.bottom.equalToSuperview().offset(-100)
+            $0.left.equalTo(detail.snp.left)
         })
     }
     
@@ -167,7 +169,7 @@ class GroupDetailViewController: UIViewController {
             ProgressHUD.showFailed("功能尚未解锁")
             return
         }
-        var alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
         alert.addAction(cancel)
         if group.myIdentity == "VISITOR"{
@@ -180,7 +182,7 @@ class GroupDetailViewController: UIViewController {
                     }
                 },onError: { error in
                     ProgressHUD.showFailed("申请提交失败")
-                })
+                }).disposed(by: self!.disposeBag)
             })
             alert.addAction(join)
             present(alert, animated: true, completion: nil)

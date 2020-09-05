@@ -8,6 +8,7 @@
 
 import UIKit
 import ProgressHUD
+import RxSwift
 
 
 class CatalogueViewController: UIViewController {
@@ -18,6 +19,7 @@ class CatalogueViewController: UIViewController {
             print("vc:\(notices)")
         }
     }
+    let disposeBag = DisposeBag()
     var listView:UITableView!
     var cataName = ["动态评论","组织申请结果","组织创建结果","关注列表动态提醒","组织申请","动态审核"]
 
@@ -28,13 +30,26 @@ class CatalogueViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        ProgressHUD.show("正在加载中")
         self.model.notices = [1:[Notice](),2:[Notice](),3:[Notice](),4:[Notice](),5:[Notice](),6:[Notice]()]
-        model.getNotice().subscribe(onNext:{ notices in
+        self.model.pageNum = 0
+        /*model.getNotice().subscribe(onNext:{ notices in
             self.notices = self.model.notices
             ProgressHUD.dismiss()
         },onError: { error in
-        })
+            }).disposed(by: disposeBag)*/
+        
+        /*model.unread().subscribe(onNext:{ string in
+            print("read")
+            let window = Navigator.window()
+            if let vc = window.rootViewController as? MainTabViewController {
+                vc.infoItem.badgeValue = string
+                if  string == "0" {
+                    vc.infoItem.badgeValue = nil
+                }
+            }
+        },onError: { error in
+            ProgressHUD.showFailed(error.localizedDescription)
+            }).disposed(by: disposeBag)*/
     }
     
     func initTableView() {
@@ -55,14 +70,14 @@ extension CatalogueViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: MessageTypeTableViewCell.identifier, for: indexPath) as! MessageTypeTableViewCell
        
         cell.typeLabel.text = cataName[indexPath.row]
-        for (key,value) in notices {
+        /*for (key,value) in notices {
             if indexPath.row == (key-1) {
                 cell.contentLabel.text = value.first?.content
                 if let date = (value.first?.time) {
                     cell.dateLabel.text = timeIntervalToString(timeInterval: Double(date))
                 }
             }
-        }
+        }*/
         
        return cell
     }

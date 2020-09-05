@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2A00C13C2500B0CC0074CAD1 /* GroupUpdateMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A00C13B2500B0CC0074CAD1 /* GroupUpdateMessageViewController.swift */; };
+		2A00C13F2503045C0074CAD1 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A00C13D2503045C0074CAD1 /* ListTableViewCell.swift */; };
+		2A00C1402503045C0074CAD1 /* ListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A00C13E2503045C0074CAD1 /* ListTableViewCell.xib */; };
 		2A24A3E824C9A00800522DC6 /* GroupDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24A3E724C9A00800522DC6 /* GroupDetailViewController.swift */; };
 		2A24A3EC24CA002600522DC6 /* MemberListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24A3EB24CA002600522DC6 /* MemberListViewController.swift */; };
 		2A24A3EE24D11F7C00522DC6 /* GroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24A3ED24D11F7C00522DC6 /* GroupViewModel.swift */; };
@@ -85,6 +87,8 @@
 /* Begin PBXFileReference section */
 		028B67D19DB4579CBBD2008F /* Pods-SchoolPlus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SchoolPlus.debug.xcconfig"; path = "Target Support Files/Pods-SchoolPlus/Pods-SchoolPlus.debug.xcconfig"; sourceTree = "<group>"; };
 		2A00C13B2500B0CC0074CAD1 /* GroupUpdateMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupUpdateMessageViewController.swift; sourceTree = "<group>"; };
+		2A00C13D2503045C0074CAD1 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
+		2A00C13E2503045C0074CAD1 /* ListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListTableViewCell.xib; sourceTree = "<group>"; };
 		2A24A3E724C9A00800522DC6 /* GroupDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailViewController.swift; sourceTree = "<group>"; };
 		2A24A3EB24CA002600522DC6 /* MemberListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberListViewController.swift; sourceTree = "<group>"; };
 		2A24A3ED24D11F7C00522DC6 /* GroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewModel.swift; sourceTree = "<group>"; };
@@ -183,6 +187,8 @@
 				2A3D384624FE7F4D00C7E25C /* ApplicationViewController.swift */,
 				2AD1AC8724FF17CB001BD8CB /* GroupMessageViewController.swift */,
 				2A00C13B2500B0CC0074CAD1 /* GroupUpdateMessageViewController.swift */,
+				2A00C13D2503045C0074CAD1 /* ListTableViewCell.swift */,
+				2A00C13E2503045C0074CAD1 /* ListTableViewCell.xib */,
 			);
 			path = "组织详情";
 			sourceTree = "<group>";
@@ -504,6 +510,7 @@
 				2AF91ED024FA54110080BA56 /* TableViewCell.xib in Resources */,
 				2ACDA3ED24B6F79A006BB0DA /* Assets.xcassets in Resources */,
 				2A8CD1A724F49F8C00E00A7C /* TimeLineTableViewCell.xib in Resources */,
+				2A00C1402503045C0074CAD1 /* ListTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -573,6 +580,7 @@
 				2ACDA40F24BB570B006BB0DA /* NetworkPara.swift in Sources */,
 				2AD1AC8224FF0D15001BD8CB /* AllMessagesViewController.swift in Sources */,
 				2A3D384724FE7F4D00C7E25C /* ApplicationViewController.swift in Sources */,
+				2A00C13F2503045C0074CAD1 /* ListTableViewCell.swift in Sources */,
 				2A78BCB124FA206D00BC62EF /* IntroAMViewController.swift in Sources */,
 				2ACDA40424B8C3FD006BB0DA /* HexColor.swift in Sources */,
 				2ACDA42424C5D080006BB0DA /* GroupSearchViewController.swift in Sources */,

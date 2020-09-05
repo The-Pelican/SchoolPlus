@@ -24,7 +24,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="gLO-CW-oEs" secondAttribute="height" multiplier="2:3" id="v4l-P6-eOY"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>

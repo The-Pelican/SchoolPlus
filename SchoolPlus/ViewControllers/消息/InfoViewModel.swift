@@ -14,18 +14,19 @@ import ProgressHUD
 
 
 class InfoViewModel {
-    let length = 5
+    let length = 20
     var pageNum = 0
     var notices:[Int:[Notice]] = [1:[Notice](),2:[Notice](),3:[Notice](),4:[Notice](),5:[Notice](),6:[Notice]()]
+    var typeNotices:[Notice] = []
     let disposeBag = DisposeBag()
     
-    func getNotice() -> Observable<[Int:[Notice]]> {
-        let url = URL(string: "http://www.chenzhimeng.top/fu-community/message")!
+    func getNotice(type:Int) -> Observable<[Notice]> {
+        let url = URL(string: "http://www.chenzhimeng.top/fu-community/message/\(type)")!
         let headers: HTTPHeaders = [
             "accessToken": user.accessToken
         ]
         let para = ["pageNum":pageNum,"length":length]
-        return Observable<[Int:[Notice]]>.create { (observer) -> Disposable in
+        return Observable<[Notice]>.create { (observer) -> Disposable in
             AF.request(url,method:.get,parameters:para, headers: headers).responseJSON(completionHandler: {
                 [weak self](response) in
                 debugPrint(response)
@@ -39,10 +40,11 @@ class InfoViewModel {
                             for i in 1...6 {
                                 if noti.type! == i {
                                     self?.notices[i]?.append(noti)
+                                    self?.typeNotices.append(noti)
                                 }
                             }
                         }
-                        observer.onNext(self!.notices)
+                        observer.onNext(self!.typeNotices)
                     }
                 case .failure(let error):
                     print(error)
@@ -54,7 +56,7 @@ class InfoViewModel {
     }
     
     func moreNotice(type:Int) -> Observable<[Notice]> {
-        let url = URL(string: "http://www.chenzhimeng.top/fu-community/message")!
+        let url = URL(string: "http://www.chenzhimeng.top/fu-community/message/\(type)")!
         let headers: HTTPHeaders = [
             "accessToken": user.accessToken
         ]

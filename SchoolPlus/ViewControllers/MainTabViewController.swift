@@ -13,6 +13,7 @@ import RxSwift
 class MainTabViewController: UITabBarController {
     let model =  InfoViewModel()
     let disposeBag = DisposeBag()
+    var infoItem : UITabBarItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +29,7 @@ class MainTabViewController: UITabBarController {
     }
     
     func initControllers() {
-        //let school = Navigator.getViewController(key: "校园")
+        
         let group = Navigator.getViewController(key: "组织")
         //let info = IntroAMViewController()
         let info = Navigator.getViewController(key: "信息")
@@ -38,7 +39,7 @@ class MainTabViewController: UITabBarController {
         
         let schoolItem = UITabBarItem(title: "学院", image: UIImage(named: "底部icon_学院"), tag: 0)
         let groupItem = UITabBarItem(title: "组织", image: UIImage(named: "底部社团_icon"), tag: 1)
-        let infoItem = UITabBarItem(title: "信息", image: UIImage(named: "底部icon_消息"), tag: 2)
+        infoItem = UITabBarItem(title: "信息", image: UIImage(named: "底部icon_消息"), tag: 2)
         let myItem = UITabBarItem(title: "我的", image: UIImage(named: "底部icon_我的"), tag: 3)
         
         page.tabBarItem = schoolItem
@@ -55,9 +56,9 @@ class MainTabViewController: UITabBarController {
         self.selectedIndex = 1
         
         model.unread().subscribe(onNext: { string in
-            infoItem.badgeValue = string
+            self.infoItem.badgeValue = string
             if string == "0" {
-                infoItem.badgeValue = nil
+                self.infoItem.badgeValue = nil
             }
         },onError: { error in
             

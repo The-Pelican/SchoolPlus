@@ -190,6 +190,7 @@ class MyViewController: UIViewController {
         groupTableView.dataSource = self
         groupTableView.separatorStyle = .none
         groupTableView.isScrollEnabled = false
+        groupTableView.register(UINib(nibName: "ListTableViewCell", bundle: nil), forCellReuseIdentifier: ListTableViewCell.identifier)
         groupTableView.snp.makeConstraints({
             $0.centerX.equalToSuperview()
             $0.left.equalTo(whiteView[0].snp.left)
@@ -253,6 +254,7 @@ class MyViewController: UIViewController {
         usersTableView.dataSource = self
         usersTableView.separatorStyle = .none
         usersTableView.isScrollEnabled = false
+        usersTableView.register(UINib(nibName: "ListTableViewCell", bundle: nil), forCellReuseIdentifier: ListTableViewCell.identifier)
         usersTableView.snp.makeConstraints({
             $0.centerX.equalToSuperview()
             $0.left.equalTo(whiteView[1].snp.left)
@@ -336,15 +338,16 @@ class MyViewController: UIViewController {
             $0.height.equalTo(15)
         })
         
-        setButton.setTitle("设置", for: .normal)
+        //setButton.setTitle("设置", for: .normal)
+        setButton.setImage(UIImage(named: "shezhi"), for: .normal)
         setButton.setTitleColor(UIColor.systemBlue, for: .normal)
         self.scrollView.addSubview(setButton)
         setButton.addTarget(self, action: #selector(setting), for: .touchUpInside)
         setButton.snp.makeConstraints({
             $0.top.equalTo(safeAreaTopHeight)
             $0.right.equalTo(backView[0].snp.right)
-            $0.width.equalTo(50)
-            $0.height.equalTo(50)
+            $0.width.equalTo(40)
+            $0.height.equalTo(40)
         })
         
         for i in logo {
@@ -412,27 +415,25 @@ extension MyViewController: UITableViewDelegate, UITableViewDataSource {
             }
             return cell
         } else {
-            let identifier = "cell"
-            var cell = tableView.dequeueReusableCell(withIdentifier: identifier)
-            if cell == nil {
-                cell = UITableViewCell(style: .value1, reuseIdentifier: identifier)
-            }
+            var cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.identifier, for: indexPath) as! ListTableViewCell
             if tableView == groupTableView {
-                cell?.textLabel?.text = groups[indexPath.row].organizationName
+                cell.nameLabel?.text = groups[indexPath.row].organizationName
                 if let strUrl = groups[indexPath.row].logo {
                        if let url = URL(string: strUrl) {
-                           cell?.imageView?.kf.setImage(with:url)
+                        cell.picView.kf.setImage(with:url)
                        }
                 }
             } else if tableView == usersTableView {
-                cell?.textLabel?.text = users[indexPath.row].studentName
+                cell.nameLabel.text = users[indexPath.row].studentName
                 if let strUrl = users[indexPath.row].avatar {
                        if let url = URL(string: strUrl) {
-                           cell?.imageView?.kf.setImage(with:url)
+                           cell.picView.kf.setImage(with:url)
                        }
                 }
             }
-            return cell!
+            cell.identityLabel.text = ""
+            cell.picView.layer.cornerRadius = (cell.picView.frame.width)/2
+            return cell
         }
         
         

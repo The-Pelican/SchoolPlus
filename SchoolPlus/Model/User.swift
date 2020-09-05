@@ -398,7 +398,7 @@ class User: NSObject {
                      let navigationController = UINavigationController(rootViewController: LoginViewController())
                      Navigator.window().rootViewController = navigationController
                  } else {
-                    ProgressHUD.showSucceed("请刷新再试")
+                    ProgressHUD.showSucceed("token重置，请刷新再试")
                 }
              },onError: { error in
                  user.logout()

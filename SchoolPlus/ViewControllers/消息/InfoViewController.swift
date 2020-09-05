@@ -20,9 +20,12 @@ class InfoViewController: UIViewController {
                 print("获取成功\(i.type)")
                 if (i.type! != 1 && i.type! != 4) {
                     print("阅读")
-                    model.read(id: i.messageId ?? -1)
+                    if i.hasRead == false {
+                        model.read(id: i.messageId ?? -1)
+                    }
                 }
             }
+            tableView.reloadData()
         }
     }
     let model = InfoViewModel()
@@ -40,7 +43,29 @@ class InfoViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        model.getNotice(type: typeIndex).subscribe(onNext:{ list in
+            self.notices = list
+            },onError: { error in
+                ProgressHUD.showError(error.localizedDescription)
+            }).disposed(by: disposeBag)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        model.unread().subscribe(onNext:{ string in
+            let window = Navigator.window()
+            if let navvc = window.rootViewController as? UINavigationController {
+                if let vc =  navvc.viewControllers[0] as? MainTabViewController {
+                    
+                    vc.infoItem.badgeValue = string
+                    if  string == "0" {
+                        vc.infoItem.badgeValue = nil
+                    }
+                }
+            }
+        },onError: { error in
+            ProgressHUD.showFailed(error.localizedDescription)
+            }).disposed(by: disposeBag)
     }
     
     func initTableView() {
@@ -67,6 +92,7 @@ class InfoViewController: UIViewController {
     @objc func headerRefresh(){
         self.model.pageNum = 0
         self.model.notices = [1:[Notice](),2:[Notice](),3:[Notice](),4:[Notice](),5:[Notice](),6:[Notice]()]
+        self.model.typeNotices = []
         model.moreNotice(type: typeIndex).subscribe(onNext:{ notices in
             self.notices = notices
             self.model.pageNum += 1
@@ -88,6 +114,8 @@ class InfoViewController: UIViewController {
         tableView.reloadData()
         self.tableView.mj_footer!.endRefreshing()
     }
+    
+
 }
 
 extension InfoViewController: UITableViewDelegate,UITableViewDataSource {

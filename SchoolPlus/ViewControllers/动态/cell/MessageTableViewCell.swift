@@ -61,6 +61,8 @@ class MessageTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.contentView.layer.borderWidth = 1
+        self.contentView.layer.cornerRadius = 2
         initCollectionView()
         subscribeButton.layer.cornerRadius = 5
         likeButton.addTarget(self, action: #selector(likeNews), for: .touchUpInside)
@@ -84,6 +86,9 @@ class MessageTableViewCell: UITableViewCell {
             var frame = newValue
             frame.size.height -= 10
             frame.origin.y += 10
+            frame.origin.x += 10;
+            frame.size.width -= 20;
+
             super.frame  = frame
         }
     }

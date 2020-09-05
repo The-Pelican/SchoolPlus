@@ -37,6 +37,7 @@ class ApplicationViewController: UIViewController {
         listView.frame = self.view.frame
         listView.delegate = self
         listView.dataSource = self
+        listView.register(UINib(nibName: "ListTableViewCell", bundle: nil), forCellReuseIdentifier: ListTableViewCell.identifier)
         self.view.addSubview(listView)
     }
     
@@ -58,13 +59,20 @@ extension ApplicationViewController:UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let identifier = "cell"
+        /*let identifier = "cell"
         var cell = tableView.dequeueReusableCell(withIdentifier: identifier)
         if cell == nil {
             cell = UITableViewCell(style: .default, reuseIdentifier: identifier)
         }
-        cell?.textLabel?.text = list[indexPath.row].studentName
-        return cell!
+        cell?.textLabel?.text = list[indexPath.row].studentName*/
+        var cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.identifier, for: indexPath) as! ListTableViewCell
+        cell.nameLabel.text = list[indexPath.row].studentName
+        if let url = URL(string: list[indexPath.row].avatar ?? "") {
+            cell.picView.kf.setImage(with: url)
+        }
+        cell.identityLabel.text = ""
+        cell.picView.layer.cornerRadius = (cell.picView.frame.width)/2
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

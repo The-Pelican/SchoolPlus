@@ -16,12 +16,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="400" height="200"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ThU-8g-wHq">
-                        <rect key="frame" x="20" y="26" width="40" height="40"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="46" id="2xf-bP-3Be"/>
-                        </constraints>
-                    </imageView>
                     <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rnV-R4-IhD">
                         <rect key="frame" x="20" y="80" width="360" height="2"/>
                     </view>
@@ -47,6 +41,12 @@
                             <constraint firstAttribute="width" constant="71" id="aLC-UR-rtn"/>
                         </constraints>
                     </imageView>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ThU-8g-wHq">
+                        <rect key="frame" x="20" y="37" width="35" height="35"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="35" id="2xf-bP-3Be"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="rnV-R4-IhD" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="AMd-bX-Wti"/>
@@ -54,7 +54,7 @@
                     <constraint firstItem="rnV-R4-IhD" firstAttribute="leading" secondItem="yjk-Ln-Ghh" secondAttribute="leading" id="D5c-7F-WTW"/>
                     <constraint firstItem="rnV-R4-IhD" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="K7R-0u-Q7t"/>
                     <constraint firstItem="tUh-0n-jkz" firstAttribute="leading" secondItem="yjk-Ln-Ghh" secondAttribute="trailing" constant="8" id="L3E-IP-yyX"/>
-                    <constraint firstItem="Yw7-Ry-jCp" firstAttribute="leading" secondItem="ThU-8g-wHq" secondAttribute="trailing" constant="8" id="NrP-bl-Lyb"/>
+                    <constraint firstItem="Yw7-Ry-jCp" firstAttribute="leading" secondItem="ThU-8g-wHq" secondAttribute="trailing" constant="19" id="NrP-bl-Lyb"/>
                     <constraint firstItem="rnV-R4-IhD" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="O6h-Zw-mNh"/>
                     <constraint firstItem="ThU-8g-wHq" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="XcF-Z1-eu1"/>
                     <constraint firstItem="Yw7-Ry-jCp" firstAttribute="trailing" secondItem="tUh-0n-jkz" secondAttribute="trailing" id="aWk-Nm-dfH"/>
@@ -65,7 +65,7 @@
                     <constraint firstItem="yjk-Ln-Ghh" firstAttribute="top" secondItem="tUh-0n-jkz" secondAttribute="top" id="pRY-3Z-n1z"/>
                     <constraint firstAttribute="trailingMargin" secondItem="Yw7-Ry-jCp" secondAttribute="trailing" constant="7" id="qB8-O5-gle"/>
                     <constraint firstAttribute="bottomMargin" secondItem="yjk-Ln-Ghh" secondAttribute="bottom" constant="28" id="uXK-5R-S9T"/>
-                    <constraint firstItem="ThU-8g-wHq" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-29" id="vjs-rR-2XI"/>
+                    <constraint firstItem="ThU-8g-wHq" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-18" id="vjs-rR-2XI"/>
                     <constraint firstItem="Yw7-Ry-jCp" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-16" id="yT8-Gd-Nfq"/>
                 </constraints>
             </tableViewCellContentView>

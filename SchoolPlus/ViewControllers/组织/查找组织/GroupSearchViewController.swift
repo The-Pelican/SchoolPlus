@@ -80,6 +80,7 @@ class GroupSearchViewController: UIViewController {
             $0.height.equalTo(self.view.frame.height-90)
         })
     }
+    
     func initSearchController() {
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.delegate = self  //两个样例使用不同的代理
@@ -227,7 +228,7 @@ extension GroupSearchViewController:UISearchBarDelegate {
         },onError: { error in
             ProgressHUD.showError()
             
-        })
+            }).disposed(by: disposeBag)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

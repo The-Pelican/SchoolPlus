@@ -246,7 +246,7 @@ extension UpdateMessageViewController: UICollectionViewDelegate, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.identifier, for: indexPath) as! ImageCell
         if indexPath.row == images.count {
-            cell.imageView.image = UIImage(named: "zhaoxiangji")
+            cell.imageView.image = UIImage(named: "tianjia")
         } else {
             cell.imageView.image = images[indexPath.row]
             if indexPath.row < images.count {

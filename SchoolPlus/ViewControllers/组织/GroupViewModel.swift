@@ -547,7 +547,7 @@ class GroupViewModel {
         let headers:HTTPHeaders = ["accessToken":user.accessToken]
         return Observable<String>.create { (observer) -> Disposable in
         AF.request(url, method: .post,parameters: para, headers: headers).responseJSON {
-            [weak self](response) in
+            (response) in
             debugPrint(response)
             switch response.result {
             case .success(let value):
@@ -562,7 +562,37 @@ class GroupViewModel {
                         }
                     }
                 }
-                
+            case .failure(let error):
+                print(error)
+                observer.onError(error)
+            }
+        }
+            return Disposables.create()
+            }
+    }
+    
+    func removePastAdmin(organizationId:Int,adminId:Int) -> Observable<String> {
+        let url = URL(string: "http://www.chenzhimeng.top/fu-community/organization/admin")!
+        let para = ["organizationId":organizationId,"adminId":adminId]
+        let headers:HTTPHeaders = ["accessToken":user.accessToken]
+        print("remove:\(url)")
+        return Observable<String>.create { (observer) -> Disposable in
+        AF.request(url, method: .delete, parameters: para, headers: headers).responseJSON {
+            (response) in
+            debugPrint(response)
+            switch response.result {
+            case .success(let value):
+                print(value)
+                let json = JSON(value)
+                if let result = json["result"].bool {
+                    if result {
+                        observer.onNext("success")
+                    } else {
+                        if let msg = json["msg"].string {
+                            observer.onNext(msg)
+                        }
+                    }
+                }
             case .failure(let error):
                 print(error)
                 observer.onError(error)

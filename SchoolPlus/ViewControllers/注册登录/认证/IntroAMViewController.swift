@@ -54,8 +54,9 @@ class IntroAMViewController: UIViewController {
         
         self.view.addSubview(nextButton)
         nextButton.setTitle("下一步", for: .normal)
-        nextButton.backgroundColor = UIColor.green
-        nextButton.setTitleColor(UIColor.black, for: .normal)
+        nextButton.backgroundColor = UIColor.systemBlue
+        nextButton.layer.cornerRadius = 5
+        nextButton.setTitleColor(UIColor.white, for: .normal)
         nextButton.snp.makeConstraints({
             $0.centerX.equalToSuperview()
             $0.height.equalTo(50)
@@ -66,8 +67,7 @@ class IntroAMViewController: UIViewController {
         
         self.view.addSubview(backButton)
         backButton.setTitle("退出", for: .normal)
-        backButton.backgroundColor = UIColor.green
-        backButton.setTitleColor(UIColor.black, for: .normal)
+        backButton.setTitleColor(UIColor.systemBlue, for: .normal)
         backButton.snp.makeConstraints({
             $0.height.equalTo(40)
             $0.width.equalTo(50)

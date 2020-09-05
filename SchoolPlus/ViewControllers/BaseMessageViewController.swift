@@ -59,7 +59,7 @@ class BaseMessageViewController: UIViewController,UITableViewDelegate,UITableVie
     
     func initTableView() {
         self.view.addSubview(tableView)
-        tableView.backgroundColor = UIColor.lightGray
+        tableView.backgroundColor = UIColor.white
         tableView.snp.makeConstraints({
             $0.top.equalToSuperview()
             $0.left.equalToSuperview()
