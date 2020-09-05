@@ -37,12 +37,12 @@ class InfoViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.lightGray
         initTableView()
-        
-
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        model.typeNotices = []
+        model.pageNum = 0
         model.getNotice(type: typeIndex).subscribe(onNext:{ list in
             self.notices = list
             },onError: { error in
@@ -131,6 +131,11 @@ extension InfoViewController: UITableViewDelegate,UITableViewDataSource {
         let time = (notices[indexPath.row].time)!
         let date = timeIntervalToString(timeInterval: Double(time))
         cell.reloadData(time: date, content: notices[indexPath.row].content ?? "暂无内容",hasRead: notices[indexPath.row].hasRead ?? false)
+        if notices[indexPath.row].type! == 1 {
+            cell.contentLabel.text = "您的动态收到新回复"
+        } else if notices[indexPath.row].type! == 4 {
+            cell.contentLabel.text = "您的关注人发布新动态"
+        }
         return cell
     }
     

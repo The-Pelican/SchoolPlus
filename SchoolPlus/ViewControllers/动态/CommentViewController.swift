@@ -247,6 +247,7 @@ class CommentViewController: UIViewController {
             ProgressHUD.showError(error.localizedDescription)
             }).disposed(by: disposeBag)
         textView.resignFirstResponder()
+        textView.text = ""
     }
     
     @objc func addPic() {

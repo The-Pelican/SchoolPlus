@@ -230,5 +230,11 @@ extension GroupDetailViewController: UITableViewDataSource,UITableViewDelegate {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = CommentViewController()
+        vc.newsId = news[indexPath.row].newsId ?? -1
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     
 }

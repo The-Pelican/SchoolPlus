@@ -31,6 +31,7 @@ class OnthersViewController: UIViewController {
     var user: UserInfo?
     var groups:[Organization] = [] {
         didSet {
+            print("他人组织")
             groupTableView.reloadData()
         }
     }
@@ -60,8 +61,6 @@ class OnthersViewController: UIViewController {
         model.userList = []
         model.organizationList = []
         model.newsList =  []
-        
-
         model.getUserGroups(id: user?.userId ?? -1).subscribe(onNext:{ [weak self]list in
             self?.groups = list
         },onError: { [weak self]error in
@@ -184,7 +183,9 @@ class OnthersViewController: UIViewController {
         groupTableView.delegate = self
         groupTableView.dataSource = self
         groupTableView.separatorStyle = .none
+        //groupTableView.backgroundColor = UIColor.purple
         groupTableView.isScrollEnabled = false
+        groupTableView.register(UINib(nibName: "ListTableViewCell", bundle: nil), forCellReuseIdentifier: ListTableViewCell.identifier)
         groupTableView.snp.makeConstraints({
             $0.centerX.equalToSuperview()
             $0.left.equalTo(whiteView[0].snp.left)
@@ -194,7 +195,7 @@ class OnthersViewController: UIViewController {
         
         backView[0].addSubview(totalButton[0])
         totalButton[0].setTitle("查看全部", for: .normal)
-        //totalButton[0].addTarget(self, action: #selector(groupList), for: .touchUpInside)
+        totalButton[0].addTarget(self, action: #selector(groupList), for: .touchUpInside)
         totalButton[0].setTitleColor(UIColor.systemBlue, for: .normal)
         totalButton[0].snp.makeConstraints({
             $0.centerX.equalToSuperview()
@@ -250,6 +251,7 @@ class OnthersViewController: UIViewController {
         newsTableView.dataSource = self
         newsTableView.separatorStyle = .none
         newsTableView.isScrollEnabled = false
+        newsTableView.register(UINib(nibName: "TimeLineTableViewCell", bundle: nil), forCellReuseIdentifier: TimeLineTableViewCell.identifier)
         newsTableView.snp.makeConstraints({
             $0.centerX.equalToSuperview()
             $0.left.equalTo(whiteView[1].snp.left)
@@ -259,7 +261,7 @@ class OnthersViewController: UIViewController {
         
         backView[1].addSubview(totalButton[1])
         totalButton[1].setTitle("查看全部", for: .normal)
-        //totalButton[1].addTarget(self, action: #selector(userList), for: .touchUpInside)
+        totalButton[1].addTarget(self, action: #selector(newsList), for: .touchUpInside)
         totalButton[1].setTitleColor(UIColor.systemBlue, for: .normal)
         totalButton[1].snp.makeConstraints({
             $0.centerX.equalToSuperview()
@@ -309,7 +311,32 @@ extension OnthersViewController: UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let identifier = "cell"
+        if tableView == newsTableView {
+            let cell = tableView.dequeueReusableCell(withIdentifier: TimeLineTableViewCell.identifier, for: indexPath) as! TimeLineTableViewCell
+            cell.contentLabel?.text = news[indexPath.row].text
+            cell.dateLabel.text = news[indexPath.row].publishTime
+            if let media = news[indexPath.row].media {
+                if !media.isEmpty {
+                    if let url = URL(string: media.first ?? "") {
+                        cell.picView?.kf.setImage(with:url)
+                    }
+                }
+            }
+            return cell
+        } else {
+             var cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.identifier, for: indexPath) as! ListTableViewCell
+            cell.nameLabel?.text = groups[indexPath.row].organizationName
+                           if let strUrl = groups[indexPath.row].logo {
+                                  if let url = URL(string: strUrl) {
+                                   cell.picView.kf.setImage(with:url)
+                                  }
+                           }
+            cell.identityLabel.text = ""
+            return cell
+            
+        }
+        
+       /* let identifier = "cell"
         var cell = tableView.dequeueReusableCell(withIdentifier: identifier)
         if cell == nil {
             cell = UITableViewCell(style: .value1, reuseIdentifier: identifier)
@@ -321,8 +348,22 @@ extension OnthersViewController: UITableViewDelegate,UITableViewDataSource {
         } else {
             cell?.textLabel?.text = news[indexPath.row].text
         }
-        return cell!
+        return cell!*/
+        
     }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+           if tableView == newsTableView {
+               let vc = CommentViewController()
+               vc.newsId = news[indexPath.row].newsId ?? -1
+               self.navigationController?.pushViewController(vc, animated: true)
+           } else if tableView == groupTableView {
+               let vc = GroupDetailViewController()
+               vc.organizationId = groups[indexPath.row].organizationId ?? -1
+               self.navigationController?.pushViewController(vc, animated: true)
+           }
+       }
     
     
 }

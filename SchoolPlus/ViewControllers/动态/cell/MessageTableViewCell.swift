@@ -33,8 +33,10 @@ class MessageTableViewCell: UITableViewCell {
                   }
                 if i.hasSubscribed ?? false {
                     self.subscribeButton.backgroundColor = UIColor.darkGray
+                    self.subscribeButton.setTitle("已关注", for: .normal)
                 } else {
                     self.subscribeButton.backgroundColor = UIColor(valueStr: "FBEA77")
+                    self.subscribeButton.setTitle("关注", for: .normal)
                 }
                 if i.userId == user.userId {
                     self.subscribeButton.isHidden = true
@@ -48,8 +50,10 @@ class MessageTableViewCell: UITableViewCell {
                 userNameLabel.text = i.organizationName
                 if i.hasSubscribed ?? false {
                     self.subscribeButton.backgroundColor = UIColor.darkGray
+                    self.subscribeButton.setTitle("已关注", for: .normal)
                 } else {
                     self.subscribeButton.backgroundColor = UIColor(valueStr: "FBEA77")
+                    self.subscribeButton.setTitle("关注", for: .normal)
                 }
             }
         }
@@ -159,13 +163,16 @@ class MessageTableViewCell: UITableViewCell {
             if n {
                 user.cancelSubscribe(userId: info.publisher?.userId!, organizationId: nil).subscribe(onNext:{ string in
                 self.subscribeButton.backgroundColor = UIColor(valueStr: "FBEA77")
+                    self.subscribeButton.setTitle("关注", for: .normal)
                     info.publisher?.hasSubscribed = false
                 }, onError: { error in
                     ProgressHUD.showError(error.localizedDescription)
                 }).disposed(by: disposeBag)
             } else {
                 user.subscribeUser(userId: (info.publisher?.userId)!).subscribe(onNext:{ string in
+                    print(string)
                 self.subscribeButton.backgroundColor = UIColor.darkGray
+                    self.subscribeButton.setTitle("已关注", for: .normal)
                     info.publisher?.hasSubscribed = true
                     ProgressHUD.showSucceed("已关注")
                 }, onError: { error in
@@ -179,6 +186,7 @@ class MessageTableViewCell: UITableViewCell {
                 user.cancelSubscribe(userId: nil, organizationId: info.orgnization?.organizationId!).subscribe(onNext:{ string in
                    self.subscribeButton.backgroundColor = UIColor(valueStr: "FBEA77")
                     info.orgnization?.hasSubscribed = false
+                    self.subscribeButton.setTitle("关注", for: .normal)
                    }, onError: { error in
                        ProgressHUD.showError(error.localizedDescription)
                    }).disposed(by: disposeBag)
@@ -186,6 +194,7 @@ class MessageTableViewCell: UITableViewCell {
                 user.subscribeOragnization(organizationId: (info.orgnization?.organizationId)!).subscribe(onNext:{ string in
                 self.subscribeButton.backgroundColor = UIColor.darkGray
                     info.orgnization?.hasSubscribed = true
+                    self.subscribeButton.setTitle("已关注", for: .normal)
                 }, onError: { error in
                     ProgressHUD.showError(error.localizedDescription)
                 }).disposed(by: disposeBag)

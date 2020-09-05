@@ -108,6 +108,7 @@ class User: NSObject {
         userId = -1
         avatar = "未设置"
         name = "无名"
+        hasChecked = nil
         user.save()
         user.saveInfo()
     }
@@ -552,8 +553,10 @@ class User: NSObject {
                 }
                 if let error = response.error {
                     observer.onError(error)
+                } else {
+                    observer.onNext("success")
                 }
-                observer.onNext("success")
+                
             }
             return Disposables.create()
         }
@@ -562,14 +565,12 @@ class User: NSObject {
     
     
     func cancelSubscribe(userId:Int?,organizationId:Int?) -> Observable<String>{
-        var para = ["organization":organizationId]
+        var para = ["organizationId":organizationId]
         
         if let userId = userId {
             para = ["userId":userId]
-        }
-        
-        if let organizationId = organizationId  {
-            para = ["organization":organizationId]
+        } else if let organizationId = organizationId  {
+            para = ["organizationId":organizationId]
         }
         
         let url = URL(string: "http://www.chenzhimeng.top/fu-community/user/fans")!

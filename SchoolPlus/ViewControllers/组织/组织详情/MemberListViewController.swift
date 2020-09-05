@@ -66,6 +66,7 @@ class MemberListViewController: UIViewController {
          ProgressHUD.show("正在加载中")
         list = []
         users = [:]
+        model.memberList = [:]
         model.getMemberList(organizationId: organizationId).subscribe(onNext:{ list in
             self.users = list
             ProgressHUD.dismiss()
@@ -94,6 +95,7 @@ class MemberListViewController: UIViewController {
         self.view.addSubview(listView)
     }
     @objc func headerRefresh() {
+        getMemberData()
         listView.reloadData()
         self.listView.mj_header!.endRefreshing()
     }
@@ -138,21 +140,6 @@ extension MemberListViewController:UITableViewDataSource,UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        /*let identifier = "cell"
-        var cell = tableView.dequeueReusableCell(withIdentifier: identifier)
-        if cell == nil {
-            cell = UITableViewCell(style: .value1, reuseIdentifier: identifier)
-        }
-        cell?.textLabel?.text = list[indexPath.row].studentName
-        if let url = URL(string: list[indexPath.row].avatar ?? "") {
-            cell?.imageView?.kf.setImage(with: url)
-        }
-        if  indexPath.row == 0 {
-            cell?.detailTextLabel?.text = "创始人"
-        } else if indexPath.row > 0 && indexPath.row < (users["admin"]!.count + 1) {
-             cell?.detailTextLabel?.text = "管理员"
-        }
-        cell?.imageView?.layer.cornerRadius = 30*/
         var cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.identifier, for: indexPath) as! ListTableViewCell
         cell.nameLabel.text = list[indexPath.row].studentName
         if let url = URL(string: list[indexPath.row].avatar ?? "") {

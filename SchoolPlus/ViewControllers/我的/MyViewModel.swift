@@ -204,7 +204,7 @@ class MyViewModel {
               switch response.result {
               case .success(let value):
                   let json = JSON(value)
-                  if let newsJson = json.array {
+                  if let newsJson = json["my"].array {
                       for news in newsJson {
                           let info = Organization(news)
                           self?.myGroupList.append(info)

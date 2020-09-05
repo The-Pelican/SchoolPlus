@@ -63,6 +63,19 @@ extension InfoDetailViewController: UITableViewDelegate,UITableViewDataSource {
         }
            return cell!
        }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if !groups.isEmpty {
+            let vc = GroupDetailViewController()
+            vc.organizationId = groups[indexPath.row].organizationId ?? -1
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else if !users.isEmpty {
+            let vc = OnthersViewController()
+            vc.user = users[indexPath.row]
+            vc.userId = users[indexPath.row].userId!
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
 }
 
 

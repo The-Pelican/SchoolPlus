@@ -36,6 +36,9 @@ class MyViewController: UIViewController {
     var users:[UserInfo] = [] {
         didSet {
             usersTableView.reloadData()
+            for i in users {
+                print(i.userId)
+            }
         }
     }
 
@@ -182,7 +185,7 @@ class MyViewController: UIViewController {
             $0.height.equalTo(30)
             $0.width.equalTo(100)
         })
-        introLabel[0].text = "我的组织"
+        introLabel[0].text = "我关注的组织"
         whiteView[0].addButtonLine()
         
         backView[0].addSubview(groupTableView)
@@ -467,6 +470,23 @@ extension MyViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         return cell!*/
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView == newsTableView {
+            let vc = CommentViewController()
+            vc.newsId = news[indexPath.row].newsId ?? -1
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else if tableView == usersTableView {
+            let vc = OnthersViewController()
+            vc.user = users[indexPath.row]
+            vc.userId = users[indexPath.row].userId!
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else if tableView == groupTableView {
+            let vc = GroupDetailViewController()
+            vc.organizationId = groups[indexPath.row].organizationId ?? -1
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     

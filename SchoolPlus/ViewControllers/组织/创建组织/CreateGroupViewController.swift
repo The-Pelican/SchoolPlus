@@ -149,7 +149,7 @@ class CreateGroupViewController: UIViewController {
             $0.width.equalTo(200)
         })
         
-        button.setTitle("创建一个组织", for: .normal)
+        button.setTitle("提交申请", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.setTitleColor(UIColor.black, for: .normal)
         button.layer.borderWidth = 0.5
