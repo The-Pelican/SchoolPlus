@@ -482,7 +482,9 @@ class User: NSObject {
         ]
         return Observable<String>.create { (observer) -> Disposable in
             AF.upload(multipartFormData: { (multiPart) in
-                multiPart.append(imageData!, withName: "avatar", fileName:  "avatar.jpeg", mimeType: "image/jpeg")
+                if let data = imageData {
+                    multiPart.append(data, withName: "avatar", fileName:  "avatar.jpeg", mimeType: "image/jpeg")
+                }
                   }, to: "http://www.chenzhimeng.top/fu-community/user/avatar", usingThreshold:UInt64.init(), method: .put, headers:headers).responseJSON { (response) in
                       debugPrint(response)
                       switch response.result {
